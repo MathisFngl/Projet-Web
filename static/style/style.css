@@ -1,0 +1,75 @@
+@font-face {
+    font-family: 'kanit';
+    src: url('../fonts/kanit-bold.woff2') format('woff2');
+}
+
+
+*  {
+    margin: 0;
+    background-color: black;
+    padding: 0;
+    text-decoration: None;
+    list-style: None;
+   
+
+}
+
+body{
+    font-family: 'kanit',Helvetica;
+
+}
+
+h1{
+    position: absolute;
+    color: #fff;
+    margin-top: 17%;
+    margin-left: 25%;
+    font-size: 3em;
+}
+
+.navbar{
+    position: absolute;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.navbar a{
+    color: #fff;
+}
+
+.navbar .icon{
+    position: absolute;
+    display: flex;
+    color: #fff;
+}
+
+.navbar .logo{
+    font-size: 2.1em;
+    font-weight: bold;
+    margin-left: 60px;
+}
+
+.navbar .nav-links ul{
+    display: flex;
+}
+
+.navbar .nav-links ul li{
+    margin: 0 35px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+.navbar .nav-links ul li.active a{
+    color: red;
+    font-weight: 600;
+}
+
+.navbar .nav-links ul li :hover{
+    text-decoration: underline;
+    text-decoration-color: red;
+    font-size: 1.4em;
+}
