@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-
 <html>
   <head>
     <metacharset="utf-8">
-    <title>LogIn</title>
+    <title>Register</title>
     <link rel="stylesheet" href="../static/style/style.css">
   </head>
 
@@ -19,18 +18,18 @@
           <a href="#" class="logo">Virtual Trader</a>
         <div class="nav-links">
             <ul>
-                <li><a href="index.html">Acceuil</a></li>
-                <li class="active"><a href="#">Connexion</a></li>
-                <li><a href="#">S'inscrire</a></li>
-                <li><a href="#">Info</a></li>
+                <li><a href="index.php">Acceuil</a></li>
+                <li><a href="login.php">Connexion</a></li>
+                <li class="active"><a href="#">S'inscrire</a></li>
+                <li><a href="info.php">Info</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </div>
     </nav>
     <section class="form-box">
         <div class="form-value">
-            <form action="">
-                <h2>Connexion</h2>
+            <form method="post">
+                <h2>Inscription</h2>
                 <div class="inputbox">
                     <ion-icon name="mail-outline"></ion-icon>
                     <input type="email" required>
@@ -39,15 +38,14 @@
                 <div class="inputbox">
                     <ion-icon name="lock-closed-outline"></ion-icon>
                     <input type="password" required>
-                    <label for="">Password</label>
+                    <label for="">Mot de passe</label>
                 </div>
-                <div class="forget">
-                    <label for=""><input type="checkbox">Se Souvenir | <a href="#">Mot de passe oublié ?</a></label>
+                <div class="inputbox">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <input type="password" required>
+                    <label for="">Confirmation mot de passe</label>
                 </div>
-                <button class="buttonLog">Connexion</button>
-                <div class="register">
-                    <p>Pas de compte <a href="#">S'INSCRIRE</a></p>
-                </div>
+                <button type="submit" class="buttonLog">S'inscrire</button>
             </form>
         </div>
     </section>
