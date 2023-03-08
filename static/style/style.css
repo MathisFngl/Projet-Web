@@ -46,8 +46,8 @@ h1 {
     padding: 50px;
 }
 
-.menu-padding-10{
-    padding: 10px;
+.menu-padding-20{
+    padding: 20px;
 }
 
 .navbar {
@@ -71,12 +71,6 @@ h1 {
 
 .navbar .logo {
     font-size: 2.1em;
-    font-weight: bold;
-    margin-left: 60px;
-}
-
-.navbar .minilogo {
-    font-size: 1.5em;
     font-weight: bold;
     margin-left: 60px;
 }
@@ -229,7 +223,7 @@ input:valid~label {
     position: absolute;
     margin-top: 150px;
     margin-left: 50px;
-    
+    user-select: none;
 }
 .profilPhoto img{
     width: 170px;
