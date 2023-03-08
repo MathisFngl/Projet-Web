@@ -32,7 +32,7 @@ h1 {
     font-size: 1.2em;
     top: 200px;
     padding: 35px;
-    line-height: 1.5em;
+    line-height: 1.1em;
 }
 
 .php {
@@ -209,4 +209,59 @@ input:valid~label {
 
 .register p a:hover {
     text-decoration: underline;
+}
+
+/*profile*/
+.profilPhoto{
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 50px;
+    
+}
+.profilPhoto img{
+    width: 170px;
+    height: 120x;
+    border: 2px solid #fff;
+    border-radius: 40px;
+    box-shadow: 5px 5px 5px #fff;
+   
+}
+.infoProfil{
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 230px;
+    color: #fff;
+    width: 35%;
+}
+.infoProfil h2{
+    position: relative;
+    font-size: 2.6em;
+}
+.info-user{
+    width: 100%;
+    position: relative;
+    font-size: 2em;
+    margin-left: 30px;
+    border-right: 2px solid #fff;   
+}
+.info-user label{
+    position: absolute;
+    color: #fff;
+    font-size: 1em;
+    margin-top: 35px;
+}
+.info-user input{
+    position: relative;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+    height: 15px;
+    top: 15px;
+    font-size: 0.9em;
+    margin-top: 55px;
+    padding: 20px;
+    margin-left: -20px;
+    font-weight: 600;
 }
