@@ -26,8 +26,8 @@
         </ul>
       </div>
     </nav>
+    <div class="menu_divider"></div>
     <div class="sidenav">
-      <div class="menu_divider"></div>
       <a href="#indices">Indices</a>
       <div class="menu_divider"></div>
       <a href="#forex">Forex</a>
