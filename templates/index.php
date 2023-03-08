@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="../static/style/style.css">
         
     <body>
-        <nav class="navbar">
+        <nav class="navbar menu-padding-50">
             <svg width="48" height="48" fill="none" viewBox="0 0 24 24" class="icon">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 11.25L10.25 5.75"></path>
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.75 19.2502H6.25C6.80229 19.2502 7.25 18.8025 7.25 18.2502V15.75C7.25 15.1977 6.80229 14.75 6.25 14.75H5.75C5.19772 14.75 4.75 15.1977 4.75 15.75V18.2502C4.75 18.8025 5.19772 19.2502 5.75 19.2502Z"></path>
