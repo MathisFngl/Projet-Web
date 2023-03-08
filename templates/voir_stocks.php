@@ -18,7 +18,7 @@
       <a href="#" class="logo">Virtual Trader</a>
       <div class="nav-links">
         <ul>
-          <li class="active"><a href="#">Voir les stocks</a></li>
+          <li class="active"><a href="#">Stocks</a></li>
           <li><a href="profile.php">Profil</a></li>
           <li><a href="#">Historique</a></li>
           <li><a href="#">Amis</a></li>
