@@ -26,5 +26,20 @@
         </ul>
       </div>
     </nav>
+    <div class="sidenav">
+      <div class="menu_divider"></div>
+      <a href="#indices">Indices</a>
+      <div class="menu_divider"></div>
+      <a href="#forex">Forex</a>
+      <div class="menu_divider"></div>
+      <a href="#crypto">Crypto</a>
+      <div class="menu_divider"></div>
+      <a href="#action">Actions</a>
+      <div class="menu_divider"></div>
+      <a href="#taux-obligation">Taux & Obligations</a>
+      <div class="menu_divider"></div>
+      <a href="#etf">ETF</a>
+      <div class="menu_divider"></div>
+      </div>
   </body>
 </html>

@@ -51,11 +51,12 @@ h1 {
 }
 
 .navbar {
-    position: absolute;
+    position: static;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    background-color: #111;
     box-sizing: border-box;
 }
 
@@ -235,7 +236,7 @@ input:valid~label {
 }
 .infoProfil{
     position: absolute;
-    margin-top: 150px;
+    margin-top: 120px;
     margin-left: 230px;
     color: #fff;
     width: 35%;
@@ -271,4 +272,46 @@ input:valid~label {
     padding: 20px;
     margin-left: -20px;
     font-weight: 600;
+}
+
+/*Sidenav*/
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 73px;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  display: block;
+  }
+  
+  .sidenav a {
+    padding: 18px 18px 18px 16px;
+    text-decoration: none;
+    font-size: 19px;
+    color: #818181;
+    display: block;
+  }
+  
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+  
+  .main {
+    margin-left: 160px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 10px;}
+  }
+
+  .menu_divider{
+    border-top: 1px solid #212b36;
+    
 }
