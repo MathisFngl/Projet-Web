@@ -25,7 +25,8 @@
             </div>
         </nav>
         <h1>Bienvenue sur le jeu Virtual Trader</h1>
-        <div class="php"><?php
+        <div class="php">
+            <?php
         $a = 25;
         $b = -6;
         $c = $a + $b;
