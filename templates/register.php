@@ -26,29 +26,49 @@
             </ul>
         </div>
     </nav>
-    <section class="form-box">
-        <div class="form-value">
+    <section class="form-box-register">
+        <div class="form-value-register">
             <form method="post">
-                <h2>Inscription</h2>
-                <div class="inputbox">
+                <h2 class="h2-register">Inscription</h2>
+                <div class="inputbox-register">
+                <ion-icon name="person-outline"></ion-icon>
+                    <input type="text" required>
+                    <label for="">Pseudo</label>
+                </div>
+                <div class="inputbox-register">
                     <ion-icon name="mail-outline"></ion-icon>
                     <input type="email" required>
                     <label for="">Email</label>
                 </div>
-                <div class="inputbox">
+                <div class="inputbox-register">
                     <ion-icon name="lock-closed-outline"></ion-icon>
                     <input type="password" required>
                     <label for="">Mot de passe</label>
                 </div>
-                <div class="inputbox">
+                <div class="inputbox-register">
                     <ion-icon name="lock-closed-outline"></ion-icon>
                     <input type="password" required>
                     <label for="">Confirmation mot de passe</label>
                 </div>
-                <button type="submit" class="buttonLog">S'inscrire</button>
+                <div class="modal-container-register">
+                    <div class="modal-register">
+                        <button class="close-modal-register modal-trigger-register">X</button>
+                        <button class="modal-image1-register modal-trigger-register"><img src="../images/img1.jpg" alt="photo de profile"></button>
+                        <button class="modal-image2-register modal-trigger-register"><img src="../images/img2.jpg" alt="photo de profile"></button>
+                        <button class="modal-image3-register modal-trigger-register"><img src="../images/img3.jpg" alt="photo de profile"></button>
+                        <button class="modal-image4-register modal-trigger-register"><img src="../images/img4.jpg" alt="photo de profile"></button>
+                        <button class="modal-image5-register modal-trigger-register"><img src="../images/img5.jpg" alt="photo de profile"></button>
+                        <button class="modal-image6-register modal-trigger-register"><img src="../images/img6.jpg" alt="photo de profile"></button>
+                        <button class="modal-image7-register modal-trigger-register"><img src="../images/img7.jpg" alt="photo de profile"></button>
+                        <button class="modal-image8-register modal-trigger-register"><img src="../images/img2.jpg" alt="photo de profile"></button>
+                    </div>
+                 </div>     
+                <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>
+                <button type="submit" class="buttonLog-register">S'inscrire</button>
             </form>
         </div>
     </section>
+    <script src="../js/app.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   </body>

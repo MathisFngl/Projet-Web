@@ -26,7 +26,7 @@
             </div>
         </nav>
         <div class="profilPhoto">
-            <img src="../images/capybara.jpg" alt="photo de profile">
+            <img src="../images/img7.jpg" alt="photo de profile">
         </div>
         <div class="infoProfil">
             <h2>Profil</h2>
