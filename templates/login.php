@@ -27,6 +27,7 @@
             </ul>
         </div>
     </nav>
+    <div class="menu_divider"></div>
     <section class="form-box">
         <div class="form-value">
             <form method="post">

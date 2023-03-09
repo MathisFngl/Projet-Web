@@ -25,6 +25,7 @@
                 </ul>
             </div>
         </nav>
+        <div class="menu_divider"></div>
         <div class="profilPhoto">
             <img src="../images/capybara.jpg" alt="photo de profile">
         </div>
