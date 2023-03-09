@@ -26,6 +26,7 @@
             </ul>
         </div>
     </nav>
+    <div class="menu_divider"></div>
     <section class="form-box-register">
         <div class="form-value-register">
             <form method="post">
