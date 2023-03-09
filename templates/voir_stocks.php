@@ -5,7 +5,7 @@
     <metacharset="utf-8">
     <title>Stocks</title>
     <link rel="stylesheet" href="../static/style/style.css">
-    <script src="../static/graphe.js"></script>
+    <script src="../js/graph.js"></script>
   </head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <body>
