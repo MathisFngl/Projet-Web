@@ -24,6 +24,7 @@
                 </ul>
             </div>
         </nav>
+        <div class="menu_divider"></div>
         <p class="pInfo">Virtual Trader est un projet d'informatique qui a pour but de simuler l'action de jouer en bourse.<br><br>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet bibendum urna. Nullam ultrices leo dolor, 
             a sollicitudin dolor mollis ut. Sed quam ex, convallis in mattis bibendum, pharetra vel turpis. In rhoncus dui non

@@ -25,6 +25,7 @@
                 </ul>
             </div>
         </nav>
+        <div class="menu_divider"></div>
         <div class="profilPhoto">
             <img src="../images/img7.jpg" alt="photo de profile">
         </div>

@@ -24,6 +24,7 @@
                 </ul>
             </div>
         </nav>
+        <div class="menu_divider"></div>
         <h1>Bienvenue sur le jeu Virtual Trader</h1>
         <div class="php">
             <?php
