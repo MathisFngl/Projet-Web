@@ -612,17 +612,36 @@ input:valid~label {
     overflow: hidden;
 }
 
-.graphique {
-    max-width:65%;
+.graphique_main {
     background-color: #212b36;
-    padding: 10px 10px 10px 10px;
+    width: 100%;
+    height:70%;
+}
+
+.dim-main-trade{
+    width: 100%;
+    height: 94%;
+}
+
+.graphique_rsi {
+    max-width:100%;
+    background-color: #212b36;
+}
+.rsi {
+    width:65%;
+    height:10%;
+}
+
+.graphes-gauche{
+    left:0;
+    width: 70%;
+    height: 100%;
 }
 
 .bandeau-infos-trade {
     background-color: #12171c;
     padding: 5px 10px 5px 10px;
     color: #f1f1f1;
-    max-width:65%;
 }
 
 @media only screen and (max-width : 1035px){

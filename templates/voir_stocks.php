@@ -44,40 +44,50 @@
         <div class="menu_divider"></div>
       </div>
       <div class="page-content">
-      <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : 
-      <?php
-        $a = 25;
-        echo " +$a%"; 
-      ?>
-      </div>
-      <div class="trade-body">
-        <div class="graphique">
-        <canvas  id="myChart"></canvas>
-        <script>
-          var xValues = [1,2,3,4,5,6,7,8,9,10,11,12];
+      <div class="graphes-gauche">
+        <div class="graphique_main">
+          <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php $a = 25; echo " +$a%"; ?></div>
+          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+          <div id="MainTrade" class="dim-main-trade"></div>
+          <script>
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
 
-          new Chart("myChart", {
-              type: "line",
-              data: {
-                  labels: xValues,
-                  datasets: [{ 
-                  data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478,1303,2640],
-                  borderColor: "red",
-                  fill: true
-                  }]
-              },
-              options: {
-                  legend: {display: false}
+              function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['1', 20, 28, 38, 45],
+                  ['2', 31, 38, 55, 66],
+                  ['3', 50, 55, 77, 80],
+                  ['4', 77, 77, 66, 50],
+                  ['5', 68, 66, 22, 15],
+                  ['6', 68, 22, 12, 15],
+                  ['7', 9, 12, 41, 15],
+                  ['8', 29, 41, 39, 45],
+                  ['9', 68, 39, 73, 85],
+                  ['10', 29, 73, 108, 110],
+                  ['11', 98, 108, 159, 183],
+                  ['12', 108, 159, 148, 164],], true);
+
+                var options = {
+                  legend:'none',
+                  candlestick: {
+                        fallingColor: { strokeWidth: 0, fill: '#a52714' },
+                        risingColor: { strokeWidth: 0, fill: '#0f9d58' }},
+                  backgroundColor : { strokeWidth: 0, fill: '#212b36' },
+                  chartArea: {'width': '90%', 'height': '85%'},
+                };
+
+                var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
+
+                chart.draw(data, options);
               }
-          });
-        </script>
+          </script>
         </div>
-      </div>
-      <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): 
-      <?php
-        $a = 25;
-        echo " +$a%"; 
-      ?>
+        <div class="graphique_rsi">
+          <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <?php $a = 25; echo " +$a%"; ?></div>
+
+        </div>
+      <div>
     </div>
   </body>
 </html>
