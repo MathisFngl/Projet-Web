@@ -277,7 +277,6 @@ input:valid~label {
     margin-left: -20px;
     font-weight: 600;
 }
-
 /*Sidenav*/
 
 .sidenav {
@@ -326,5 +325,42 @@ input:valid~label {
 
   .menu_divider{
     border-top: 1px solid #212b36;
-    
 }
+
+/* Content */
+.page-content {
+    position: absolute;
+    top: 74px;
+    right: 0;
+    bottom: 0;
+    left: 160px;
+    background: #192129;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.graphique {
+    max-width:65%;
+    background-color: #212b36;
+    padding: 10px 10px 10px 10px;
+}
+
+.bandeau-infos-trade {
+    background-color: #12171c;
+    padding: 5px 10px 5px 10px;
+    color: #f1f1f1;
+    max-width:65%;
+}
+
+@media only screen and (max-width : 1035px){
+    .page-content {
+        position: absolute;
+        top: 108px;
+        right: 0;
+        bottom: 0;
+        left: 160px;
+        background: #192129;
+        z-index: 0;
+        overflow: hidden;
+    }
+  }

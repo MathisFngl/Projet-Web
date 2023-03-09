@@ -5,7 +5,9 @@
     <metacharset="utf-8">
     <title>Stocks</title>
     <link rel="stylesheet" href="../static/style/style.css">
+    <script src="../static/graphe.js"></script>
   </head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <body>
     <nav class="navbar menu-padding-20">
       <svg width="48" height="48" fill="none" viewBox="0 0 24 24" class="icon">
@@ -27,19 +29,55 @@
       </div>
     </nav>
     <div class="menu_divider"></div>
-    <div class="sidenav">
-      <a href="#indices">Indices</a>
-      <div class="menu_divider"></div>
-      <a href="#forex">Forex</a>
-      <div class="menu_divider"></div>
-      <a href="#crypto">Crypto</a>
-      <div class="menu_divider"></div>
-      <a href="#action">Actions</a>
-      <div class="menu_divider"></div>
-      <a href="#taux-obligation">Taux & Obligations</a>
-      <div class="menu_divider"></div>
-      <a href="#etf">ETF</a>
-      <div class="menu_divider"></div>
+      <div class="sidenav">
+        <a href="#indices">Indices</a>
+        <div class="menu_divider"></div>
+        <a href="#forex">Forex</a>
+        <div class="menu_divider"></div>
+        <a href="#crypto">Crypto</a>
+        <div class="menu_divider"></div>
+        <a href="#action">Actions</a>
+        <div class="menu_divider"></div>
+        <a href="#taux-obligation">Taux & Obligations</a>
+        <div class="menu_divider"></div>
+        <a href="#etf">ETF</a>
+        <div class="menu_divider"></div>
       </div>
+      <div class="page-content">
+      <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : 
+      <?php
+        $a = 25;
+        echo " +$a%"; 
+      ?>
+      </div>
+      <div class="trade-body">
+        <div class="graphique">
+        <canvas  id="myChart"></canvas>
+        <script>
+          var xValues = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+          new Chart("myChart", {
+              type: "line",
+              data: {
+                  labels: xValues,
+                  datasets: [{ 
+                  data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478,1303,2640],
+                  borderColor: "red",
+                  fill: true
+                  }]
+              },
+              options: {
+                  legend: {display: false}
+              }
+          });
+        </script>
+        </div>
+      </div>
+      <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): 
+      <?php
+        $a = 25;
+        echo " +$a%"; 
+      ?>
+    </div>
   </body>
 </html>
