@@ -105,7 +105,7 @@ section {
     align-items: center;
     margin-left: 530px;
     top: 20px;
-    min-height: 70vh;
+    min-height: 75vh;
     width: 100%;
 }
 
@@ -223,10 +223,283 @@ input:valid~label {
     text-decoration: underline;
 }
 
+/*register*/
+.form-box-register {
+    position: relative;
+    width: 400px;
+    height: 500px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 5px #fff;
+}
+
+.h2-register {
+    position: absolute;
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    top: 8%;
+    left: 30%;
+}
+
+.inputbox-register {
+    position: relative;
+    padding-top: 40px;
+    top: 30px;
+    width: 310px;
+    border-bottom: 2px solid #fff;
+}
+
+.inputbox-register label {
+    position: absolute;
+    top: 70%;
+    left: 5px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1em;
+    pointer-events: none;
+    transition: .5s;
+}
+
+input:focus~label,
+input:valid~label {
+    top: 15px;
+}
+
+.inputbox-register input {
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #fff;
+}
+
+.inputbox-register ion-icon {
+    position: absolute;
+    right: 8px;
+    color: #fff;
+    font-size: 1.2em;
+    top: 30px;
+}
+
+
+.buttonLog-register {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    margin-top: 30px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+}
+/*photo*/
+.modal-btn-register {
+    width: 80%;
+    height: 40px;
+    margin-left: 10%;
+    border-radius: 40px;
+    margin-top: 40px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+  } 
+
+.modal-container-register {
+    visibility: hidden;
+    /*background: red;*/
+    position: absolute;
+    top: 10px;
+    width: 35vw;
+    height: 50vh;
+    transition: visibility 0.4s;
+}
+.modal-container-register.active {
+    visibility: visible;
+}
+
+.modal-container-register.active {
+    opacity: 1;
+    transition: opacity 0.4s ease-out;
+}
+  
+.modal-register {
+    opacity: 0;
+    width: 100%;
+    height: 70%;
+    padding: 30px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(15px); /* assure la compatibilité avec safari */
+    backdrop-filter: blur(15px);
+    background-color: rgba(182, 182, 182, 0.2);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 5px #fff;
+    position: absolute;
+    top: 70%;
+    left: 30%;
+    transform: translate(-50%, calc(-50% - 50px));
+    transition: opacity 0.4s ease-out,
+    transform 0.4s ease-out;
+ }
+  
+.modal-container-register.active .modal-register {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s 0.2s ease-out,
+    transform 0.4s 0.2s ease-out;
+}
+  
+  .close-modal-register {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 20%;
+    font-size: 18px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    background: #ff365e;
+    color: #fff;
+  }
+.modal-image1-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 30px;
+    left: 50px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image2-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 30px;
+    left: 176px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image3-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 30px;
+    left: 302px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image4-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 30px;
+    left: 428px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image5-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 170px;
+    left: 50px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image6-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 170px;
+    left: 176px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image7-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 170px;
+    left: 302px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image8-register{
+    border: none;
+    border-radius: 20%;
+    position: absolute;
+    top: 170px;
+    left: 428px;
+    cursor: pointer;
+    width: 96px;
+    height: 120px;
+}
+.modal-image1-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image2-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image3-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image4-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image5-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image6-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image7-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+.modal-image8-register img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20%;
+}
+
 /*profile*/
 .profilPhoto{
     position: absolute;
-    margin-top: 50px;
+    margin-top: 60px;
     margin-left: 50px;
     user-select: none;
 }
@@ -234,13 +507,13 @@ input:valid~label {
     width: 170px;
     height: 120x;
     border: 2px solid #fff;
-    border-radius: 40px;
+    border-radius: 20%;
     box-shadow: 5px 5px 5px #fff;
    
 }
 .infoProfil{
     position: absolute;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 230px;
     color: #fff;
     width: 35%;
