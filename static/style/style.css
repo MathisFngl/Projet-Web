@@ -623,13 +623,19 @@ input:valid~label {
     height: 94%;
 }
 
+.dim-RSI-trade{
+    width: 100%;
+    height: 80%;
+}
+
 .graphique_rsi {
-    max-width:100%;
+    width: 100%;
+    height: 33%;
     background-color: #212b36;
 }
 .rsi {
     width:65%;
-    height:10%;
+    height:100%;
 }
 
 .graphes-gauche{
