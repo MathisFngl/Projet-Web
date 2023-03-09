@@ -85,7 +85,61 @@
         </div>
         <div class="graphique_rsi">
           <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <?php $a = 25; echo " +$a%"; ?></div>
+            <div id="RSI" class="dim-RSI-trade"></div>
+            <script>
+                google.charts.load('current', {packages: ['corechart', 'line']});
+                google.charts.setOnLoadCallback(drawBasic);
 
+                function drawBasic() {
+
+                  var data = new google.visualization.DataTable();
+                  data.addColumn('number', 'X');
+                  data.addColumn('number', 'Value');
+
+                  data.addRows([
+                    [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
+                    [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35]
+                  ]);
+
+                  var options = {
+                    legend: 'none',
+                    backgroundColor: { strokeWidth: 0, fill: '#212b36' },
+                    chartArea: { 'width': '90%', 'height': '85%' },
+                    vAxis: {
+                    viewWindow: {
+                          min: 0,
+                          max: 100
+                          },
+                      ticks: [30, 70],
+                      gridlines: {
+                        color: '#ccc',
+                        count: 2
+                      }
+                    },
+                    hAxis: {
+                      viewWindow: {
+                        min: 0,
+                        max: 11
+                      },
+                      gridlines: {
+                        color: 'transparent'
+                      }
+                    },
+                    series: {
+                      0: {
+                        color: '#fdd835',
+                        lineWidth: 2 
+                      }
+                    }
+                  };
+
+                  var chart = new google.visualization.LineChart(document.getElementById('RSI'));
+
+                  chart.draw(data, options);
+                }
+              </script>
+        
+              </div>  
         </div>
       <div>
     </div>
