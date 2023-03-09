@@ -29,8 +29,40 @@
     </nav>
     <div class="menu_divider"></div>
     <section class="form-box">
+    <?php 
+        if(isset($_GET['reg_err']))
+            {
+                $err = htmlspecialchars($_GET['reg_err']);
+
+                switch($err)
+                {
+                    case 'password':
+                    ?>
+                        <div class="h2-register">
+                            <strong>Erreur</strong> mot de passe incorrect
+                        </div>
+                    <?php
+                    break;
+
+                    case 'email':
+                    ?>
+                        <div class="h2-register">
+                            <strong>Erreur</strong> email non valide
+                        </div>
+                    <?php
+                    break;
+
+                    case 'already':
+                    ?>
+                        <div class="h2-register">
+                            <strong>Erreur</strong> déja connecté
+                        </div>
+                    <?php 
+                    }
+                }
+                ?>
         <div class="form-value">
-            <form method="post">
+            <form action="login_bdd.php" method="post">
                 <h2>Connexion</h2>
                 <div class="inputbox">
                     <ion-icon name="mail-outline"></ion-icon>

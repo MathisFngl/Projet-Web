@@ -28,43 +28,83 @@
     </nav>
     <div class="menu_divider"></div>
     <section class="form-box-register">
+    <?php 
+        if(isset($_GET['reg_err']))
+            {
+                $err = htmlspecialchars($_GET['reg_err']);
+
+                switch($err)
+                {
+                    case 'password':
+                    ?>
+                        <div class="h2-register">
+                            <strong>Erreur</strong> mot de passe différent
+                        </div>
+                    <?php
+                    break;
+
+                    case 'email':
+                    ?>
+                        <div class="h2-register">
+                            <strong>Erreur</strong> email non valide
+                        </div>
+                    <?php
+                    break;
+
+                    case 'pseudo':
+                        ?>
+                            <div class="h2-register">
+                                <strong>Erreur</strong> pseudo non valide
+                            </div>
+                        <?php
+                        break;
+
+                    case 'already':
+                    ?>
+                        <div class="h2-register">
+                            <strong>Erreur</strong> compte deja existant
+                        </div>
+                    <?php 
+                    }
+                }
+                ?>
         <div class="form-value-register">
-            <form method="post">
+            <form action="register_bdd.php" method="post">
                 <h2 class="h2-register">Inscription</h2>
                 <div class="inputbox-register">
                 <ion-icon name="person-outline"></ion-icon>
-                    <input type="text" required>
+                    <input type="text" name="pseudo" required>
                     <label for="">Pseudo</label>
                 </div>
                 <div class="inputbox-register">
                     <ion-icon name="mail-outline"></ion-icon>
-                    <input type="email" required>
+                    <input type="email" name="email" required>
                     <label for="">Email</label>
                 </div>
                 <div class="inputbox-register">
                     <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input type="password" required>
+                    <input type="password" name="password" required>
                     <label for="">Mot de passe</label>
                 </div>
                 <div class="inputbox-register">
                     <ion-icon name="lock-closed-outline"></ion-icon>
-                    <input type="password" required>
+                    <input type="password" name="password2" required>
                     <label for="">Confirmation mot de passe</label>
                 </div>
-                <div class="modal-container-register">
+                <!--<div class="modal-container-register">
                     <div class="modal-register">
                         <button class="close-modal-register modal-trigger-register">X</button>
-                        <button class="modal-image1-register modal-trigger-register"><img src="../images/img1.jpg" alt="photo de profile"></button>
-                        <button class="modal-image2-register modal-trigger-register"><img src="../images/img2.jpg" alt="photo de profile"></button>
-                        <button class="modal-image3-register modal-trigger-register"><img src="../images/img3.jpg" alt="photo de profile"></button>
-                        <button class="modal-image4-register modal-trigger-register"><img src="../images/img4.jpg" alt="photo de profile"></button>
-                        <button class="modal-image5-register modal-trigger-register"><img src="../images/img5.jpg" alt="photo de profile"></button>
-                        <button class="modal-image6-register modal-trigger-register"><img src="../images/img6.jpg" alt="photo de profile"></button>
-                        <button class="modal-image7-register modal-trigger-register"><img src="../images/img7.jpg" alt="photo de profile"></button>
-                        <button class="modal-image8-register modal-trigger-register"><img src="../images/img2.jpg" alt="photo de profile"></button>
+                        <input type="image" class="modal-image1-register modal-trigger-register" name="photo" src="../images/img1.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image2-register modal-trigger-register" name="photo" src="../images/img2.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image3-register modal-trigger-register" name="photo" src="../images/img3.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image4-register modal-trigger-register" name="photo" src="../images/img4.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image5-register modal-trigger-register" name="photo" src="../images/img5.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image6-register modal-trigger-register" name="photo" src="../images/img6.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image7-register modal-trigger-register" name="photo" src="../images/img7.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image8-register modal-trigger-register" name="photo" src="../images/img2.jpg" alt="photo de profile">
                     </div>
                  </div>     
-                <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>
+                <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>-->
                 <button type="submit" class="buttonLog-register">S'inscrire</button>
             </form>
         </div>
