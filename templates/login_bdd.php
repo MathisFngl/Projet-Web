@@ -11,15 +11,14 @@
         $email = strtolower($email);
 
         // On vérifie si l'utilisateur existe
-        $verif = $bdd->prepare('SELECT pseudo, email, mdp FROM user WHERE email = ?');
+        $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE email = ?');
         $verif->execute(array($email));
         $data = $verif->fetch();
         $userExist = $verif->rowCount();
         
         if($userExist > 0){ 
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){ 
-                $password = password_hash($password, PASSWORD_DEFAULT);
-                if(password_verify($password, $data['mdp'])){
+                if(password_verify($password,$data['mdp'])){
                     $_SESSION['user'] = $data['token'];
                     header('Location: voir_stocks.php');
                     die();
