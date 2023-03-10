@@ -91,7 +91,7 @@
                     <input type="password" name="password2" required>
                     <label for="">Confirmation mot de passe</label>
                 </div>
-                <!--<div class="modal-container-register">
+                <div class="modal-container-register">
                     <div class="modal-register">
                         <button class="close-modal-register modal-trigger-register">X</button>
                         <input type="image" class="modal-image1-register modal-trigger-register" name="photo" src="../images/img1.jpg" alt="photo de profile">
@@ -101,10 +101,10 @@
                         <input type="image" class="modal-image5-register modal-trigger-register" name="photo" src="../images/img5.jpg" alt="photo de profile">
                         <input type="image" class="modal-image6-register modal-trigger-register" name="photo" src="../images/img6.jpg" alt="photo de profile">
                         <input type="image" class="modal-image7-register modal-trigger-register" name="photo" src="../images/img7.jpg" alt="photo de profile">
-                        <input type="image" class="modal-image8-register modal-trigger-register" name="photo" src="../images/img2.jpg" alt="photo de profile">
+                        <input type="image" class="modal-image8-register modal-trigger-register" name="photo" src="../images/img8.jpg" alt="photo de profile">
                     </div>
                  </div>     
-                <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>-->
+                <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>
                 <button type="submit" class="buttonLog-register">S'inscrire</button>
             </form>
         </div>
