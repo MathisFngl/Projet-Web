@@ -6,9 +6,9 @@
     <metacharset="utf-8">
     <title>Stocks</title>
     <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" href="../static/style/stock.css">
     <script src="../js/graph.js"></script>
   </head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
   <body>
     <nav class="navbar menu-padding-20">
       <svg width="48" height="48" fill="none" viewBox="0 0 24 24" class="icon">
@@ -41,21 +41,24 @@
         <div class="menu_divider"></div>
         <a href="#taux-obligation">Taux & Obligations</a>
         <div class="menu_divider"></div>
-        <a href="#etf">ETF</a>
-        <div class="menu_divider"></div>
       </div>
+
+
+
       <div class="page-content">
+
       <div class="graphes-gauche">
+
         <div class="graphique_main">
           <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php $a = 25; echo " +$a%"; ?></div>
           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
           <div id="MainTrade" class="dim-main-trade"></div>
           <script>
-              google.charts.load('current', {'packages':['corechart']});
-              google.charts.setOnLoadCallback(drawChart);
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
 
-              function drawChart() {
-                var data = google.visualization.arrayToDataTable([
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
                   ['1', 20, 28, 38, 45],
                   ['2', 31, 38, 55, 66],
                   ['3', 50, 55, 77, 80],
@@ -84,6 +87,7 @@
               }
           </script>
         </div>
+
         <div class="graphique_rsi">
           <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <?php $a = 25; echo " +$a%"; ?></div>
             <div id="RSI" class="dim-RSI-trade"></div>
@@ -129,7 +133,7 @@
                     series: {
                       0: {
                         color: '#fdd835',
-                        lineWidth: 2 
+                        lineWidth: 1 
                       }
                     }
                   };
@@ -142,7 +146,15 @@
         
               </div>  
         </div>
-      <div>
+      <div class="graphe-droite">
+        <div class="achat-vente-button">
+          <button class="achat-button"> Achat </button>
+          <button class="sell-button"> Vente </button>
+        </div>
+        <div>
+        <div class="price-label">Prix :</div>
+        <div class="price"> <?php $a = 1000; echo " $a $"?> </div>
+      </div>
     </div>
   </body>
 </html>
