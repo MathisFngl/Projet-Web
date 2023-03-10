@@ -1,3 +1,12 @@
+<?php
+    session_start();
+    require_once 'bdd.php';
+    if(isset($_GET['user'])){
+        $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+        $requUser->execute(array($_GET['user']));
+        $dataUser = $requUser->fetch();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,11 +43,11 @@
             <div class="info-user">
                 <div>
                     <label for="pseudo"><ion-icon name="person-outline"></ion-icon> Pseudo :</label>
-                    <input type="text" name="pseudo" value="capybara" readonly>
+                    <input type="text" name="pseudo" value="<?php echo $dataUser['pseudo'] ?>" readonly>
                 </div>
                 <div>
                     <label for="nom"><ion-icon name="mail-outline"></ion-icon> Email :</label>
-                    <input type="email" name="email" value="antoinemilochevitch@gmail.com" readonly>
+                    <input type="email" name="email" value="<?php echo $dataUser['email'] ?>" readonly>
                 </div>
                 <div>
                     <label for="nom"><ion-icon name="checkmark-outline"></ion-icon> Nombre parties jouées :</label>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html>
@@ -25,7 +26,7 @@
           <li><a href="profile.php">Profil</a></li>
           <li><a href="#">Historique</a></li>
           <li><a href="#">Amis</a></li>
-          <li><a href="login.php">Déconnexion</a></li>
+          <li><a href="deconnexion.php">Déconnexion</a></li>
         </ul>
       </div>
     </nav>
