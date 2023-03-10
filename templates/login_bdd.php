@@ -20,7 +20,10 @@
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){ 
                 if(password_verify($password,$data['mdp'])){
                     $_SESSION['user'] = $data['token'];
-                    header('Location: voir_stocks.php');
+                    $_SESSION['email'] = $data['email'];
+                    $_SESSION['mdp'] = $data['mdp'];
+                    $_SESSION['pseudo'] = $data['pseudo'];
+                    header('Location: profile.php?user='.$_SESSION['user']);
                     die();
                 }else{ header('Location: login.php?reg_err=password'); die();}
             }else{ header('Location: login.php?reg_err=email'); die();}
