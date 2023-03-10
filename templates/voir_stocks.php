@@ -9,6 +9,7 @@
     <script src="../js/graph.js"></script>
   </head>
   <body>
+
     <nav class="navbar menu-padding-20">
       <svg width="48" height="48" fill="none" viewBox="0 0 24 24" class="icon">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 11.25L10.25 5.75"></path>
@@ -28,6 +29,7 @@
         </ul>
       </div>
     </nav>
+
     <div class="menu_divider"></div>
       <div class="sidenav">
         <a href="#indices">Indices</a>
@@ -42,12 +44,8 @@
         <div class="menu_divider"></div>
       </div>
 
-
-
       <div class="page-content">
-
       <div class="graphes-gauche">
-
         <div class="graphique_main">
           <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php $a = 25; echo " +$a%"; ?></div>
           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -147,12 +145,26 @@
         </div>
       <div class="graphe-droite">
         <div class="achat-vente-button">
-          <button class="achat-button"> Achat </button>
-          <button class="sell-button"> Vente </button>
+          <button class="achat-button"> Acheter </button>
+          <button class="sell-button"> Vendre </button>
         </div>
         <div>
-        <div class="price-label">Prix :</div>
-        <div class="price"> <?php $a = 1000; echo " $a $"?> </div>
+        <div class="side-labels">Prix à l'unité :</div>
+        <div class="unit-price"> <?php $unit_price = 3.6; echo " $unit_price $"?> </div>
+        <div class="menu_divider" style="padding-top: 15px;"></div>
+        <div class="side-labels"> Quantité à acheter / vendre :</div>
+        <input class="quantity-input" id="numberInput" oninput="displayNumber()" type="number" min="0" style="padding-top : 10px;"> </input>
+        <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
+        <div class="full-price" id="display"></div>
+        <script>
+          function displayNumber() {
+            const number = document.getElementById('numberInput').value;
+            const unit_price = <?php echo $unit_price; ?>;
+            const final_price = number * unit_price;
+            const final_price_rounded = final_price.toFixed(2);
+            document.getElementById('display').innerHTML = `${final_price_rounded} $`;
+          }
+        </script>
       </div>
     </div>
   </body>
