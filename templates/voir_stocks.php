@@ -51,12 +51,13 @@
           <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php $a = 25; echo " +$a%"; ?></div>
           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
           <div id="MainTrade" class="dim-main-trade"></div>
+          <script src="../js/calculate_rsi.js"></script>
+
           <script>
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart);
-
-            function drawChart() {
-              var data = google.visualization.arrayToDataTable([
+            const data_amount = 11;
+            const data_array = [
                   ['1', 20, 28, 38, 45],
                   ['2', 31, 38, 55, 66],
                   ['3', 50, 55, 77, 80],
@@ -68,7 +69,11 @@
                   ['9', 68, 39, 73, 85],
                   ['10', 29, 73, 108, 110],
                   ['11', 98, 108, 159, 183],
-                  ['12', 108, 159, 148, 164],], true);
+                  ['12', 108, 159, 148, 164]]
+
+            function drawChart(){
+              
+              const data = google.visualization.arrayToDataTable(data_array, true);
 
                 var options = {
                   legend:'none',
@@ -80,12 +85,25 @@
                 };
 
                 var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
-
                 chart.draw(data, options);
               }
+              
+              const prix_bougies = [];
+              for (let i = 0; i < data_amount; i++) {
+                var innerArray = data_array[i];
+                if(innerArray[3] < innerArray[2]){
+                  var fourthElement = innerArray[3];
+                }
+                if(innerArray[2] < innerArray[3]){
+                  var fourthElement = innerArray[2];
+                }
+                prix_bougies.push(fourthElement);
+              }
+                const valeurs_rsi = calculateRSI(prix_bougies, 3);
+                console.log(valeurs_rsi);
+
           </script>
         </div>
-
         <div class="graphique_rsi">
           <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <?php $a = 25; echo " +$a%"; ?></div>
             <div id="RSI" class="dim-RSI-trade"></div>
@@ -99,10 +117,15 @@
                   data.addColumn('number', 'X');
                   data.addColumn('number', 'Value');
 
-                  data.addRows([
-                    [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
-                    [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35]
-                  ]);
+                  const rows = []
+                  for (let i = 0; i < data_amount; i++) {
+                    var local_row = [i, valeurs_rsi[i]];
+                    rows.push(local_row);
+                    }
+
+                  data.addRows(
+                    rows
+                  );
 
                   var options = {
                     legend: 'none',
@@ -151,10 +174,10 @@
         </div>
         <div>
         <div class="side-labels">Prix à l'unité :</div>
-        <div class="unit-price"> <?php $unit_price = 3.6; echo " $unit_price $"?> </div>
+        <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
         <div class="menu_divider" style="padding-top: 15px;"></div>
         <div class="side-labels"> Quantité à acheter / vendre :</div>
-        <input class="quantity-input" id="numberInput" oninput="displayNumber()" type="number" min="0" style="padding-top : 10px;"> </input>
+        <input class="quantity-input" id="numberInput" oninput="displayNumber()" type="number" min="0" max="1000000" style="padding-top : 10px;"> </input>
         <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
         <div class="full-price" id="display"></div>
         <script>
