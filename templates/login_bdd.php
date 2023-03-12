@@ -19,12 +19,19 @@
         if($userExist > 0){ 
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){ 
                 if(password_verify($password,$data['mdp'])){
-                    $_SESSION['user'] = $data['token'];
-                    $_SESSION['email'] = $data['email'];
-                    $_SESSION['mdp'] = $data['mdp'];
-                    $_SESSION['pseudo'] = $data['pseudo'];
-                    header('Location: profile.php?user='.$_SESSION['user']);
-                    die();
+                    if($email == 'virtualtrader23@gmail.com'){
+                        $_SESSION['admin'] = $data['token'];
+                        header('Location: admin.php?admin='.$_SESSION['admin']);
+                        die();
+                    }
+                    else{
+                        $_SESSION['user'] = $data['token'];
+                        $_SESSION['email'] = $data['email'];
+                        $_SESSION['mdp'] = $data['mdp'];
+                        $_SESSION['pseudo'] = $data['pseudo'];
+                        header('Location: profile.php?user='.$_SESSION['user']);
+                        die();
+                    }
                 }else{ header('Location: login.php?reg_err=password'); die();}
             }else{ header('Location: login.php?reg_err=email'); die();}
         }else{ header('Location: login.php?reg_err=already'); die();}

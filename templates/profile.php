@@ -30,15 +30,15 @@
                     <li class="active"><a href="profile.php">Profil</a></li>
                     <li><a href="#">Historique</a></li>
                     <li><a href="#">Amis</a></li>
-                    <li><a href="login.php">Déconnexion</a></li>
+                    <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
         <div class="menu_divider"></div>
-        <div class="profilPhoto">
-            <img src="../images/img7.jpg" alt="photo de profile">
-        </div>
         <div class="infoProfil">
+            <div class="profilPhoto">
+                <img src="../images/img7.jpg" alt="photo de profile">
+            </div>
             <h2>Profil</h2>
             <div class="info-user">
                 <div>
