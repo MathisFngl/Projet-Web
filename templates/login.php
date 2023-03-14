@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    require_once 'bdd.php';
+
+    include_once('remember.php');
+?>
 <!DOCTYPE html>
 
 <html>
@@ -75,7 +81,7 @@
                     <label for="">Mot de passe</label>
                 </div>
                 <div class="forget">
-                    <label for=""><input type="checkbox">Se Souvenir | <a href="forgotMdp.php">Mot de passe oublié ?</a></label>
+                    <label for=""><input type="checkbox" name="remember">Se Souvenir | <a href="forgotMdp.php">Mot de passe oublié ?</a></label>
                 </div>
                 <button type="submit" class="buttonLog">Connexion</button>
                 <div class="register">

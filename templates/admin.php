@@ -2,6 +2,17 @@
     session_start();
     require_once 'bdd.php';
 
+    if(isset($_GET['user'])){
+        $requUser = $bdd->prepare('SELECT statut FROM user WHERE token = ?');
+        $requUser->execute(array($_GET['user']));
+        $dataUser = $requUser->fetch();
+    }
+    if(isset($dataUser['statut']) AND $dataUser['statut'] == 1){
+
+    }else{
+        header('Location: deconnexion.php');
+    }   
+
     if(isset($_GET['supprime']) AND !empty($_GET['supprime'])){
         $idSupr = (int) $_GET['supprime'];
 
@@ -54,7 +65,7 @@
                         </form>
                     </div>
                 <?php
-            }
+           }
             ?>
         </div>
     </body>

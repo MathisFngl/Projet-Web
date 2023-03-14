@@ -1,11 +1,19 @@
 <?php
     session_start();
     require_once 'bdd.php';
+
+    include_once('remember.php');
     if(isset($_GET['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
         $requUser->execute(array($_GET['user']));
         $dataUser = $requUser->fetch();
     }
+    if(isset($_COOKIE['token'])){
+        $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+        $requUser->execute(array($_GET['token']));
+        $dataUser = $requUser->fetch();
+    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
