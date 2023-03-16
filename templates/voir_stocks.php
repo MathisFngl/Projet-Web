@@ -1,8 +1,3 @@
-<?php
-  session_start();
-  require_once 'bdd.php';
-  include_once('remember.php');
-?>
 <!DOCTYPE html>
 
 <html>
@@ -57,6 +52,7 @@
           <div id="MainTrade" class="dim-main-trade"></div>
           <script src="../js/calculate_rsi.js"></script>
           <script>
+
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart);
             const data_amount = 11;
@@ -90,6 +86,12 @@
 
                 var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
                 chart.draw(data, options);
+
+                window.addEventListener('resize', function() {
+                  setTimeout(function() {
+                  chart.draw(data, options);
+                  }, 0);
+                });
               }
               
               const prix_bougies = [];
@@ -105,6 +107,8 @@
               }
                 const valeurs_rsi = calculateRSI(prix_bougies, 3);
                 console.log(valeurs_rsi);
+
+            
           </script>
         </div>
         <div class="graphique_rsi">
@@ -171,6 +175,12 @@
                   var chart = new google.visualization.LineChart(document.getElementById('RSI'));
 
                   chart.draw(data, options);
+
+                  window.addEventListener('resize', function() {
+                    setTimeout(function() {
+                    chart.draw(data, options);
+                    }, 0);
+                  });
                 }
               </script>
         
