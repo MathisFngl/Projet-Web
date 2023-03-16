@@ -1,11 +1,19 @@
 <?php
     session_start();
     require_once 'bdd.php';
+
+    include_once('remember.php');
     if(isset($_GET['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
         $requUser->execute(array($_GET['user']));
         $dataUser = $requUser->fetch();
     }
+    if(isset($_COOKIE['token'])){
+        $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+        $requUser->execute(array($_GET['token']));
+        $dataUser = $requUser->fetch();
+    }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,15 +38,15 @@
                     <li class="active"><a href="profile.php">Profil</a></li>
                     <li><a href="#">Historique</a></li>
                     <li><a href="#">Amis</a></li>
-                    <li><a href="login.php">Déconnexion</a></li>
+                    <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
         <div class="menu_divider"></div>
-        <div class="profilPhoto">
-            <img src="../images/img7.jpg" alt="photo de profile">
-        </div>
         <div class="infoProfil">
+            <div class="profilPhoto">
+                <img src="../images/img7.jpg" alt="photo de profile">
+            </div>
             <h2>Profil</h2>
             <div class="info-user">
                 <div>

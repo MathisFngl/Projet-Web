@@ -497,43 +497,46 @@ input:valid~label {
 }
 
 /*profile*/
+.infoProfil{
+    position: absolute;
+    margin-top: 5vh;
+    margin-left: 2vw;
+    color: #fff;
+    width: 30%;
+}
 .profilPhoto{
     position: absolute;
-    margin-top: 60px;
-    margin-left: 50px;
+    margin-top: 5vh;
     user-select: none;
+    width: 10.8vw;
+    height: 28.8vh;
 }
 .profilPhoto img{
-    width: 170px;
-    height: 120x;
+    width: 100%;
+    height: 100%;
     border: 2px solid #fff;
     border-radius: 20%;
     box-shadow: 5px 5px 5px #fff;
    
 }
-.infoProfil{
-    position: absolute;
-    margin-top: 20px;
-    margin-left: 230px;
-    color: #fff;
-    width: 35%;
-}
 .infoProfil h2{
-    position: relative;
+    position: absolute;
     font-size: 2.6em;
+    margin-left: 50%;
 }
 .info-user{
     width: 100%;
-    position: relative;
+    position: absolute;
     font-size: 2em;
-    margin-left: 30px;
+    margin-top: 5vh;
+    margin-left: 15vw;
     border-right: 2px solid #fff;   
 }
 .info-user label{
     position: absolute;
     color: #fff;
     font-size: 1em;
-    margin-top: 35px;
+    margin-top: 5vh;
 }
 .info-user input{
     position: relative;
@@ -542,12 +545,12 @@ input:valid~label {
     outline: none;
     color: #fff;
     width: 100%;
-    height: 15px;
-    top: 15px;
+    height: 2vh;
+    top: 2vh;
     font-size: 0.9em;
-    margin-top: 55px;
-    padding: 20px;
-    margin-left: -20px;
+    margin-top: 7.7vh;
+    padding: 2.8vh;
+    margin-left: -1.3vw;
     font-weight: 600;
 }
 /*Sidenav*/
@@ -599,3 +602,25 @@ input:valid~label {
   .menu_divider{
     border-top: 1px solid #212b36;
   }
+
+  /*Admin*/
+  .infoUser{
+    position: relative;
+    width: 80vw;
+    height: 82vh;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 5px #fff;
+    color: #fff;
+    margin-left: 10vw;
+    margin-top: 3vh;
+  }
+  .tabAdmin{
+    border: #fff;
+    background: #ff365e;
+  }
+  
