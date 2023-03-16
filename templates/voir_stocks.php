@@ -52,7 +52,6 @@
           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
           <div id="MainTrade" class="dim-main-trade"></div>
           <script src="../js/calculate_rsi.js"></script>
-
           <script>
             google.charts.load('current', {'packages':['corechart']});
             google.charts.setOnLoadCallback(drawChart);
@@ -78,9 +77,10 @@
                 var options = {
                   legend:'none',
                   candlestick: {
-                        fallingColor: { strokeWidth: 0, fill: '#a52714' },
-                        risingColor: { strokeWidth: 0, fill: '#0f9d58' }},
+                        fallingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#a52714' },
+                        risingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#0f9d58' }},
                   backgroundColor : { strokeWidth: 0, fill: '#212b36' },
+                  colors: ['#f1f1f1'],
                   chartArea: {'width': '90%', 'height': '85%'},
                 };
 
@@ -101,11 +101,16 @@
               }
                 const valeurs_rsi = calculateRSI(prix_bougies, 3);
                 console.log(valeurs_rsi);
-
           </script>
         </div>
         <div class="graphique_rsi">
-          <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <?php $a = 25; echo " +$a%"; ?></div>
+          <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <span id="percentage_rsi"></span> </div>
+          <script>
+            var percentage_last_rsi = ((valeurs_rsi[data_amount-1] - valeurs_rsi[data_amount-2])/valeurs_rsi[data_amount-2])*100.0;
+            var rounded_percentage_last_rsi = percentage_last_rsi.toFixed(1);
+            document.getElementById("percentage_rsi").innerHTML = rounded_percentage_last_rsi + "%";
+
+          </script>
             <div id="RSI" class="dim-RSI-trade"></div>
             <script>
                 google.charts.load('current', {packages: ['corechart', 'line']});
@@ -121,7 +126,7 @@
                   for (let i = 0; i < data_amount; i++) {
                     var local_row = [i, valeurs_rsi[i]];
                     rows.push(local_row);
-                    }
+                  }
 
                   data.addRows(
                     rows
