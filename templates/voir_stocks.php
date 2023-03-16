@@ -2,6 +2,12 @@
   session_start();
   require_once 'bdd.php';
   include_once('remember.php');
+
+  /*if(isset($_GET['user'])){
+    $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+    $requUser->execute(array($_GET['user']));
+    $dataUser = $requUser->fetch();
+    }else{header('Location: deconnexion.php');}*/
 ?>
 <!DOCTYPE html>
 
