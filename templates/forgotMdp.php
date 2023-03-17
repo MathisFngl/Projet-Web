@@ -3,14 +3,14 @@
   require_once 'bdd.php';
   if(isset($_GET['section'])){
     $section = htmlspecialchars($_GET['section']);
-}else{ $section="";}
+  }else{ $section="";}
 ?>
 <!DOCTYPE html>
 <html>
   <head>
   <meta charset="UTF-8">
     <title>MdpOublie</title>
-    <link rel="stylesheet" href="../static/style/style.css">
+    <!--<link rel="stylesheet" href="../static/style/style.css">-->
   </head>
   <body>
     <nav class="navbar menu-padding-50">
@@ -59,8 +59,8 @@
     <div class="form-value">
     <h2>Mot de Passe Oublié</h2>
     <?php
-      /*if($section == $code){ ?>
-        <div class="php"><p>Inscrivez le code reçu sur <? echo $_SESSION['email']; ?></p></div>
+      if($section == "code"){ ?>
+       <div class="php"><p>Inscrivez le code reçu sur <? echo $_SESSION['email']; ?></p></div>
         <form action="forgotMdp_bdd.php" method="post">
           <div class="inputbox">
             <ion-icon name="lock-closed-outline"></ion-icon>
@@ -69,7 +69,8 @@
           </div>
           <button type="submit" class="buttonLog">Vérifier le code</button>
         </form>
-    <?php } else if($section == $resetMdp){ ?>
+       
+    <?php } else if($section == "resetMdp"){ ?>
         <div class="php"><p>Inscrivez un nouveau mot de passe></p></div>
         <form action="forgotMdp_bdd.php" method="post">
           <div class="inputbox-register">
@@ -84,7 +85,7 @@
           </div>
           <button type="submit" class="buttonLog">Changer le mot de passe</button>
         </form>
-    <?php } else { */?>
+    <?php } else { ?>
       <form action="forgotMdp_bdd.php" method="post">
         <div class="inputbox">
           <ion-icon name="mail-outline"></ion-icon>
@@ -93,17 +94,9 @@
         </div>
         <button type="submit" class="buttonLog">Envoyer un code</button>
       </form>
+      
     </div>
-    <?php //}
-    $to = 'antoinemacmil45@gmail.com';
-    $subject = 'the subject';
-    $message = 'hello';
-    $headers = array(
-        'From' => 'antoinemacmil45@gmail.com',
-        'Reply-To' => 'antoinemacmil45@gmail.com',
-        'X-Mailer' => 'PHP/' . phpversion()
-    );
-    mail($to, $subject, $message, $headers); ?>
+    <?php } ?>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   </body>
