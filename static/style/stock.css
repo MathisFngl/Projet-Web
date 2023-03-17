@@ -5,6 +5,7 @@
 
 .page-content {
     position: absolute;
+    flex-direction: column;
     display: flex;
     top: 74px;
     right: 0;
@@ -139,6 +140,17 @@
     font-size: 45px;
     color: #ffffff;
     text-align: center;
+}
+
+.trading-panel{
+    position: absolute;
+    display: flex;
+    background: #192129;
+    z-index: 0;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 3%;
+    height: 94%;
 }
 
 @media only screen and (max-width : 860px){

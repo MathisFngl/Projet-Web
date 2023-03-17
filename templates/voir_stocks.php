@@ -1,3 +1,14 @@
+<?php
+session_start();
+  require_once 'bdd.php';
+  include_once('remember.php');
+
+  /*if(isset($_GET['user'])){
+    $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+    $requUser->execute(array($_GET['user']));
+    $dataUser = $requUser->fetch();
+    }else{header('Location: deconnexion.php');}*/
+?>
 <!DOCTYPE html>
 
 <html>
@@ -43,160 +54,75 @@
         <a href="#taux-obligation">Taux & Obligations</a>
         <div class="menu_divider"></div>
       </div>
-
       <div class="page-content">
-      <div class="graphes-gauche">
-        <div class="graphique_main">
-          <script>
-            const data_amount = 11;
-            const data_array = [
-                  ['1', 20, 28, 38, 45],
-                  ['2', 31, 38, 55, 66],
-                  ['3', 50, 55, 77, 80],
-                  ['4', 77, 77, 66, 50],
-                  ['5', 68, 66, 22, 15],
-                  ['6', 68, 22, 12, 15],
-                  ['7', 9, 12, 41, 15],
-                  ['8', 29, 41, 39, 45],
-                  ['9', 68, 39, 73, 85],
-                  ['10', 29, 73, 108, 110],
-                  ['11', 98, 108, 159, 183],
-                  ['12', 108, 159, 149, 164]]
-
-          </script>
-          <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <span id="percentage_general"></span> </div>
-          <script>
-            var percent_change = 0;
-              if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
-                if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
-                  percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
-                }
-                if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
-                  percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
-                  }
-              }
-              if(data_array[data_amount-1][2] > data_array[data_amount-1][3]){
-                if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
-                  percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
-                }
-                if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
-                  percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
-                  }
-              }
-
-            const percent_change_rounded = percent_change.toFixed(1);
-
-            document.getElementById("percentage_general").innerHTML = percent_change_rounded + "%";
-          </script>
-          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-          <div id="MainTrade" class="dim-main-trade"></div>
-          <script src="../js/calculate_rsi.js"></script>
-          <script>
-
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
-            function drawChart(){
-              
-              const data = google.visualization.arrayToDataTable(data_array, true);
-
-                var options = {
-                  legend:'none',
-                  candlestick: {
-                        fallingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#a52714' },
-                        risingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#0f9d58' }},
-                  backgroundColor : { strokeWidth: 0, fill: '#212b36' },
-                  colors: ['#f1f1f1'],
-                  chartArea: {'width': '90%', 'height': '85%'},
-                };
-
-                var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
-                chart.draw(data, options);
-
-                window.addEventListener('resize', function() {
-                  setTimeout(function() {
-                  chart.draw(data, options);
-                  }, 0);
-                });
-              }
-              
-              const prix_bougies = [];
-              for (let i = 0; i < data_amount; i++) {
-                var innerArray = data_array[i];
-                if(innerArray[3] < innerArray[2]){
-                  var fourthElement = innerArray[3];
-                }
-                if(innerArray[2] < innerArray[3]){
-                  var fourthElement = innerArray[2];
-                }
-                prix_bougies.push(fourthElement);
-              }
-                const valeurs_rsi = calculateRSI(prix_bougies, 3);
-                console.log(valeurs_rsi);
-          </script>
+        <div class="player-info-bar">
         </div>
-        <div class="graphique_rsi">
-          <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <span id="percentage_rsi"></span> </div>
-          <script>
-            var percentage_last_rsi = ((valeurs_rsi[data_amount-1] - valeurs_rsi[data_amount-2])/valeurs_rsi[data_amount-2])*100.0;
-            var rounded_percentage_last_rsi = percentage_last_rsi.toFixed(1);
-            document.getElementById("percentage_rsi").innerHTML = rounded_percentage_last_rsi + "%";
-
-          </script>
-            <div id="RSI" class="dim-RSI-trade"></div>
+      <div class="trading-panel">
+        <div class="graphes-gauche">
+          <div class="graphique_main">
             <script>
-                google.charts.load('current', {packages: ['corechart', 'line']});
-                google.charts.setOnLoadCallback(drawBasic);
+              const data_amount = 11;
+              const data_array = [
+                    ['1', 20, 28, 38, 45],
+                    ['2', 31, 38, 55, 66],
+                    ['3', 50, 55, 77, 80],
+                    ['4', 77, 77, 66, 50],
+                    ['5', 68, 66, 22, 15],
+                    ['6', 68, 22, 12, 15],
+                    ['7', 9, 12, 41, 15],
+                    ['8', 29, 41, 39, 45],
+                    ['9', 68, 39, 73, 85],
+                    ['10', 29, 73, 108, 110],
+                    ['11', 98, 108, 159, 183],
+                    ['12', 108, 159, 149, 164]]
 
-                function drawBasic() {
-
-                  var data = new google.visualization.DataTable();
-                  data.addColumn('number', 'X');
-                  data.addColumn('number', 'Value');
-
-                  const rows = []
-                  for (let i = 0; i < data_amount; i++) {
-                    var local_row = [i, valeurs_rsi[i]];
-                    rows.push(local_row);
+            </script>
+            <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <span id="percentage_general"></span> </div>
+            <script>
+              var percent_change = 0;
+                if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
+                  if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
+                    percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
                   }
+                  if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
+                    percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
+                    }
+                }
+                if(data_array[data_amount-1][2] > data_array[data_amount-1][3]){
+                  if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
+                    percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
+                  }
+                  if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
+                    percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
+                    }
+                }
 
-                  data.addRows(
-                    rows
-                  );
+              const percent_change_rounded = percent_change.toFixed(1);
+
+              document.getElementById("percentage_general").innerHTML = percent_change_rounded + "%";
+            </script>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <div id="MainTrade" class="dim-main-trade"></div>
+            <script src="../js/calculate_rsi.js"></script>
+            <script>
+
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+              function drawChart(){
+                
+                const data = google.visualization.arrayToDataTable(data_array, true);
 
                   var options = {
-                    legend: 'none',
-                    backgroundColor: { strokeWidth: 0, fill: '#212b36' },
-                    chartArea: { 'width': '90%', 'height': '85%' },
-                    vAxis: {
-                    viewWindow: {
-                          min: 0,
-                          max: 100
-                          },
-                      ticks: [30, 70],
-                      gridlines: {
-                        color: '#ccc',
-                        count: 2
-                      }
-                    },
-                    hAxis: {
-                      viewWindow: {
-                        min: 0,
-                        max: 11
-                      },
-                      gridlines: {
-                        color: 'transparent'
-                      }
-                    },
-                    series: {
-                      0: {
-                        color: '#fdd835',
-                        lineWidth: 1 
-                      }
-                    }
+                    legend:'none',
+                    candlestick: {
+                          fallingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#a52714' },
+                          risingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#0f9d58' }},
+                    backgroundColor : { strokeWidth: 0, fill: '#212b36' },
+                    colors: ['#f1f1f1'],
+                    chartArea: {'width': '90%', 'height': '85%'},
                   };
 
-                  var chart = new google.visualization.LineChart(document.getElementById('RSI'));
-
+                  var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
                   chart.draw(data, options);
 
                   window.addEventListener('resize', function() {
@@ -205,32 +131,120 @@
                     }, 0);
                   });
                 }
-              </script>
-        
-              </div>  
+                
+                const prix_bougies = [];
+                for (let i = 0; i < data_amount; i++) {
+                  var innerArray = data_array[i];
+                  if(innerArray[3] < innerArray[2]){
+                    var fourthElement = innerArray[3];
+                  }
+                  if(innerArray[2] < innerArray[3]){
+                    var fourthElement = innerArray[2];
+                  }
+                  prix_bougies.push(fourthElement);
+                }
+                  const valeurs_rsi = calculateRSI(prix_bougies, 3);
+                  console.log(valeurs_rsi);
+            </script>
+          </div>
+          <div class="graphique_rsi">
+            <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <span id="percentage_rsi"></span> </div>
+            <script>
+              var percentage_last_rsi = ((valeurs_rsi[data_amount-1] - valeurs_rsi[data_amount-2])/valeurs_rsi[data_amount-2])*100.0;
+              var rounded_percentage_last_rsi = percentage_last_rsi.toFixed(1);
+              document.getElementById("percentage_rsi").innerHTML = rounded_percentage_last_rsi + "%";
+
+            </script>
+              <div id="RSI" class="dim-RSI-trade"></div>
+              <script>
+                  google.charts.load('current', {packages: ['corechart', 'line']});
+                  google.charts.setOnLoadCallback(drawBasic);
+
+                  function drawBasic() {
+
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('number', 'X');
+                    data.addColumn('number', 'Value');
+
+                    const rows = []
+                    for (let i = 0; i < data_amount; i++) {
+                      var local_row = [i, valeurs_rsi[i]];
+                      rows.push(local_row);
+                    }
+
+                    data.addRows(
+                      rows
+                    );
+
+                    var options = {
+                      legend: 'none',
+                      backgroundColor: { strokeWidth: 0, fill: '#212b36' },
+                      chartArea: { 'width': '90%', 'height': '85%' },
+                      vAxis: {
+                      viewWindow: {
+                            min: 0,
+                            max: 100
+                            },
+                        ticks: [30, 70],
+                        gridlines: {
+                          color: '#ccc',
+                          count: 2
+                        }
+                      },
+                      hAxis: {
+                        viewWindow: {
+                          min: 0,
+                          max: 11
+                        },
+                        gridlines: {
+                          color: 'transparent'
+                        }
+                      },
+                      series: {
+                        0: {
+                          color: '#fdd835',
+                          lineWidth: 1 
+                        }
+                      }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('RSI'));
+
+                    chart.draw(data, options);
+
+                    window.addEventListener('resize', function() {
+                      setTimeout(function() {
+                      chart.draw(data, options);
+                      }, 0);
+                    });
+                  }
+                </script>
+          
+                </div>  
+          </div>
+        <div class="graphe-droite">
+          <div class="achat-vente-button">
+            <button class="achat-button"> Acheter </button>
+            <button class="sell-button"> Vendre </button>
+          </div>
+          <div>
+          <div class="side-labels">Prix à l'unité :</div>
+          <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
+          <div class="menu_divider" style="padding-top: 15px;"></div>
+          <div class="side-labels"> Quantité à acheter / vendre :</div>
+          <input class="quantity-input" id="numberInput" oninput="displayNumber()" type="number" min="0" max="1000000" style="padding-top : 10px;"> </input>
+          <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
+          <div class="full-price" id="display"></div>
+          <script>
+            function displayNumber() {
+              const number = document.getElementById('numberInput').value;
+              const unit_price = <?php echo $unit_price; ?>;
+              const final_price = number * unit_price;
+              const final_price_rounded = final_price.toFixed(2);
+              document.getElementById('display').innerHTML = `${final_price_rounded} $`;
+            }
+          </script>
         </div>
-      <div class="graphe-droite">
-        <div class="achat-vente-button">
-          <button class="achat-button"> Acheter </button>
-          <button class="sell-button"> Vendre </button>
-        </div>
-        <div>
-        <div class="side-labels">Prix à l'unité :</div>
-        <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
-        <div class="menu_divider" style="padding-top: 15px;"></div>
-        <div class="side-labels"> Quantité à acheter / vendre :</div>
-        <input class="quantity-input" id="numberInput" oninput="displayNumber()" type="number" min="0" max="1000000" style="padding-top : 10px;"> </input>
-        <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
-        <div class="full-price" id="display"></div>
-        <script>
-          function displayNumber() {
-            const number = document.getElementById('numberInput').value;
-            const unit_price = <?php echo $unit_price; ?>;
-            const final_price = number * unit_price;
-            const final_price_rounded = final_price.toFixed(2);
-            document.getElementById('display').innerHTML = `${final_price_rounded} $`;
-          }
-        </script>
       </div>
     </div>
   </body>
