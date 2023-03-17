@@ -10,7 +10,7 @@
     if(isset($dataUser['statut']) AND $dataUser['statut'] == 1){
 
     }else{
-        header('Location: deconnexion.php');
+        header('Location: deconnexion.php?user='.$_GET["user"]);
     }   
 
     if(isset($_GET['supprime']) AND !empty($_GET['supprime'])){

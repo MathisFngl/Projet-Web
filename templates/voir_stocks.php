@@ -7,7 +7,7 @@ session_start();
     $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
     $requUser->execute(array($_GET['user']));
     $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}
+    }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
 ?>
 <!DOCTYPE html>
 
