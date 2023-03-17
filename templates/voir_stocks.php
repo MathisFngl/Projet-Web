@@ -1,14 +1,3 @@
-<?php
-  session_start();
-  require_once 'bdd.php';
-  include_once('remember.php');
-
-  /*if(isset($_GET['user'])){
-    $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
-    $requUser->execute(array($_GET['user']));
-    $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}*/
-?>
 <!DOCTYPE html>
 
 <html>
@@ -59,9 +48,6 @@
       <div class="graphes-gauche">
         <div class="graphique_main">
           <script>
-
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
             const data_amount = 11;
             const data_array = [
                   ['1', 20, 28, 38, 45],
@@ -125,6 +111,12 @@
 
                 var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
                 chart.draw(data, options);
+
+                window.addEventListener('resize', function() {
+                  setTimeout(function() {
+                  chart.draw(data, options);
+                  }, 0);
+                });
               }
               
               const prix_bougies = [];
@@ -206,6 +198,12 @@
                   var chart = new google.visualization.LineChart(document.getElementById('RSI'));
 
                   chart.draw(data, options);
+
+                  window.addEventListener('resize', function() {
+                    setTimeout(function() {
+                    chart.draw(data, options);
+                    }, 0);
+                  });
                 }
               </script>
         
