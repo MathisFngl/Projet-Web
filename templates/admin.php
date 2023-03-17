@@ -10,7 +10,7 @@
     if(isset($dataUser['statut']) AND $dataUser['statut'] == 1){
 
     }else{
-        header('Location: deconnexion.php');
+        header('Location: deconnexion.php?user='.$_GET["user"]);
     }   
 
     if(isset($_GET['supprime']) AND !empty($_GET['supprime'])){
@@ -39,7 +39,7 @@
               <a href="#" class="logo">Virtual Trader</a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="deconnexion.php">Déconnexion</a></li>
+                    <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
