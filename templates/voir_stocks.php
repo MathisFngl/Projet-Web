@@ -47,14 +47,7 @@
       <div class="page-content">
       <div class="graphes-gauche">
         <div class="graphique_main">
-          <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php $a = 25; echo " +$a%"; ?></div>
-          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-          <div id="MainTrade" class="dim-main-trade"></div>
-          <script src="../js/calculate_rsi.js"></script>
           <script>
-
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawChart);
             const data_amount = 11;
             const data_array = [
                   ['1', 20, 28, 38, 45],
@@ -68,8 +61,40 @@
                   ['9', 68, 39, 73, 85],
                   ['10', 29, 73, 108, 110],
                   ['11', 98, 108, 159, 183],
-                  ['12', 108, 159, 148, 164]]
+                  ['12', 108, 159, 149, 164]]
 
+          </script>
+          <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <span id="percentage_general"></span> </div>
+          <script>
+            var percent_change = 0;
+              if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
+                if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
+                  percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
+                }
+                if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
+                  percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
+                  }
+              }
+              if(data_array[data_amount-1][2] > data_array[data_amount-1][3]){
+                if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
+                  percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
+                }
+                if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
+                  percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
+                  }
+              }
+
+            const percent_change_rounded = percent_change.toFixed(1);
+
+            document.getElementById("percentage_general").innerHTML = percent_change_rounded + "%";
+          </script>
+          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+          <div id="MainTrade" class="dim-main-trade"></div>
+          <script src="../js/calculate_rsi.js"></script>
+          <script>
+
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
             function drawChart(){
               
               const data = google.visualization.arrayToDataTable(data_array, true);
@@ -107,8 +132,6 @@
               }
                 const valeurs_rsi = calculateRSI(prix_bougies, 3);
                 console.log(valeurs_rsi);
-
-            
           </script>
         </div>
         <div class="graphique_rsi">
