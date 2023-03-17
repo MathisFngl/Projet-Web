@@ -3,11 +3,11 @@ session_start();
   require_once 'bdd.php';
   include_once('remember.php');
 
-  /*if(isset($_GET['user'])){
+  if(isset($_GET['user'])){
     $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
     $requUser->execute(array($_GET['user']));
     $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}*/
+    }else{header('Location: deconnexion.php');}
 ?>
 <!DOCTYPE html>
 
@@ -56,6 +56,12 @@ session_start();
       </div>
       <div class="page-content">
         <div class="player-info-bar">
+          <div class="info-nom">
+            <?php echo $dataUser['pseudo'] ?> "readonly>
+          </div>
+          <div class="porte-monnaie">
+            22
+          </div>
         </div>
       <div class="trading-panel">
         <div class="graphes-gauche">

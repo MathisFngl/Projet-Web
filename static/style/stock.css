@@ -201,4 +201,23 @@
         z-index: 0;
         overflow: hidden;
     }
-  }
+}
+
+.player-info-bar{
+    display: flex;
+    flex-direction: row;
+    height: 4%;
+    width: 100%;
+}
+
+.info-nom{
+    width: 10%;
+    height: 100%;
+    display: inline-flex;
+}
+
+.porte-monnaie{
+    width: 10%;
+    height: 100%;
+    display: inline-flex;
+}
