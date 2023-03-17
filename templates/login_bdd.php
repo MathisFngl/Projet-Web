@@ -15,7 +15,8 @@
         if(isset($_POST['remember'])){
             setcookie('user',$data['token'],time() +3600*24*2, '/', 'localhost', false, true);
         }
-
+        $requUser = $bdd->prepare('UPDATE user SET token = ? WHERE email = ?');
+        $requUser->execute(array(bin2hex(openssl_random_pseudo_bytes(64)),$email));
         $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE email = ?');
         $verif->execute(array($email));
         $data = $verif->fetch();

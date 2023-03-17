@@ -20,7 +20,7 @@
         
         if($userExist== 0){ 
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                if(strlen($pseudo) <= 255){
+                if(strlen($pseudo) <= 100){
                     if(strlen($email) <= 255){
                         if($password === $password2){
                             $password = password_hash($password, PASSWORD_DEFAULT);

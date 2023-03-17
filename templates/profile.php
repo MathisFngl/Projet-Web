@@ -34,11 +34,11 @@
               <a href="#" class="logo">Virtual Trader</a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="voir_stocks.php">Voir les stocks</a></li>
-                    <li class="active"><a href="profile.php">Profil</a></li>
+                    <li><a href="voir_stocks.php?user=<?= $_GET['user']?>">Voir les stocks</a></li>
+                    <li class="active"><a href="profile.php?user=<?= $_GET['user']?>">Profil</a></li>
                     <li><a href="#">Historique</a></li>
                     <li><a href="#">Amis</a></li>
-                    <li><a href="deconnexion.php">Déconnexion</a></li>
+                    <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>

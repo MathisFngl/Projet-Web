@@ -3,11 +3,11 @@
   require_once 'bdd.php';
   include_once('remember.php');
 
-  /*if(isset($_GET['user'])){
+  if(isset($_GET['user'])){
     $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
     $requUser->execute(array($_GET['user']));
     $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}*/
+    }else{header('Location: deconnexion.php');}
 ?>
 <!DOCTYPE html>
 
@@ -33,10 +33,10 @@
       <div class="nav-links">
         <ul>
           <li class="active"><a href="#">Stocks</a></li>
-          <li><a href="profile.php">Profil</a></li>
+          <li><a href="profile.php?user=<?= $_GET['user']?>">Profil</a></li>
           <li><a href="#">Historique</a></li>
           <li><a href="#">Amis</a></li>
-          <li><a href="deconnexion.php">Déconnexion</a></li>
+          <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
         </ul>
       </div>
     </nav>

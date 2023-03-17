@@ -69,7 +69,7 @@
                 }
                 ?>
         <div class="form-value-register">
-            <form action="register_bdd.php" method="post">
+            <form action="register_bdd.php" method="post" enctype="multipart/form-data">
                 <h2 class="h2-register">Inscription</h2>
                 <div class="inputbox-register">
                 <ion-icon name="person-outline"></ion-icon>
@@ -103,7 +103,7 @@
                         <input type="image" class="modal-image7-register modal-trigger-register" name="photo" src="../images/img7.jpg" alt="photo de profile">
                         <input type="image" class="modal-image8-register modal-trigger-register" name="photo" src="../images/img8.jpg" alt="photo de profile">
                     </div>
-                 </div>     
+                 </div>   
                 <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>
                 <button type="submit" class="buttonLog-register">S'inscrire</button>
             </form>

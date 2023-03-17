@@ -39,7 +39,7 @@
               <a href="#" class="logo">Virtual Trader</a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="deconnexion.php">Déconnexion</a></li>
+                    <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
