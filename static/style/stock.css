@@ -153,8 +153,7 @@
     height: 94%;
 }
 
-@media only screen and (max-width : 860px){
-    .achat-vente-button{
+.achat-vente-button{
         width: 100%;
         height: 30%;
         padding-top: 26px;
@@ -162,9 +161,9 @@
         text-align: center;
         justify-content: space-between;
         flex-direction: column;
-    }
+}
     
-    .achat-button{
+.achat-button{
         width: 100%;
         height: 90%;
         font-family: 'kanit', Helvetica;
@@ -175,9 +174,9 @@
         transition: 0.2s;
         border: none;
         margin-bottom: 15px;
-    }
+}
     
-    .sell-button{
+.sell-button{
         width: 100%;
         height: 90%;
         font-family: 'kanit', Helvetica;
@@ -188,7 +187,6 @@
         transition: 0.2s;
         border: none;
     }
-  }
 
 @media only screen and (max-width : 1035px){
     .page-content {
@@ -201,4 +199,28 @@
         z-index: 0;
         overflow: hidden;
     }
-  }
+}
+
+.player-info-bar{
+    display: flex;
+    flex-direction: row;
+    height: 4%;
+    width: 100%;
+}
+
+.infos{
+    height: 100%;
+    display: inline-flex;
+    font-size: 1.4vw;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+    color: #f1f1f1;
+    vertical-align: middle;
+    padding-top: 10px;
+}
+
+.achat-vente{
+    width: 90%;
+    height: 30%;
+}

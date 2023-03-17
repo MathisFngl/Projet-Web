@@ -4,10 +4,10 @@ session_start();
   include_once('remember.php');
 
   if(isset($_GET['user'])){
-    $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+    $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user WHERE token = ?');
     $requUser->execute(array($_GET['user']));
     $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
+  }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
 ?>
 <!DOCTYPE html>
 
@@ -56,6 +56,12 @@ session_start();
       </div>
       <div class="page-content">
         <div class="player-info-bar">
+          <div class="infos">
+            Joueur : <?php echo $dataUser['pseudo'] ?>
+          </div>
+          <div class="infos">
+            <?php echo $dataUser['soldeJoueur'] ?> $
+          </div>
         </div>
       <div class="trading-panel">
         <div class="graphes-gauche">
@@ -224,17 +230,26 @@ session_start();
           </div>
         <div class="graphe-droite">
           <div class="achat-vente-button">
-            <button class="achat-button"> Acheter </button>
-            <button class="sell-button"> Vendre </button>
+          <form class="achat-vente" method="post" action="">
+            <button type="submit" name="buyButton" class="achat-button" onclick="SubmitBuy()"> Acheter </button>
+            <button type="submit" name="sellButton" class="sell-button" onclick="SubmitSell()"> Vendre </button>
           </div>
           <div>
           <div class="side-labels">Prix à l'unité :</div>
           <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
           <div class="menu_divider" style="padding-top: 15px;"></div>
           <div class="side-labels"> Quantité à acheter / vendre :</div>
-          <input class="quantity-input" id="numberInput" oninput="displayNumber()" type="number" min="0" max="1000000" style="padding-top : 10px;"> </input>
+          <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" min="0" max="1000000" style="padding-top : 10px;"> </input>
           <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
           <div class="full-price" id="display"></div>
+          </form>
+          <?php 
+            if(isset($_POST['buyButton'])){
+              $numberInput = $_POST['numberInput'];
+              echo "Vous avez acheté ".$numberInput." actions";
+            }
+          ?>
+
           <script>
             function displayNumber() {
               const number = document.getElementById('numberInput').value;
@@ -242,6 +257,7 @@ session_start();
               const final_price = number * unit_price;
               const final_price_rounded = final_price.toFixed(2);
               document.getElementById('display').innerHTML = `${final_price_rounded} $`;
+              return [number, unit_price]
             }
           </script>
         </div>

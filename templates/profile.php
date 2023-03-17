@@ -8,11 +8,6 @@
         $requUser->execute(array($_GET['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
-    if(isset($_COOKIE['token'])){
-        $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
-        $requUser->execute(array($_GET['token']));
-        $dataUser = $requUser->fetch();
-    }
     
 ?>
 <!DOCTYPE html>
