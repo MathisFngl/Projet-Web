@@ -5,9 +5,10 @@ session_start();
 
   if(isset($_GET['user'])){
     $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
-    $requUser->execute(array($_GET['user']));
+    $token = $_GET['user'];
+    $requUser->execute(array($token));
     $dataUser = $requUser->fetch();
-  }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
+  }else{header('Location: deconnexion.php?user='.$token);}
 ?>
 <!DOCTYPE html>
 
@@ -42,27 +43,19 @@ session_start();
     </nav>
 
     <div class="menu_divider"></div>
-      <div class="sidenav">
-        <a href="#indices">Indices</a>
-        <div class="menu_divider"></div>
-        <a href="#forex">Forex</a>
-        <div class="menu_divider"></div>
-        <a href="#crypto">Crypto</a>
-        <div class="menu_divider"></div>
-        <a href="#action">Actions</a>
-        <div class="menu_divider"></div>
-        <a href="#taux-obligation">Taux & Obligations</a>
-        <div class="menu_divider"></div>
-      </div>
+    <div class="sidenav">
+      <a href="#indices">Indices</a>
+      <div class="menu_divider"></div>
+      <a href="#forex">Forex</a>
+      <div class="menu_divider"></div>
+      <a href="#crypto">Crypto</a>
+      <div class="menu_divider"></div>
+      <a href="#action">Actions</a>
+      <div class="menu_divider"></div>
+      <a href="#taux-obligation">Taux & Obligations</a>
+      <div class="menu_divider"></div>
+    </div>
       <div class="page-content">
-        <div class="player-info-bar">
-          <div class="infos">
-            Joueur : <?php echo $dataUser['pseudo'] ?>
-          </div>
-          <div class="infos">
-            <?php echo $dataUser['soldeJoueur'] ?> $
-          </div>
-        </div>
       <div class="trading-panel">
         <div class="graphes-gauche">
           <div class="graphique_main">
@@ -231,25 +224,28 @@ session_start();
         <div class="graphe-droite">
           <form class="achat-vente" method="post" action="">
             <div class="achat-vente-button">
-            <button type="submit" name="buyButton" class="achat-button"> Acheter </button>
-            <button type="submit" name="sellButton" class="sell-button"> Vendre </button>
-          </div>
-          <div>
-          <div class="side-labels">Prix à l'unité :</div>
-          <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
-          <div class="menu_divider" style="padding-top: 15px;"></div>
-          <div class="side-labels"> Quantité à acheter / vendre :</div>
-          <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" value="0" min="0" max="1000000" style="padding-top : 10px;"> </input>
-          <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
-          <div class="full-price" id="display"></div>
+              <button type="submit" name="buyButton" class="achat-button"> Acheter </button>
+              <button type="submit" name="sellButton" class="sell-button"> Vendre </button>
+            </div>
+            <div class="menu_divider" style="margin-bottom: 10px;"></div>
+            <div>
+            <div class="side-labels">Prix à l'unité :</div>
+            <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
+            <div class="menu_divider" style="padding-top: 15px;"></div>
+            <div class="side-labels"> Quantité à acheter / vendre :</div>
+            <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" value="0" min="0" max="1000000" style="padding-top : 10px;"> </input>
+            <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
+            <div class="full-price" id="display"></div>
           </form>
           <?php 
-            if(isset($_POST['buyButton'])){
+            if(isset($_POST['buyButton'])){ 
               $numberInput = $_POST['numberInput'];
-              if($numberInput*$unit_price <= $dataUser['soldeJoueur']){
+              $moneyCalc = $numberInput*$unit_price;
+              if($moneyCalc <= $dataUser['soldeJoueur']){
+                $new_solde_joueur = $dataUser["soldeJoueur"] - $moneyCalc;
                 $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE token = ?");
-                $sql_money_update->execute(array($dataUser["soldeJoueur"] - $numberInput*$unit_price, $_GET['user'] ));
-                error_log("Activation");
+                $sql_money_update->execute(array($new_solde_joueur, $_GET['user']));
+                $dataUser['soldeJoueur'] = $new_solde_joueur;
               }
             }
           ?>
@@ -264,6 +260,14 @@ session_start();
             }
           </script>
         </div>
+      </div>
+    </div>
+    <div class="player-info-bar">
+      <div class="infos">
+        Joueur : <?php echo $dataUser['pseudo'] ?>
+      </div>
+      <div class="infos">
+        Solde : <?php echo $dataUser['soldeJoueur'] ?> $
       </div>
     </div>
   </body>
