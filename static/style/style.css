@@ -500,14 +500,14 @@ input:valid~label {
 /*profile*/
 .infoProfil{
     position: absolute;
-    margin-top: 5vh;
-    margin-left: 2vw;
+    margin-top: 1vh;
+    margin-left: 1vw;
     color: #fff;
     width: 30%;
 }
 .profilPhoto{
     position: absolute;
-    margin-top: 5vh;
+    margin-top: 7vh;
     user-select: none;
     width: 10.8vw;
     height: 28.8vh;
@@ -529,15 +529,15 @@ input:valid~label {
     width: 100%;
     position: absolute;
     font-size: 2em;
-    margin-top: 5vh;
-    margin-left: 15vw;
+    margin-top: 6vh;
+    margin-left: 17vw;
     border-right: 2px solid #fff;   
 }
 .info-user label{
     position: absolute;
     color: #fff;
     font-size: 1em;
-    margin-top: 5vh;
+    margin-top: 7vh;
 }
 .info-user input{
     position: relative;
@@ -549,9 +549,107 @@ input:valid~label {
     height: 2vh;
     top: 2vh;
     font-size: 0.9em;
-    margin-top: 7.7vh;
+    margin-top: 9.7vh;
     padding: 2.8vh;
     margin-left: -1.3vw;
+    font-weight: 600;
+}
+.modifProfil{
+    width: 45%;
+    height: 40px;
+    border-radius: 40px;
+    margin-top: 65%;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-align: center;
+}
+
+/*Modif Profil*/
+.modifUser{
+    position: relative;
+    width: 400px;
+    height: 500px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 5px #fff;
+    margin-left: 35vw;
+    margin-top: 5vh;
+}
+.h2-modif{
+    position: absolute;
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    top: 8%;
+    left: 15%;
+}
+.inputModif{
+    position: relative;
+    padding-top: 40px;
+    top: 15%;
+    width: 310px;
+    left: 10%;
+}
+.modif{
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+}
+::placeholder{
+    color: #fff;
+}
+.inputModif ion-icon {
+    position: absolute;
+    right: 8px;
+    color: #fff;
+    font-size: 1.3em;
+    top: 27%;
+}
+.modifPassword2{
+    position: absolute;
+    top: 60%;
+    width: 100%;
+}
+.modifPassword2 ion-icon{
+    top: 0%;
+}
+.buttonModif{
+    width: 70%;
+    height: 25%;
+    margin-left: 15%;
+    border-radius: 40px;
+    margin-top: 5%;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+}
+.buttonModifP{
+    width: 70%;
+    height: 25%;
+    margin-left: 15%;
+    border-radius: 40px;
+    margin-top: 22%;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
     font-weight: 600;
 }
 /*Sidenav*/

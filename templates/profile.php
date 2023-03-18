@@ -4,7 +4,7 @@
 
     include_once('remember.php');
     if(isset($_GET['user'])){
-        $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+        $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur FROM user WHERE token = ?');
         $requUser->execute(array($_GET['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
@@ -58,9 +58,10 @@
                 </div>
                 <div>
                     <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>
-                    <input type="text" name="soldeUser" value="9526 €" readonly>
+                    <input type="text" name="soldeUser" value="<?php echo $dataUser['soldeJoueur'] ?>" readonly>
                 </div>
             </div>
+            <button class="modifProfil"><a href="modifProfil.php?user=<?= $_GET['user']?>">Modifier mon profil</a></button>
             <div class="historiqueProfil">
 
             </div>
