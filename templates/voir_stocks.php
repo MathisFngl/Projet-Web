@@ -1,14 +1,14 @@
 <?php
-session_start();
+  session_start();
   require_once 'bdd.php';
-  include_once('remember.php');
+  //include_once('remember.php');
 
-  if(isset($_GET['user'])){
+  if(isset($_SESSION['user'])){
     $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
-    $token = $_GET['user'];
+    $token = $_SESSION['user'];
     $requUser->execute(array($token));
     $dataUser = $requUser->fetch();
-  }else{header('Location: deconnexion.php?user='.$token);}
+  }else{header('Location: deconnexion.php');}
 ?>
 <!DOCTYPE html>
 
@@ -34,10 +34,10 @@ session_start();
       <div class="nav-links">
         <ul>
           <li class="active"><a href="#">Stocks</a></li>
-          <li><a href="profile.php?user=<?= $_GET['user']?>">Profil</a></li>
+          <li><a href="profile.php">Profil</a></li>
           <li><a href="#">Historique</a></li>
           <li><a href="#">Amis</a></li>
-          <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
+          <li><a href="deconnexion.php">Déconnexion</a></li>
         </ul>
       </div>
     </nav>
@@ -244,7 +244,7 @@ session_start();
               if($moneyCalc <= $dataUser['soldeJoueur']){
                 $new_solde_joueur = $dataUser["soldeJoueur"] - $moneyCalc;
                 $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE token = ?");
-                $sql_money_update->execute(array($new_solde_joueur, $_GET['user']));
+                $sql_money_update->execute(array($new_solde_joueur, $_SESSION['user']));
                 $dataUser['soldeJoueur'] = $new_solde_joueur;
               }
             }

@@ -593,8 +593,8 @@ input:valid~label {
 }
 .inputModif{
     position: relative;
-    padding-top: 40px;
-    top: 15%;
+    padding-top: 30px;
+    top: 20%;
     width: 310px;
     left: 10%;
 }
@@ -616,19 +616,22 @@ input:valid~label {
     right: 8px;
     color: #fff;
     font-size: 1.3em;
-    top: 27%;
+    top: 28%;
 }
 .modifPassword2{
     position: absolute;
-    top: 60%;
+    top: 130%;
     width: 100%;
 }
+.modifPassword1 ion-icon{
+    top: 45%;
+}
 .modifPassword2 ion-icon{
-    top: 0%;
+    top: -5%;
 }
 .buttonModif{
     width: 70%;
-    height: 25%;
+    height: 25px;
     margin-left: 15%;
     border-radius: 40px;
     margin-top: 5%;
@@ -640,8 +643,9 @@ input:valid~label {
     font-weight: 600;
 }
 .buttonModifP{
+    position: absolute;
     width: 70%;
-    height: 25%;
+    height: 25px;
     margin-left: 15%;
     border-radius: 40px;
     margin-top: 22%;

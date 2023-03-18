@@ -3,11 +3,11 @@
     require_once 'bdd.php';
 
     //include_once('remember.php');
-    if(isset($_GET['user'])){
+    if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
-        $requUser->execute(array($_GET['user']));
+        $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
+    }else{header('Location: deconnexion.php');}
 
     if(!empty($_POST)){
         if(isset($_POST['pseudoModif'])){
@@ -15,8 +15,8 @@
                 $pseudo = htmlspecialchars($_POST['pseudo']);
                 if(strlen($pseudo) < 100){
                     $pseudoUpdate = $bdd->prepare('UPDATE user SET pseudo=? WHERE token=? ');
-                    $pseudoUpdate->execute(array($pseudo,$_GET["user"]));
-                    header('Location: profile.php?user='.$_GET["user"]);
+                    $pseudoUpdate->execute(array($pseudo,$_SESSION['user']));
+                    header('Location: profile.php');
                 }else{ echo "pseudo trop long";}
             }else{echo "pseudo vide";}
         }
@@ -32,8 +32,8 @@
                     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                         if(strlen($email) < 255){
                             $emailUpdate = $bdd->prepare('UPDATE user SET email=? WHERE token=? ');
-                            $emailUpdate->execute(array($email,$_GET["user"]));
-                            header('Location: profile.php?user='.$_GET["user"]);
+                            $emailUpdate->execute(array($email,$_SESSION['user']));
+                            header('Location: profile.php');
                         }else{echo "email trop grand";}
                     }else{echo "email non valide";}
                 }else{echo "email deja pris";}
@@ -47,8 +47,8 @@
                 if($password == $password2){
                     $password = password_hash($password, PASSWORD_DEFAULT);
                     $passwordUpdate = $bdd->prepare('UPDATE user SET mdp=? WHERE token=? ');
-                    $passwordUpdate->execute(array($password,$_GET["user"]));
-                    header('Location: profile.php?user='.$_GET["user"]);
+                    $passwordUpdate->execute(array($password,$_SESSION['user']));
+                    header('Location: profile.php');
                 }else{ echo "mdp différent";}
             }else{echo "mdp vide";}
         }
@@ -74,11 +74,11 @@
               <a href="#" class="logo">Virtual Trader</a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="voir_stocks.php?user=<?= $_GET['user']?>">Voir les stocks</a></li>
-                    <li><a href="profile.php?user=<?= $_GET['user']?>">Profil</a></li>
+                    <li><a href="voir_stocks.php">Voir les stocks</a></li>
+                    <li><a href="profile.php">Profil</a></li>
                     <li><a href="#">Historique</a></li>
                     <li><a href="#">Amis</a></li>
-                    <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
+                    <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
