@@ -4,7 +4,7 @@ session_start();
   include_once('remember.php');
 
   if(isset($_GET['user'])){
-    $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user WHERE token = ?');
+    $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
     $requUser->execute(array($_GET['user']));
     $dataUser = $requUser->fetch();
   }else{header('Location: deconnexion.php?user='.$_GET["user"]);}
@@ -229,27 +229,30 @@ session_start();
                 </div>  
           </div>
         <div class="graphe-droite">
-          <div class="achat-vente-button">
           <form class="achat-vente" method="post" action="">
-            <button type="submit" name="buyButton" class="achat-button" onclick="SubmitBuy()"> Acheter </button>
-            <button type="submit" name="sellButton" class="sell-button" onclick="SubmitSell()"> Vendre </button>
+            <div class="achat-vente-button">
+            <button type="submit" name="buyButton" class="achat-button"> Acheter </button>
+            <button type="submit" name="sellButton" class="sell-button"> Vendre </button>
           </div>
           <div>
           <div class="side-labels">Prix à l'unité :</div>
           <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
           <div class="menu_divider" style="padding-top: 15px;"></div>
           <div class="side-labels"> Quantité à acheter / vendre :</div>
-          <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" min="0" max="1000000" style="padding-top : 10px;"> </input>
+          <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" value="0" min="0" max="1000000" style="padding-top : 10px;"> </input>
           <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
           <div class="full-price" id="display"></div>
           </form>
           <?php 
             if(isset($_POST['buyButton'])){
               $numberInput = $_POST['numberInput'];
-              echo "Vous avez acheté ".$numberInput." actions";
+              if($numberInput*$unit_price <= $dataUser['soldeJoueur']){
+                $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE token = ?");
+                $sql_money_update->execute(array($dataUser["soldeJoueur"] - $numberInput*$unit_price, $_GET['user'] ));
+                error_log("Activation");
+              }
             }
           ?>
-
           <script>
             function displayNumber() {
               const number = document.getElementById('numberInput').value;
