@@ -1,5 +1,10 @@
 <?php
+    use PHPMailer\PHPMailer\PHPMailer;
+
     require_once 'bdd.php';
+    require_once '../PHPMailer/PHPMailer.php';
+    require_once '../PHPMailer/SMTP.php';
+    require_once '../PHPMailer/Exception.php';
     if(isset($_GET['section'])){
         $section = htmlspecialchars($_GET['section']);
     }else{ $section="";}
@@ -7,15 +12,15 @@
         if(!empty($_POST['email'])){
             $email = htmlspecialchars($_POST['email']);
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $code = rand(10000000,99999999);
+                echo $code;
                 $verifMail = $bdd->prepare('SELECT ID_User FROM user WHERE email = ?');
                 $verifMail->execute(array($email));
                 $mailExist = $verifMail->rowCount();
 
                 if($mailExist == 1){
                     $_SESSION['email'] = $email;
-                    for($i=0; $i < 9; $i++){
-                        $code .= rand(0,9);
-                    }
+                    
                     $mailIn = $bdd->prepare('SELECT ID_Forgot FROM forgotMdp WHERE email = ?');
                     $mailIn->execute(array($email));
                     $mailIn = $mailIn->rowCount();
@@ -26,28 +31,39 @@
                         $forgot_insert = $bdd->prepare('INSERT INTO forgotMdp(email,code) VALUES (?,?)');
                         $forgot_insert->execute(array($email,$code));
                     }
-                    $to = 'antoinemacmil45@gmail.com';
-                    $subject = 'the subject';
-                    $message = 'hello';
-                    $headers = array(
-                    'From' => 'antoinemacmil45@gmail.com',
-                    'Reply-To' => 'antoinemacmil45@gmail.com',
-                    'X-Mailer' => 'PHP/' . phpversion()
-                    );
+                    $subject = "Code de rénitialisation";
+                    $message = "Bonjour, voici le code pour rénitialiser votre mot de passe".$code;
 
-                    mail($to, $subject, $message, $headers);
-                    $message = "Bonjour, voici le code afin de modifier votre mot de passe : $code";
-                    $header = 'Content-Type: text/plain; charset="utf-8"'."";
+                    $mail = new PHPMailer();
+                    //SMTP settings
+                    $mail->isSMTP();
+                    $mail->Host= 'smtp.gmail.com';
+                    $mail->SMTPAuth = true; 
+                    $mail->Username = "virtualtrader23@gmail.com";
+                    $mail->Password = "Capybara26!";
+                    $mail->Port = 587;
+                    $mail->SMTPSecure = "tls";
 
-                    if(mail($email, "Changement de mot de passe",$message,$header)){
-                        header("Location: forgotMdp.php");
-                    }//else{ header('Location: forgotMdp.php?reg_err=email'); die();}
+                    //settings email
+                    $mail->CharSet = 'UTF-8';
+                    $mail->From= "virtualtrader23@gmail.com";
+                    $mail->FromName = "VirtualTrader";
+                    $mail->addAddress($email);
+                    $mail->Subject = $subject;
+                    $mail->AltBody = $message;
+                    $mail->isHTML(false);
+                    $mail->msgHTML($message);
+
+                    if($mail->send()){
+                        echo "email envoyé";
+                        header('Location: forgotMdp.php?section=code');
+                    }else{ echo "email NON envoyé" .$mail->ErrorInfo;}
                 }else{ header('Location: forgotMdp.php?reg_err=email'); die();}
             }else{ header('Location: forgotMdp.php?reg_err=email'); die();}
         }else{ header('Location: forgotMdp.php?reg_err=email'); die();}
     }else{ header('Location: fortgotMdp.php?reg_err=email'); die();}
 
-    if(isset($_POST['codeSubmit'])){
+    /*if(isset($_POST['codeSubmit'])){
         $codeSubmit = htmlspecialchars($_POST['codeSubmit']);
         if(!empty($codeSubmit)){
             $verifCode = $bdd->prepare('SELECT ID_Forgot FROM forgotMdp WHERE email = ? AND code=?');
@@ -57,7 +73,6 @@
                 $delCode = $bdd->prepare('DELETE FROM forgotMdp WHERE mail=?');
                 $delCode->execute(array($_SESSION['email']));
                 header("Location: forgotMdp.php?section=resetMdp");
-
             }else{ header('Location: forgotMdp.php?reg_err=code'); die();}
         }else{ header('Location: forgotMdp.php?reg_err=code'); die();}
     }
@@ -67,8 +82,8 @@
         $enterCode = $bdd->prepare('SELECT codeOk FROM forgotMdp WHERE email = ?');
         $enterCode->execute(array($_SESSION['email']));
         $enterCode->fetch();
-        $enterCode = $enterCode['codeOK'];
-        if($enterCode == 1){
+        $codeExist = $enterCode->rowCount();
+        if($codeExist == 1){
             if(!empty($newPassword) && !empty($newPassword2)){
                 if($newPassword === $newPassword2){
                     $upCodeOk = $bdd->prepare('UPDATE forgotMdp SET codeOk=? WHERE email=? ');
@@ -80,6 +95,6 @@
                 }else{ header('Location: forgotMdp.php?reg_err=password'); die();}
             }else{ header('Location: forgotMdp.php?reg_err=password'); die();}
         }else{ header('Location: forgotMdp.php?reg_err=password'); die();}
-    }else{ header('Location: forgotMdp.php?reg_err=password'); die();}
+    }else{ header('Location: forgotMdp.php?reg_err=password'); die();}*/
   
 ?>
