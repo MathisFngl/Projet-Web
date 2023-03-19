@@ -9,15 +9,52 @@
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
-    if(isset($_GET['searchAmi']) AND !empty($_GET['searchAmi'])){
+    if(isset($_GET['rechercher']) && !empty($_GET['searchAmi'])){
         $search = htmlspecialchars($_GET['searchAmi']);
-        $allUsers=$bdd->query('SELECT pseudo,token FROM user WHERE pseudo LIKE "%'.$search.'%" ORDER BY ID_User DESC');
-        $user = $allUsers->fetch();
-        while($user){
-            echo $user['pseudo'];
-        }
-    }else{echo "pb";}
-    
+        $allUsers=$bdd->prepare("SELECT pseudo,token FROM user WHERE pseudo LIKE ? EXCEPT (SELECT pseudo,token FROM user WHERE email=? or email=?)");
+        $allUsers->execute(array('%'.$search.'%',"virtualtrader23@gmail.com",$_SESSION['email']));
+    }
+    $reqAmiFollower = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Follower=user.ID_User WHERE user.token = ? AND amis.statut = ?');
+    $reqAmiFollower->execute(array($_SESSION['user'],1));
+    $nbAmiFollower = $reqAmiFollower->rowCount(); 
+    $reqAmiFollowed = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Followed=user.ID_User WHERE user.token = ? AND amis.statut = ?');
+    $reqAmiFollowed->execute(array($_SESSION['user'],1));
+    $nbAmiFollowed = $reqAmiFollowed->rowCount(); 
+    if(isset($_GET['add'] ) && !empty($_GET['add'])){
+        $reqIdAdd = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
+        $reqIdAdd->execute(array($_GET['add']));
+        $idAdd = $reqIdAdd->fetch();
+        $addUser= $bdd->prepare('INSERT INTO amis(ID_Follower,ID_Followed,statut) VALUE(?,?,?)');
+        $addUser->execute(array($dataUser['ID_User'],$idAdd['ID_User'],0));
+        header('Location: amis.php');
+    }
+    if(isset($_GET['supprime'] ) && !empty($_GET['supprime'])){
+        $reqIdSupr = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
+        $reqIdSupr->execute(array($_GET['supprime']));
+        $idSupr = $reqIdSupr->fetch();
+        $suprAmi = $bdd->prepare('DELETE FROM amis WHERE ID_Follower=? AND ID_Followed = ?');
+        $suprAmi-> execute(array($idSupr['ID_User'],$dataUser['ID_User'],));
+        header('Location: amis.php');
+    }
+    $reqDemande = $bdd->prepare('SELECT pseudo,token FROM user INNER JOIN amis ON user.ID_User=amis.ID_Follower WHERE amis.ID_Followed = ? AND amis.statut = ? ');
+    $reqDemande->execute(array($dataUser['ID_User'],0));
+    $nbDemande = $reqDemande->rowCount();
+    if(isset($_GET['accept'] ) && !empty($_GET['accept'])){
+        $reqIdAccept = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
+        $reqIdAccept->execute(array($_GET['accept']));
+        $idAccept = $reqIdAccept->fetch();
+        $acceptAmi = $bdd->prepare('UPDATE amis SET statut=? WHERE ID_Follower=? AND ID_Followed = ?');
+        $acceptAmi-> execute(array(1,$idAccept['ID_User'],$dataUser['ID_User']));
+        header('Location: amis.php');
+    }
+    if(isset($_GET['refuse'] ) && !empty($_GET['refuse'])){
+        $reqIdRefuse = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
+        $reqIdRefuse->execute(array($_GET['refuse']));
+        $idRefuse = $reqIdRefuse->fetch();
+        $refuseAmi = $bdd->prepare('DELETE FROM amis WHERE ID_Follower=? AND ID_Followed = ?');
+        $refuseAmi-> execute(array($idRefuse['ID_User'],$dataUser['ID_User'],));
+        header('Location: amis.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,17 +87,15 @@
             <form method="get">
                 <ion-icon name="search-outline"></ion-icon>
                 <input type="search" name="searchAmi" placeholder="Rechercher un joueur">
-                <input type="submit" name="recherche" value="rechercher">
+                <input type="submit" name="rechercher" value="rechercher">
             </form>
         </div>
         <section class="searchJoueur">
             <?php 
-                /*$verfifUser = $allUsers->rowCount();
-                echo $verfifUser;
-                $user = $allUsers->fetch();
-                echo $user;
+                if(isset($allUsers)){
+                $verfifUser = $allUsers->rowCount();
                 if($verfifUser > 0){
-                    while($user){
+                    foreach($allUsers as $user){
                         ?>
                         <div>
                             <div><?= $user['pseudo'] ?> </div>
@@ -69,9 +104,98 @@
                             </form>
                         </div>
                         <?php
-                    }
-               }else{echo "ce joueur n'existe pas";}*/
+                        }
+                    }else{echo "ce joueur n'existe pas";}
+                }   
             ?>
+        </section>
+        <section>
+            <?php 
+                if($nbAmiFollower + $nbAmiFollowed>0){
+                    if($nbAmiFollower +$nbAmiFollowed >1){
+                        ?>
+                        <h2>Liste d'ami(e)s</h2>
+                        <?php
+                    }else{
+                        ?>
+                        <h2>Liste d'ami(e)</h2>
+                        <?php
+                    }
+                    foreach($reqAmiFollower as $amiFollower){
+                        $reqAmiFollower = $bdd->prepare('SELECT pseudo,token FROM user WHERE ID_User = ?');
+                        $reqAmiFollower->execute(array($amiFollower['ID_Followed']));
+                        $pseudoAmiFollower = $reqAmiFollower->fetch();
+                    ?>
+                        <div><a href="amis.php?profil=<?= $pseudoAmiFollower['token']?>"><?= $pseudoAmiFollower['pseudo']?></a></div>
+                    <?php 
+                    
+                    } 
+                    foreach($reqAmiFollowed as $amiFollowed){
+                        $reqAmiFollowed = $bdd->prepare('SELECT pseudo,token FROM user WHERE ID_User = ?');
+                        $reqAmiFollowed->execute(array($amiFollowed['ID_Follower']));
+                        $pseudoAmiFollowed = $reqAmiFollowed->fetch();
+                    ?>
+                        <div><a href="amis.php?profil=<?= $pseudoAmiFollowed['token']?>"><?= $pseudoAmiFollowed['pseudo']?></a></div>
+                    <?php 
+                    
+                    } 
+                }else{
+                    ?>
+                    <div>Vous n'avez pas encore d'ami</div>
+                    <?php  
+                }
+            ?>
+        </section>
+        <?php 
+            if(isset($_GET['profil'])){
+                $reqProfil = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user WHERE token = ?');
+                $reqProfil->execute(array($_GET['profil']));
+                $amiInfo = $reqProfil->fetch();
+                ?>
+                <div>
+                    <div>
+                        <label for="pseudo"><ion-icon name="person-outline"></ion-icon> Pseudo :</label>
+                        <input type="text" name="pseudo" value="<?php echo $amiInfo['pseudo'] ?>" readonly>
+                    </div>
+                </div>
+                <div>
+                    <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>
+                    <input type="text" name="soldeUser" value="<?php echo $amiInfo['soldeJoueur'] ?>" readonly>
+                </div>
+                <div>
+                    <form method="get">
+                        <button><a href="amis.php?supprime=<?= $_GET['profil'] ?>">Supprimer</a></button>
+                    </form>
+                </div>
+            <?php }
+        ?>
+        <section>
+        <?php 
+            if($nbDemande>0){
+                    ?>
+                    <h2>Demandes d'amis : <?= $nbDemande?></h2>
+                    <?php
+                foreach($reqDemande as $demande){;
+                ?>
+                    <div><a href="amis.php?profil=<?= $demande['token']?>"><?= $demande['pseudo']?></a></div>
+                    <div>
+                        <form method="get">
+                            <button><a href="amis.php?accept=<?= $demande['token'] ?>">Accepter</a></button>
+                        </form>
+                    </div>
+                    <div>
+                        <form method="get">
+                            <button><a href="amis.php?refuse=<?= $demande['token'] ?>">Refuser</a></button>
+                        </form>
+                    </div>
+                <?php 
+                } 
+            }else{
+                ?>
+                <div>Vous n'avez pas de demande d'ami</div>
+                <?php  
+            }
+        ?>
         </section>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
