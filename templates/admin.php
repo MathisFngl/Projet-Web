@@ -26,6 +26,7 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" href="../static/style/admin.css">
 </head>
     <body>
         <nav class="navbar menu-padding-20">
@@ -44,29 +45,34 @@
             </div>
         </nav>
         <div class="menu_divider"></div>
+        <div class="titre_admin">Panneau de contrôle administrateur</div>
         <div class="infoUser">
-            <h2>Interface Admin</h2>
-            <div class="tabAdmin">
-                <div>
-                    <div><p>User_id</p></div>
-                    <div><p>Pseudo</p></div>
-                    <div><p>Email</p></div>
-                    <div></div>
-                </div>
-            <?php
-            foreach($bdd->query('SELECT * FROM user EXCEPT (SELECT * FROM user WHERE email="virtualtrader23@gmail.com")') as $infoUser ){ 
-                ?>
-                    <div class="tabAdmin">
-                        <div><?= $infoUser["ID_User"] ?></div>
-                        <div><?= $infoUser["pseudo"] ?> </div>
-                        <div><?= $infoUser["email"] ?> </div>
-                        <form method="post">
-                        <button><a href="admin.php?supprime=<?= $infoUser["ID_User"] ?>">Supprimer</a></button>
-                        </form>
+            <table>
+                <tr>
+                    <div class="titres">
+                        <th class="label-titres"><p>ID</p></th>
+                        <th class="label-titres"><p>Pseudo</p></th>
+                        <th class="label-titres"><p>Email</p></th>
+                        <th class="label-titres"><p>Actions</p></th>
                     </div>
+                </tr>
                 <?php
-           }
-            ?>
+                foreach($bdd->query('SELECT * FROM user EXCEPT (SELECT * FROM user WHERE email="virtualtrader23@gmail.com")') as $infoUser ){ 
+                ?>
+                <div class="tabAdmin">
+                    <tr>
+                        <td class="items"><?= $infoUser["ID_User"] ?></td>
+                        <td class="items"><?= $infoUser["pseudo"] ?> </td>
+                        <td class="items"><?= $infoUser["email"] ?> </td>
+                        <td class="actions"><form method="post">
+                            <button><a href="admin.php?supprime=<?= $infoUser["ID_User"] ?>">Supprimer</a></button>
+                        </form></td>
+                    </tr>
+                </div>
+                <?php
+                }
+                ?>
+            </table>
         </div>
     </body>
 </html>

@@ -1,0 +1,86 @@
+@font-face {
+    font-family: 'kanit';
+    src: url('../fonts/kanit-bold.woff2') format('woff2');
+}
+
+.infoUser{
+    position: relative;
+    width: 80vw;
+    background: transparent;
+    border: 1px solid #515b64;
+    backdrop-filter: blur(15px);
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    margin-left: 10vw;
+  }
+
+.tabAdmin{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+  
+.titre_admin{
+    font-size: 3.5vw;
+    text-align: center;
+    color: bisque;
+    margin-top: 23px;
+    margin-bottom: 23px;
+}
+
+.titres{
+    background-color: #090d11;
+    border-radius: 10px 20px 0px 0px;
+}
+
+tr{
+    background-color: #192129;
+    border: 1px solid #dddddd;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color:#232d36
+  }
+
+th{
+    background-color: #1c2127;
+    border: 1px solid #515b64;
+    text-align: left;
+    padding: 10px;
+    text-align: center;
+}
+
+td.items{
+    padding: 8px;
+    border: 1px solid #515b64;
+}
+
+td.actions{
+    border: 1px solid #515b64;
+    height: 100%;
+}
+
+form{
+    height: 100%;
+    margin: 0 auto;
+}
+
+table{
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 1em;
+}
+
+button{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border-width: 0px;
+    cursor: pointer;
+    font-family: 'kanit', Helvetica;
+    font-size: 1vw;
+    color: #dddddd;
+    text-decoration: none;
+}

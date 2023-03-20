@@ -605,23 +605,3 @@ input:valid~label {
   }
 
   /*Admin*/
-  .infoUser{
-    position: relative;
-    width: 80vw;
-    height: 82vh;
-    background: transparent;
-    border: 2px solid #fff;
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    justify-content: center;
-    align-items: center;
-    box-shadow: 5px 5px 5px #fff;
-    color: #fff;
-    margin-left: 10vw;
-    margin-top: 3vh;
-  }
-  .tabAdmin{
-    border: #fff;
-    background: #ff365e;
-  }
-  

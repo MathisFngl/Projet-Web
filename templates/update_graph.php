@@ -13,7 +13,7 @@
     if(isset($_GET['user'])){
         $requValDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)');
         $requValDernierMois->execute();
-        $requValAvantDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)-1');
+        $requValAvantDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE (mois = (SELECT MAX(mois) FROM historiqueaction)-1)');
         $requValAvantDernierMois->execute();
         $DerniereVal = $requValDernierMois->fetch();
         $AvantDerniereVal = $requAvantValDernierMois->fetch();
