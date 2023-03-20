@@ -24,10 +24,11 @@
                     if(strlen($email) <= 255){
                         if($password === $password2){
                             $password = password_hash($password, PASSWORD_DEFAULT);
-                                $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token/*,photo*/) VALUES(?, ?, ?,?/*,?photo*/)');
-                                $insert->execute(array($pseudo,$email,$password,bin2hex(openssl_random_pseudo_bytes(64)/*'photo' =>$photo,*/)));
-                                header('Location:login.php');
-                                die();
+                            $soldeJoueur = 10000.00;
+                            $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token,soldeJoueur/*,photo*/) VALUES(?, ?, ?,?,?/*,?photo*/)');
+                            $insert->execute(array($pseudo,$email,$password,bin2hex(openssl_random_pseudo_bytes(64)),$soldeJoueur/*'photo' =>$photo,*/));
+                            header('Location:login.php');
+                            die();
                         }else{ header('Location: register.php?reg_err=password'); die();}
                     }else{ header('Location: register.php?reg_err=email'); die();}
                 }else{ header('Location: register.php?reg_err=pseudo'); die();}

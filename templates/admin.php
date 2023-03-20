@@ -2,15 +2,15 @@
     session_start();
     require_once 'bdd.php';
 
-    if(isset($_GET['user'])){
+    if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT statut FROM user WHERE token = ?');
-        $requUser->execute(array($_GET['user']));
+        $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }
     if(isset($dataUser['statut']) AND $dataUser['statut'] == 1){
 
     }else{
-        header('Location: deconnexion.php?user='.$_GET["user"]);
+        header('Location: deconnexion.php');
     }   
 
     if(isset($_GET['supprime']) AND !empty($_GET['supprime'])){
@@ -40,7 +40,7 @@
               <a href="#" class="logo">Virtual Trader</a>
             <div class="nav-links">
                 <ul>
-                    <li><a href="deconnexion.php?user=<?= $_GET['user']?>">Déconnexion</a></li>
+                    <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
@@ -64,7 +64,7 @@
                         <td class="items"><?= $infoUser["ID_User"] ?></td>
                         <td class="items"><?= $infoUser["pseudo"] ?> </td>
                         <td class="items"><?= $infoUser["email"] ?> </td>
-                        <td class="actions"><form method="post">
+                        <td class="actions"><form method="get">
                             <button><a href="admin.php?supprime=<?= $infoUser["ID_User"] ?>">Supprimer</a></button>
                         </form></td>
                     </tr>

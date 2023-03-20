@@ -1,7 +1,7 @@
 <?php 
     session_start();
     require_once 'bdd.php';
-    include_once('remember.php');
+    //include_once('remember.php');
 
     // Si les variables existent et qu'elles ne sont pas vides
     if(!empty($_POST['email']) && !empty($_POST['password']))
@@ -28,7 +28,7 @@
                     if($email == 'virtualtrader23@gmail.com'){
                         $_SESSION['user'] = $data['token'];
                         $_SESSION['statut'] = $data['statut'];
-                        header('Location: admin.php?user='.$_SESSION['user']);
+                        header('Location: admin.php');
                         die();
                     }
                     else{
@@ -37,7 +37,7 @@
                         $_SESSION['mdp'] = $data['mdp'];
                         $_SESSION['pseudo'] = $data['pseudo'];
                         $_SESSION['statut'] = $data['statut'];
-                        header('Location: profile.php?user='.$_SESSION['user']);
+                        header('Location: profile.php');
                         die();
                     }
                 }else{ header('Location: login.php?reg_err=password'); die();}
