@@ -59,17 +59,33 @@
       <div class="trading-panel">
         <div class="graphes-gauche">
           <div class="graphique_main">
+            <script>
+              const data_amount = 11;
+              const data_array = [
+                    ['1', 28, 28, 38, 38],
+                    ['2', 31, 38, 55, 66],
+                    ['3', 50, 55, 77, 80],
+                    ['4', 77, 77, 66, 50],
+                    ['5', 68, 66, 22, 15],
+                    ['6', 68, 22, 12, 15],
+                    ['7', 9, 12, 41, 15],
+                    ['8', 29, 41, 39, 45],
+                    ['9', 68, 39, 73, 85],
+                    ['10', 29, 73, 108, 110],
+                    ['11', 98, 108, 159, 183],
+                    ['12', 108, 159, 149, 164]]
+
+            </script>
 
             <?php
-              include 'update_graph.php';
+              /*include 'update_graph.php';
               $data_amount = 11;
               $data_array = constructionTableau($bdd);
               echo '<script>var data_amount = "' . $data_amount . '";</script>';
-              echo '<script>var data_array = "' . $data_array . '";</script>';
+              echo '<script>var data_array = "' . $data_array . '";</script>';*/
             ?>
 
             <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <span id="percentage_general"></span> </div>
-            
             <script>
               var percent_change = 0;
                 if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
@@ -88,10 +104,11 @@
                     percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
                     }
                 }
+
               const percent_change_rounded = percent_change.toFixed(1);
+
               document.getElementById("percentage_general").innerHTML = percent_change_rounded + "%";
             </script>
-
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <div id="MainTrade" class="dim-main-trade"></div>
             <script src="../js/calculate_rsi.js"></script>
@@ -235,9 +252,15 @@
               $numberInput = $_POST['numberInput'];
               $moneyCalc = $numberInput*$unit_price;
               if($moneyCalc <= $dataUser['soldeJoueur']){
+
                 $new_solde_joueur = $dataUser["soldeJoueur"] - $moneyCalc;
                 $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE token = ?");
                 $sql_money_update->execute(array($new_solde_joueur, $_SESSION['user']));
+                if($numberInput != 0){
+                  $sql_action_possede = $bdd->prepare("INSERT INTO actionpossede(ID_Action,ID_User, nombreAction, prix_achat) VALUES (?,?,?,?)");
+                  $sql_action_possede->execute(array(2, $dataUser['ID_User'], $numberInput, $unit_price));
+                }
+
                 $dataUser['soldeJoueur'] = $new_solde_joueur;
               }
             }
@@ -262,6 +285,21 @@
       <div class="infos">
         Solde : <?php echo $dataUser['soldeJoueur'] ?> $
       </div>
+
+      <?php 
+        $reqDernierAchat = $bdd->prepare("SELECT nombreAction, prix_achat, nomAction FROM actionpossede INNER JOIN dataaction ON dataaction.ID_Action = actionpossede.ID_Action WHERE ID_User = ? ORDER BY transaction_date DESC LIMIT 1");
+        $reqDernierAchat -> execute(array($_SESSION['user']));
+        $dernierAchat = $reqDernierAchat->fetch();
+      
+      if ($dernierAchat){
+      ?>
+        <div class="infos">
+          Dernier Stock Acheté : <?php echo $dernierAchat['nombreAction'] ?> <?php echo $dernierAchat['nomAction'] ?> <?php echo $dernierAchat['prix_achat'] ?>$ unité
+        </div>
+      <?php 
+      }
+      ?>
+
     </div>
   </body>
 </html>
