@@ -2,13 +2,13 @@
     require_once 'bdd.php';
 
     // Si les variables existent et qu'elles ne sont pas vides
-    if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['password2']) /*&& !empty($_POST['photo'])*/)
+    if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['password2']) && !empty($_POST['photo']))
     {
         $pseudo = htmlspecialchars($_POST['pseudo']);
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
         $password2 = htmlspecialchars($_POST['password2']);
-        //$photo = htmlspecialchars($_POST['photo']);
+        $photo = htmlspecialchars($_POST['photo']);
 
         // On vérifie si l'utilisateur existe
         $verif = $bdd->prepare('SELECT pseudo, email, mdp, token FROM user WHERE email = ?');
@@ -25,8 +25,8 @@
                         if($password === $password2){
                             $password = password_hash($password, PASSWORD_DEFAULT);
                             $soldeJoueur = 10000.00;
-                            $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token,soldeJoueur/*,photo*/) VALUES(?, ?, ?,?,?/*,?photo*/)');
-                            $insert->execute(array($pseudo,$email,$password,bin2hex(openssl_random_pseudo_bytes(64)),$soldeJoueur/*'photo' =>$photo,*/));
+                            $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token,soldeJoueur,photo) VALUES(?, ?, ?,?,?,?)');
+                            $insert->execute(array($pseudo,$email,$password,bin2hex(openssl_random_pseudo_bytes(64)),$soldeJoueur,$photo));
                             header('Location:login.php');
                             die();
                         }else{ header('Location: register.php?reg_err=password'); die();}

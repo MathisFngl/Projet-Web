@@ -4,10 +4,13 @@
 
     include_once('remember.php');
     if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur FROM user WHERE token = ?');
+        $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
+
+    $photo = '../images/'.$dataUser['photo'].'.jpg';
+
     
 ?>
 <!DOCTYPE html>
@@ -40,7 +43,7 @@
         <div class="menu_divider"></div>
         <div class="infoProfil">
             <div class="profilPhoto">
-                <img src="../images/img7.jpg" alt="photo de profile">
+                <?= "<img src='$photo' alt='photo de profil'>" ?>
             </div>
             <h2>Profil</h2>
             <div class="info-user">
