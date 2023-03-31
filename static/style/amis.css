@@ -49,6 +49,12 @@ body {
     border: none;
     color: rgb(136, 174, 187);
     text-decoration: none;
+    transition-duration: 0.5s;
+}
+
+.AddFriendButton:hover{
+    transition: 0.2s;
+    background-color: #49647a;
 }
 
 .AddFriendButton a{
