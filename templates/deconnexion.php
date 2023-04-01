@@ -1,6 +1,7 @@
 <?php 
     session_start(); 
     require_once 'bdd.php';
+    include_once('remember.php');
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('UPDATE user SET token = ? WHERE token = ?');
         $requUser->execute(array(bin2hex(openssl_random_pseudo_bytes(64)),$_SESSION['user']));

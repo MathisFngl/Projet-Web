@@ -2,7 +2,7 @@
     session_start();
     require_once 'bdd.php';
 
-    //include_once('remember.php');
+    include_once('remember.php');
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,ID_User FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -11,7 +11,7 @@
 
     if(isset($_GET['rechercher']) && !empty($_GET['searchAmi'])){
         $search = htmlspecialchars($_GET['searchAmi']);
-        $allUsers=$bdd->prepare("SELECT pseudo,token FROM user WHERE pseudo LIKE ? EXCEPT (SELECT pseudo,token FROM user WHERE email=? or email=?)");
+        $allUsers=$bdd->prepare("SELECT pseudo,token,ID_User FROM user WHERE pseudo LIKE ? EXCEPT (SELECT pseudo,token,ID_User FROM user WHERE email=? or email=?)");
         $allUsers->execute(array('%'.$search.'%',"virtualtrader23@gmail.com",$_SESSION['email']));
     }
     $reqAmiFollower = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Follower=user.ID_User WHERE user.token = ? AND amis.statut = ?');
@@ -32,8 +32,8 @@
         $reqIdSupr = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
         $reqIdSupr->execute(array($_GET['supprime']));
         $idSupr = $reqIdSupr->fetch();
-        $suprAmi = $bdd->prepare('DELETE FROM amis WHERE ID_Follower=? AND ID_Followed = ?');
-        $suprAmi-> execute(array($idSupr['ID_User'],$dataUser['ID_User'],));
+        $suprAmi = $bdd->prepare('DELETE FROM amis WHERE (ID_Follower=? AND ID_Followed = ?) OR (ID_Follower=? AND ID_Followed = ?)');
+        $suprAmi-> execute(array($idSupr['ID_User'],$dataUser['ID_User'],$dataUser['ID_User'],$idSupr['ID_User']));
         header('Location: amis.php');
     }
     $reqDemande = $bdd->prepare('SELECT pseudo,token FROM user INNER JOIN amis ON user.ID_User=amis.ID_Follower WHERE amis.ID_Followed = ? AND amis.statut = ? ');
@@ -60,11 +60,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profil</title>
-    <!--<link rel="stylesheet" href="../static/style/style.css">-->
+    <title>Amis</title>
+    <link rel="stylesheet" href="../static/style/style.css">
 </head>
     <body>
-        <!--<nav class="navbar menu-padding-50">
+        <nav class="navbar menu-padding-50">
             <svg width="48" height="48" fill="none" viewBox="0 0 24 24" class="icon">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 11.25L10.25 5.75"></path>
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.75 19.2502H6.25C6.80229 19.2502 7.25 18.8025 7.25 18.2502V15.75C7.25 15.1977 6.80229 14.75 6.25 14.75H5.75C5.19772 14.75 4.75 15.1977 4.75 15.75V18.2502C4.75 18.8025 5.19772 19.2502 5.75 19.2502Z"></path>
@@ -76,21 +76,21 @@
             <div class="nav-links">
                 <ul>
                     <li><a href="voir_stocks.php">Voir les stocks</a></li>
-                    <li class="active"><a href="profile.php">Profil</a></li>
+                    <li><a href="profile.php">Profil</a></li>
                     <li><a href="#">Historique</a></li>
-                    <li><a href="#">Amis</a></li>
+                    <li class="active"><a href="amis.php">Amis</a></li>
                     <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
-        </nav>-->
-        <div>
+        </nav>
+        <div class="search">
             <form method="get">
                 <ion-icon name="search-outline"></ion-icon>
-                <input type="search" name="searchAmi" placeholder="Rechercher un joueur">
-                <input type="submit" name="rechercher" value="rechercher">
+                <input type="search" name="searchAmi" placeholder="Rechercher un joueur" class="barreRecherche">
+                <input type="submit" name="rechercher" value="rechercher" class="buttonRecherche">
             </form>
         </div>
-        <section class="searchJoueur">
+        <div class="searchJoueur">
             <?php 
                 if(isset($allUsers)){
                 $verfifUser = $allUsers->rowCount();
@@ -98,27 +98,24 @@
                     foreach($allUsers as $user){
                         ?>
                         <div>
-                            <div><?= $user['pseudo'] ?> </div>
-                            <form method="get">
-                            <button><a href="amis.php?add=<?= $user['token'] ?>">Ajouter</a></button>
-                            </form>
+                            <div><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a> </div>
                         </div>
                         <?php
                         }
                     }else{echo "ce joueur n'existe pas";}
                 }   
             ?>
-        </section>
-        <section>
+        </div>
+        <div class="amis">
             <?php 
                 if($nbAmiFollower + $nbAmiFollowed>0){
                     if($nbAmiFollower +$nbAmiFollowed >1){
                         ?>
-                        <h2>Liste d'ami(e)s</h2>
+                        <h2 class="h2-amis">Liste d'ami(e)s</h2>
                         <?php
                     }else{
                         ?>
-                        <h2>Liste d'ami(e)</h2>
+                        <h2 class="h2-amis">Liste d'ami(e)</h2>
                         <?php
                     }
                     foreach($reqAmiFollower as $amiFollower){
@@ -145,31 +142,45 @@
                     <?php  
                 }
             ?>
-        </section>
+        </div>
         <?php 
             if(isset($_GET['profil'])){
-                $reqProfil = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user WHERE token = ?');
+                $reqProfil = $bdd->prepare('SELECT pseudo, soldeJoueur,ID_User FROM user WHERE token = ?');
                 $reqProfil->execute(array($_GET['profil']));
                 $amiInfo = $reqProfil->fetch();
+                $reqVerifAmi = $bdd->prepare('SELECT statut FROM amis WHERE (ID_Follower = ? AND ID_Followed = ?) OR (ID_Follower = ? AND ID_Followed = ?) ');
+                $reqVerifAmi->execute(array($dataUser['ID_User'],$amiInfo['ID_User'],$amiInfo['ID_User'],$dataUser['ID_User']));
+                $verifAmi = $reqVerifAmi->fetch();
                 ?>
+                <div class="info-ami">  
                 <div>
-                    <div>
-                        <label for="pseudo"><ion-icon name="person-outline"></ion-icon> Pseudo :</label>
-                        <input type="text" name="pseudo" value="<?php echo $amiInfo['pseudo'] ?>" readonly>
-                    </div>
+                    <label for="pseudo"><ion-icon name="person-outline"></ion-icon> Pseudo :</label>
+                    <input type="text" name="pseudo" value="<?php echo $amiInfo['pseudo'] ?>" readonly>
                 </div>
                 <div>
                     <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>
                     <input type="text" name="soldeUser" value="<?php echo $amiInfo['soldeJoueur'] ?>" readonly>
                 </div>
-                <div>
+                <?php 
+                if($verifAmi){
+                    ?>
+                     <div>
                     <form method="get">
-                        <button><a href="amis.php?supprime=<?= $_GET['profil'] ?>">Supprimer</a></button>
+                        <button class="button-supr"><a href="amis.php?supprime=<?= $_GET['profil'] ?>">Supprimer</a></button>
                     </form>
+                    </div>
+                <?php }
+                else{
+                    ?>
+                    <form method="get">
+                    <button class="button-supr"><a href="amis.php?add=<?= $_GET['profil'] ?>">Ajouter</a></button>
+                    </form>
+                    <?php }
+                    ?>                
                 </div>
             <?php }
         ?>
-        <section>
+        <div class="demande">
         <?php 
             if($nbDemande>0){
                     ?>
@@ -196,7 +207,7 @@
                 <?php  
             }
         ?>
-        </section>
+        </div>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>

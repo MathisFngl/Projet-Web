@@ -1,7 +1,7 @@
 <?php
-    if(isset($_SESSION['user']) AND isset($_COOKIE['token']) AND !empty($_COOKIE['token'])){
-        setcookie('user',$data['token'],time() + 3600*24*2, '/', 'localhost', false, true);
-        $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE token = ?');
+    if(isset($_COOKIE['user']) AND !empty($_COOKIE['user'])){
+        setcookie('user',$data['id'],time() + 3600*24*2, '/', 'localhost', false, true);
+        $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE id = ?');
         $verif->execute(array($_COOKIE['user']));
         $data = $verif->fetch();
         $userExist = $verif->rowCount();
@@ -14,5 +14,6 @@
             $_SESSION['statut'] = $data['statut'];
         
         }
+        header('Location: profile.php');
     }
 ?>

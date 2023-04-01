@@ -9,7 +9,7 @@
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
-    $photo = '../images/'.$dataUser['photo'].'.jpg';
+    $photo = '../images/'.$dataUser['photo'];
 
     
 ?>
