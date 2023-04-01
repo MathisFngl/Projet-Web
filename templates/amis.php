@@ -60,8 +60,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Amis</title>
-    <link rel="stylesheet" href="../static/style/style.css">
+    <title>Profil</title>
+    <link rel="stylesheet" href="../static/style/amis.css">
 </head>
     <body>
         <nav class="navbar menu-padding-50">
@@ -83,30 +83,38 @@
                 </ul>
             </div>
         </nav>
-        <div class="search">
-            <form method="get">
+
+        <div class="titre_amis">Amis</div>
+        <div class="searchJoueur" class="search">
+            <form method="get" class="flex">
                 <ion-icon name="search-outline"></ion-icon>
-                <input type="search" name="searchAmi" placeholder="Rechercher un joueur" class="barreRecherche">
-                <input type="submit" name="rechercher" value="rechercher" class="buttonRecherche">
+                <input class="searchAmis" type="search" name="searchAmi" placeholder="Rechercher un joueur...">
+                <input class="searchAmisButton" type="submit" name="rechercher" value="Rechercher">
             </form>
         </div>
-        <div class="searchJoueur">
+        <?php
+        if(isset($allUsers)){
+        $verfifUser = $allUsers->rowCount();
+        ?>
+        <div class="titre_recherche_amis"> Résultats de Recherche d'Amis</div>
+        <section class="AddFriends">
             <?php 
-                if(isset($allUsers)){
-                $verfifUser = $allUsers->rowCount();
+                
                 if($verfifUser > 0){
                     foreach($allUsers as $user){
                         ?>
-                        <div>
-                            <div><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a> </div>
+                        <div class="flex">
+                            <div class="pseudoSearch" class="AddFriendButton"><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a> </div>
                         </div>
                         <?php
                         }
-                    }else{echo "ce joueur n'existe pas";}
-                }   
+                    }else{echo "ce joueur n'existe pas";} 
             ?>
-        </div>
-        <div class="amis">
+        </section>
+        <?php
+        }  
+        ?>
+        <section>
             <?php 
                 if($nbAmiFollower + $nbAmiFollowed>0){
                     if($nbAmiFollower +$nbAmiFollowed >1){
