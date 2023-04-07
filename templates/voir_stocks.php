@@ -10,6 +10,7 @@
     $dataUser = $requUser->fetch();
   }else{header('Location: deconnexion.php');}
 ?>
+
 <!DOCTYPE html>
 
 <html>
@@ -42,6 +43,8 @@
       </div>
     </nav>
     <div class="menu_divider"></div>
+
+
     <nav class="sidenav">
       <a href="#indices">Indices</a>
       <div class="menu_divider"></div>
@@ -54,62 +57,43 @@
       <a href="#taux-obligation">Taux & Obligations</a>
       <div class="menu_divider"></div>
     </nav>
+
+
       <div class="page-content">
       <div class="trading-panel">
         <div class="graphes-gauche">
           <div class="graphique_main">
             <?php
             include 'update_graph.php';
-              $data_amount = 7;
+              $data_amount = 5;
               $data_array = constructionTableau($bdd, $data_amount);
+
+                $requHistoriquePrix = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 2");
+                $requHistoriquePrix -> execute(array(2));
+                $price1_raw = $requHistoriquePrix->fetch();
+                $price2_raw = $requHistoriquePrix->fetch();
+                $price1 = $price1_raw["prix"];
+                $price2 = $price2_raw["prix"];
+
+              $percent_change = (($price1 - $price2) / $price2) * 100.0;
+              $percent_change_rounded = number_format($percent_change, 1);
             ?>
 
-            <?php
-              /*include 'update_graph.php';
-              $data_amount = 11;
-              $data_array = constructionTableau($bdd);
-              echo '<script>var data_amount = "' . $data_amount . '";</script>';
-              echo '<script>var data_array = "' . $data_array . '";</script>';*/
-            ?>
+            <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php echo "$percent_change_rounded" ?> %</div>
 
-            <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <span id="percentage_general"></span> </div>
-            <script>
-
-              var dataPHP = <?php echo json_encode($data_array); ?>;
-              var data_array = JSON.parse(dataPHP);
-
-              var percent_change = 0;
-                if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
-                  if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
-                    percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
-                  }
-                  if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
-                    percent_change = ((data_array[data_amount][3] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
-                    }
-                }
-                if(data_array[data_amount-1][2] > data_array[data_amount-1][3]){
-                  if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
-                    percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][3])/data_array[data_amount-1][3])*100.0;
-                  }
-                  if(data_array[data_amount-2][2] > data_array[data_amount-2][3]){
-                    percent_change = ((data_array[data_amount][2] - data_array[data_amount-1][2])/data_array[data_amount-1][3])*100.0;
-                    }
-                }
-
-              const percent_change_rounded = percent_change.toFixed(1);
-
-              document.getElementById("percentage_general").innerHTML = percent_change_rounded + "%";
-            </script>
-            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <div id="MainTrade" class="dim-main-trade"></div>
             <script src="../js/calculate_rsi.js"></script>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <script>
 
               google.charts.load('current', {'packages':['corechart']});
               google.charts.setOnLoadCallback(drawChart);
+
               function drawChart(){
-                
-                const data = google.visualization.arrayToDataTable(data_array, true);
+
+                  const data_array = <?php echo json_encode($data_array); ?>;
+                  const data_amount = <?php echo json_encode($data_amount); ?>;
+                  const data = google.visualization.arrayToDataTable(data_array, true);
 
                   var options = {
                     legend:'none',
@@ -118,7 +102,7 @@
                           risingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#0f9d58' }},
                     backgroundColor : { strokeWidth: 0, fill: '#212b36' },
                     colors: ['#f1f1f1'],
-                    chartArea: {'width': '90%', 'height': '85%'},
+                    chartArea: {'width': '90%', 'height': '90%'},
                   };
 
                   var chart = new google.visualization.CandlestickChart(document.getElementById('MainTrade'));
@@ -130,97 +114,9 @@
                     }, 0);
                   });
                 }
-                
-                const prix_bougies = [];
-                for (let i = 0; i < data_amount; i++) {
-                  var innerArray = data_array[i];
-                  if(innerArray[3] < innerArray[2]){
-                    var fourthElement = innerArray[3];
-                  }
-                  if(innerArray[2] < innerArray[3]){
-                    var fourthElement = innerArray[2];
-                  }
-                  prix_bougies.push(fourthElement);
-                }
-                  const valeurs_rsi = calculateRSI(prix_bougies, 3);
-                  console.log(valeurs_rsi);
             </script>
           </div>
-          <div class="graphique_rsi">
-            <div class="bandeau-infos-trade"> RSI (Relative Strenght Index): <span id="percentage_rsi"></span> </div>
-            <script>
-              var percentage_last_rsi = ((valeurs_rsi[data_amount-1] - valeurs_rsi[data_amount-2])/valeurs_rsi[data_amount-2])*100.0;
-              var rounded_percentage_last_rsi = percentage_last_rsi.toFixed(1);
-              document.getElementById("percentage_rsi").innerHTML = rounded_percentage_last_rsi + "%";
-
-            </script>
-              <div id="RSI" class="dim-RSI-trade"></div>
-              <script>
-                  google.charts.load('current', {packages: ['corechart', 'line']});
-                  google.charts.setOnLoadCallback(drawBasic);
-
-                  function drawBasic() {
-
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('number', 'X');
-                    data.addColumn('number', 'Value');
-
-                    const rows = []
-                    for (let i = 0; i < data_amount; i++) {
-                      var local_row = [i, valeurs_rsi[i]];
-                      rows.push(local_row);
-                    }
-
-                    data.addRows(
-                      rows
-                    );
-
-                    var options = {
-                      legend: 'none',
-                      backgroundColor: { strokeWidth: 0, fill: '#212b36' },
-                      chartArea: { 'width': '90%', 'height': '85%' },
-                      vAxis: {
-                      viewWindow: {
-                            min: 0,
-                            max: 100
-                            },
-                        ticks: [30, 70],
-                        gridlines: {
-                          color: '#ccc',
-                          count: 2
-                        }
-                      },
-                      hAxis: {
-                        viewWindow: {
-                          min: 0,
-                          max: 11
-                        },
-                        gridlines: {
-                          color: 'transparent'
-                        }
-                      },
-                      series: {
-                        0: {
-                          color: '#fdd835',
-                          lineWidth: 1 
-                        }
-                      }
-                    };
-
-                    var chart = new google.visualization.LineChart(document.getElementById('RSI'));
-
-                    chart.draw(data, options);
-
-                    window.addEventListener('resize', function() {
-                      setTimeout(function() {
-                      chart.draw(data, options);
-                      }, 0);
-                    });
-                  }
-                </script>
-          
-                </div>  
-          </div>
+        </div>
         <div class="graphe-droite">
           <form class="achat-vente" method="post" action="">
             <div class="achat-vente-button">
@@ -230,7 +126,13 @@
             <div class="menu_divider" style="margin-bottom: 10px;"></div>
             <div>
             <div class="side-labels">Prix à l'unité :</div>
-            <div class="unit-price"> <?php $unit_price = 3.63; echo " $unit_price $"?> </div>
+                <?php
+                $prix_courrant_req = $bdd->prepare('SELECT prix FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)');
+                $prix_courrant_req->execute();
+                $prix_courrant = $prix_courrant_req->fetch();
+                $prix = $prix_courrant["prix"];
+                ?>
+            <div class="unit-price"> <?php echo " $prix $"?> </div>
             <div class="menu_divider" style="padding-top: 15px;"></div>
             <div class="side-labels"> Quantité à acheter / vendre :</div>
             <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" value="0" min="0" max="1000000" style="padding-top : 10px;
@@ -241,7 +143,7 @@
           <?php 
             if(isset($_POST['buyButton'])){ 
               $numberInput = $_POST['numberInput'];
-              $moneyCalc = $numberInput*$unit_price;
+              $moneyCalc = $numberInput*$prix;
               if($moneyCalc <= $dataUser['soldeJoueur']){
 
                 $new_solde_joueur = $dataUser["soldeJoueur"] - $moneyCalc;
@@ -249,7 +151,7 @@
                 $sql_money_update->execute(array($new_solde_joueur, $_SESSION['user']));
                 if($numberInput != 0){
                   $sql_action_possede = $bdd->prepare("INSERT INTO actionpossede(ID_Action,ID_User, nombreAction, prix_achat) VALUES (?,?,?,?)");
-                  $sql_action_possede->execute(array(2, $dataUser['ID_User'], $numberInput, $unit_price));
+                  $sql_action_possede->execute(array(2, $dataUser['ID_User'], $numberInput, $prix));
                 }
 
                 $dataUser['soldeJoueur'] = $new_solde_joueur;
@@ -259,11 +161,11 @@
           <script>
             function displayNumber() {
               const number = document.getElementById('numberInput').value;
-              const unit_price = <?php echo $unit_price; ?>;
-              const final_price = number * unit_price;
+              const unit_price = <?php echo $prix; ?>;
+              const final_price = number * $prix;
               const final_price_rounded = final_price.toFixed(2);
               document.getElementById('display').innerHTML = `${final_price_rounded} $`;
-              return [number, unit_price]
+              return [number, $prix]
             }
           </script>
         </div>
@@ -285,7 +187,7 @@
       if ($dernierAchat){
       ?>
         <div class="infos">
-          Dernier Stock Acheté : <?php echo $dernierAchat['nombreAction'] ?> <?php echo $dernierAchat['nomAction'] ?> <?php echo $dernierAchat['prix_achat'] ?>$ unité
+          Dernier Stock Acheté : <?php echo $dernierAchat['nombreAction'] ?> <?php echo $dernierAchat['nomAction'] ?> à <?php echo $dernierAchat['prix_achat'] ?>$ l'unité
         </div>
       <?php 
       }
