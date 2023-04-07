@@ -94,14 +94,14 @@
                 <div class="modal-container-register">
                     <div class="modal-register">
                         <button class="close-modal-register modal-trigger-register">X</button>
-                        <img src="../images/img1.jpg" alt="photo de profile"  class="modal-image1-register modal-trigger-register" onclick="selectPhoto('img1.jpg')">
-                        <img src="../images/img2.jpg" alt="photo de profile"  class="modal-image2-register modal-trigger-register" onclick="selectPhoto('img2.jpg')">
-                        <img src="../images/img3.jpg" alt="photo de profile"  class="modal-image3-register modal-trigger-register" onclick="selectPhoto('img3.jpg')">
-                        <img src="../images/img4.jpg" alt="photo de profile"  class="modal-image4-register modal-trigger-register" onclick="selectPhoto('img4.jpg')">
-                        <img src="../images/img5.jpg" alt="photo de profile"  class="modal-image5-register modal-trigger-register" onclick="selectPhoto('img5.jpg')">
-                        <img src="../images/img6.jpg" alt="photo de profile"  class="modal-image6-register modal-trigger-register" onclick="selectPhoto('img6.jpg')">
-                        <img src="../images/img7.jpg" alt="photo de profile"  class="modal-image7-register modal-trigger-register" onclick="selectPhoto('img7.jpg')">
-                        <img src="../images/img8.jpg" alt="photo de profile"  class="modal-image8-register modal-trigger-register" onclick="selectPhoto('img8.jpg')">
+                        <img src="../images/img1.jpg" alt="photo de profile"  class="modal-image1-register modal-trigger-register" onclick="selectPhoto('1')">
+                        <img src="../images/img2.jpg" alt="photo de profile"  class="modal-image2-register modal-trigger-register" onclick="selectPhoto('2')">
+                        <img src="../images/img3.jpg" alt="photo de profile"  class="modal-image3-register modal-trigger-register" onclick="selectPhoto('3')">
+                        <img src="../images/img4.jpg" alt="photo de profile"  class="modal-image4-register modal-trigger-register" onclick="selectPhoto('4')">
+                        <img src="../images/img5.jpg" alt="photo de profile"  class="modal-image5-register modal-trigger-register" onclick="selectPhoto('5')">
+                        <img src="../images/img6.jpg" alt="photo de profile"  class="modal-image6-register modal-trigger-register" onclick="selectPhoto('6')">
+                        <img src="../images/img7.jpg" alt="photo de profile"  class="modal-image7-register modal-trigger-register" onclick="selectPhoto('7')">
+                        <img src="../images/img8.jpg" alt="photo de profile"  class="modal-image8-register modal-trigger-register" onclick="selectPhoto('8')">
                     </div>
                     <input type="hidden" id="photo" name="photo" required>
                  </div>   
