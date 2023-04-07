@@ -13,7 +13,7 @@
 
         // On vérifie si l'utilisateur existe
         if(isset($_POST['remember'])){
-            setcookie('user',$data['id'],time() +3600*24*2, '/', 'localhost', false, true);
+            setcookie('user',$data['id'],time() +3600*24, '/', 'localhost', false, true);
         }
         $requUser = $bdd->prepare('UPDATE user SET token = ? WHERE email = ?');
         $requUser->execute(array(bin2hex(openssl_random_pseudo_bytes(64)),$email));

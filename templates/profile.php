@@ -9,8 +9,9 @@
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
-    $photo = '../images/'.$dataUser['photo'];
-
+    $photo = $bdd->prepare('SELECT photo FROM photo WHERE ID_Photo = ?');
+    $photo->execute(array($dataUser['photo']));
+    $image = $photo->fetch();
     
 ?>
 <!DOCTYPE html>
@@ -43,7 +44,7 @@
         <div class="menu_divider"></div>
         <div class="infoProfil">
             <div class="profilPhoto">
-                <?= "<img src='$photo' alt='photo de profil'>" ?>
+                <?= '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil">' ?>
             </div>
             <h2>Profil</h2>
             <div class="info-user">
@@ -66,7 +67,6 @@
             </div>
             <button class="modifProfil"><a href="modifProfil.php">Modifier mon profil</a></button>
             <div class="historiqueProfil">
-
             </div>
         </div>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

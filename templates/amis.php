@@ -4,22 +4,26 @@
 
     include_once('remember.php');
     if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT email,pseudo,ID_User FROM user WHERE token = ?');
+        $requUser = $bdd->prepare('SELECT email,pseudo,ID_User,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
-
+    /* rechercher un ami*/
     if(isset($_GET['rechercher']) && !empty($_GET['searchAmi'])){
         $search = htmlspecialchars($_GET['searchAmi']);
         $allUsers=$bdd->prepare("SELECT pseudo,token,ID_User FROM user WHERE pseudo LIKE ? EXCEPT (SELECT pseudo,token,ID_User FROM user WHERE email=? or email=?)");
         $allUsers->execute(array('%'.$search.'%',"virtualtrader23@gmail.com",$_SESSION['email']));
     }
+
+    /*liste d'amis si on est le suiveur de base*/
     $reqAmiFollower = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Follower=user.ID_User WHERE user.token = ? AND amis.statut = ?');
     $reqAmiFollower->execute(array($_SESSION['user'],1));
     $nbAmiFollower = $reqAmiFollower->rowCount(); 
+    /*liste d'amis si on est suivi de base*/
     $reqAmiFollowed = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Followed=user.ID_User WHERE user.token = ? AND amis.statut = ?');
     $reqAmiFollowed->execute(array($_SESSION['user'],1));
     $nbAmiFollowed = $reqAmiFollowed->rowCount(); 
+
     if(isset($_GET['add'] ) && !empty($_GET['add'])){
         $reqIdAdd = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
         $reqIdAdd->execute(array($_GET['add']));
@@ -60,8 +64,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profil</title>
-    <link rel="stylesheet" href="../static/style/amis.css">
+    <title>Amis</title>
+    <link rel="stylesheet" href="../static/style/style.css">
 </head>
     <body>
         <nav class="navbar menu-padding-50">
@@ -83,47 +87,38 @@
                 </ul>
             </div>
         </nav>
-
-        <div class="titre_amis">Amis</div>
-        <div class="searchJoueur" class="search">
-            <form method="get" class="flex">
-                <ion-icon name="search-outline"></ion-icon>
-                <input class="searchAmis" type="search" name="searchAmi" placeholder="Rechercher un joueur...">
-                <input class="searchAmisButton" type="submit" name="rechercher" value="Rechercher">
+        <div class="search">   
+            <form method="get" class="search-bar">
+                <input type="search" name="searchAmi" pattern=".*\S.*" required>
+                <button type="submit" name="rechercher" class="search-btn"></button>
             </form>
         </div>
-        <?php
-        if(isset($allUsers)){
-        $verfifUser = $allUsers->rowCount();
-        ?>
-        <div class="titre_recherche_amis"> Résultats de Recherche d'Amis</div>
-        <section class="AddFriends">
+        <div class="searchJoueur">
             <?php 
-                
+                if(isset($allUsers)){
+                $verfifUser = $allUsers->rowCount();
                 if($verfifUser > 0){
                     foreach($allUsers as $user){
                         ?>
-                        <div class="flex">
-                            <div class="pseudoSearch" class="AddFriendButton"><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a> </div>
+                        <div>
+                            <div><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a></div>
                         </div>
                         <?php
                         }
-                    }else{echo "ce joueur n'existe pas";} 
+                    }else{echo "Ce joueur n'existe pas";}
+                }   
             ?>
-        </section>
-        <?php
-        }  
-        ?>
-        <section>
-            <?php 
+        </div>
+        <div class="amis">
+            <?php
                 if($nbAmiFollower + $nbAmiFollowed>0){
                     if($nbAmiFollower +$nbAmiFollowed >1){
                         ?>
-                        <h2 class="h2-amis">Liste d'ami(e)s</h2>
+                        <h2 class="h2-ami">Liste d'amis</h2>
                         <?php
-                    }else{
+                    }else{ 
                         ?>
-                        <h2 class="h2-amis">Liste d'ami(e)</h2>
+                        <h2 class="h2-ami">Liste d'ami</h2>
                         <?php
                     }
                     foreach($reqAmiFollower as $amiFollower){
@@ -146,21 +141,29 @@
                     } 
                 }else{
                     ?>
-                    <div>Vous n'avez pas encore d'ami</div>
+                    <h2 class="h2-ami">Liste d'ami</h2><br />
+                    <div><p>Vous n'avez pas encore d'ami (voulez-vous un Curly ?)</p></div>
                     <?php  
                 }
             ?>
         </div>
         <?php 
             if(isset($_GET['profil'])){
-                $reqProfil = $bdd->prepare('SELECT pseudo, soldeJoueur,ID_User FROM user WHERE token = ?');
+                $reqProfil = $bdd->prepare('SELECT pseudo, soldeJoueur,ID_User,photo FROM user WHERE token = ?');
                 $reqProfil->execute(array($_GET['profil']));
                 $amiInfo = $reqProfil->fetch();
+                $photo = $bdd->prepare('SELECT photo FROM photo WHERE ID_Photo = ?');
+                $photo->execute(array($amiInfo['photo']));
+                $image = $photo->fetch();
                 $reqVerifAmi = $bdd->prepare('SELECT statut FROM amis WHERE (ID_Follower = ? AND ID_Followed = ?) OR (ID_Follower = ? AND ID_Followed = ?) ');
                 $reqVerifAmi->execute(array($dataUser['ID_User'],$amiInfo['ID_User'],$amiInfo['ID_User'],$dataUser['ID_User']));
                 $verifAmi = $reqVerifAmi->fetch();
                 ?>
                 <div class="info-ami">  
+                <button class="close-profil"><a href="amis.php">X</a></button>  
+                    <div class="amiPhoto">
+                        <?= '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil">' ?>
+                    </div>
                 <div>
                     <label for="pseudo"><ion-icon name="person-outline"></ion-icon> Pseudo :</label>
                     <input type="text" name="pseudo" value="<?php echo $amiInfo['pseudo'] ?>" readonly>
@@ -172,7 +175,7 @@
                 <?php 
                 if($verifAmi){
                     ?>
-                     <div>
+                    <div class="supr-button">
                     <form method="get">
                         <button class="button-supr"><a href="amis.php?supprime=<?= $_GET['profil'] ?>">Supprimer</a></button>
                     </form>
@@ -180,11 +183,13 @@
                 <?php }
                 else{
                     ?>
+                    <div class="supr-button">
                     <form method="get">
                     <button class="button-supr"><a href="amis.php?add=<?= $_GET['profil'] ?>">Ajouter</a></button>
                     </form>
+                    </div>
                     <?php }
-                    ?>                
+                    ?>              
                 </div>
             <?php }
         ?>
@@ -211,6 +216,7 @@
                 } 
             }else{
                 ?>
+                <h2>Demandes d'amis :</h2>
                 <div>Vous n'avez pas de demande d'ami</div>
                 <?php  
             }
