@@ -61,7 +61,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil</title>
-    <link rel="stylesheet" href="../static/style/amis.css">
+    <!--<link rel="stylesheet" href="../static/style/style.css">-->
 </head>
     <body>
         <nav class="navbar menu-padding-50">
@@ -82,38 +82,46 @@
                     <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
+<<<<<<< HEAD
         </nav>
 
         <div class="titre_amis">Amis</div>
         <div class="searchJoueur" class="search">
             <form method="get" class="flex">
+=======
+        </nav>-->
+        <div>
+            <form method="get">
+>>>>>>> parent of 71eb824 (css page amis)
                 <ion-icon name="search-outline"></ion-icon>
-                <input class="searchAmis" type="search" name="searchAmi" placeholder="Rechercher un joueur...">
-                <input class="searchAmisButton" type="submit" name="rechercher" value="Rechercher">
+                <input type="search" name="searchAmi" placeholder="Rechercher un joueur">
+                <input type="submit" name="rechercher" value="rechercher">
             </form>
         </div>
-        <?php
-        if(isset($allUsers)){
-        $verfifUser = $allUsers->rowCount();
-        ?>
-        <div class="titre_recherche_amis"> Résultats de Recherche d'Amis</div>
-        <section class="AddFriends">
+        <section class="searchJoueur">
             <?php 
-                
+                if(isset($allUsers)){
+                $verfifUser = $allUsers->rowCount();
                 if($verfifUser > 0){
                     foreach($allUsers as $user){
                         ?>
+<<<<<<< HEAD
                         <div class="flex">
                             <div class="pseudoSearch" class="AddFriendButton"><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a> </div>
+=======
+                        <div>
+                            <div><?= $user['pseudo'] ?> </div>
+                            <form method="get">
+                            <button><a href="amis.php?add=<?= $user['token'] ?>">Ajouter</a></button>
+                            </form>
+>>>>>>> parent of 71eb824 (css page amis)
                         </div>
                         <?php
                         }
-                    }else{echo "ce joueur n'existe pas";} 
+                    }else{echo "ce joueur n'existe pas";}
+                }   
             ?>
         </section>
-        <?php
-        }  
-        ?>
         <section>
             <?php 
                 if($nbAmiFollower + $nbAmiFollowed>0){

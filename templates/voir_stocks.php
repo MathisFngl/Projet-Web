@@ -41,8 +41,9 @@
         </ul>
       </div>
     </nav>
+
     <div class="menu_divider"></div>
-    <nav class="sidenav">
+    <div class="sidenav">
       <a href="#indices">Indices</a>
       <div class="menu_divider"></div>
       <a href="#forex">Forex</a>
@@ -53,16 +54,28 @@
       <div class="menu_divider"></div>
       <a href="#taux-obligation">Taux & Obligations</a>
       <div class="menu_divider"></div>
-    </nav>
+    </div>
       <div class="page-content">
       <div class="trading-panel">
         <div class="graphes-gauche">
           <div class="graphique_main">
-            <?php
-            include 'update_graph.php';
-              $data_amount = 7;
-              $data_array = constructionTableau($bdd, $data_amount);
-            ?>
+            <script>
+              const data_amount = 11;
+              const data_array = [
+                    ['1', 28, 28, 38, 38],
+                    ['2', 31, 38, 55, 66],
+                    ['3', 50, 55, 77, 80],
+                    ['4', 77, 77, 66, 50],
+                    ['5', 68, 66, 22, 15],
+                    ['6', 68, 22, 12, 15],
+                    ['7', 9, 12, 41, 15],
+                    ['8', 29, 41, 39, 45],
+                    ['9', 68, 39, 73, 85],
+                    ['10', 29, 73, 108, 110],
+                    ['11', 98, 108, 159, 183],
+                    ['12', 108, 159, 149, 164]]
+
+            </script>
 
             <?php
               /*include 'update_graph.php';
@@ -74,10 +87,6 @@
 
             <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <span id="percentage_general"></span> </div>
             <script>
-
-              var dataPHP = <?php echo json_encode($data_array); ?>;
-              var data_array = JSON.parse(dataPHP);
-
               var percent_change = 0;
                 if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
                   if(data_array[data_amount-1][2] < data_array[data_amount-1][3]){
@@ -290,6 +299,7 @@
       <?php 
       }
       ?>
+
     </div>
   </body>
 </html>
