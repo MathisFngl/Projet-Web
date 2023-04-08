@@ -500,7 +500,7 @@ input:valid~label {
 /*Amis*/
 .search{
     width: 30vw;
-    margin-left: 30%;
+    margin-left: 20%;
     position: absolute;
 }
 .search-bar{
@@ -648,7 +648,7 @@ input:valid~label {
 .amis{
     position: absolute;
     text-decoration: none;
-    margin-top: 10vh;
+    margin-top: 7vh;
     margin-left: 3vw;
     color: #fff;
     width: 20%;
@@ -672,15 +672,98 @@ input:valid~label {
 
 .demande{
     position: absolute;
+    text-decoration: none;
     color: #fff;
-    background: #ff365e;
-    margin-top: 40vh;
-    margin-left: 1vw;
-    width: 32%;
-    margin-left: 40%;
+    margin-top: 7vh;
+    margin-left: 75vw;
+    width: 20%;
+}
+.h2-demande{
+    position: relative;
+    font-size: 2em;
+    border-bottom: #fff solid;
+    left: 0;
+}
+.demande-pseudo{
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    margin-top: 5%;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-align: center;
+}
+.demande a{
+    text-decoration: none;
+    color: #fff;
+}
+.demande p{
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    margin-top: 5%;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-align: center;
+}
+.accept-button{
+    position: absolute;
+    border: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
+    margin-left: 65%;
+    margin-top: 3%;
+}
+.refuse-button{
+    position: absolute;
+    border: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: none;
+    margin-left: 75%;
+    margin-top: 3%;
+}
+.accept-button ion-icon{
+    color: #23be73;
+    font-size: 1.8em;
+}
+.refuse-button ion-icon{
+    color: #be321c;
+    font-size: 1.8em;
 }
 .supr-button{
     margin-bottom: 2%;
+}
+.button-profil-ar{
+    position: relative;
+    margin-top: 12%;
+}
+.accept-button-profil{
+    position: absolute;
+    margin-left: 35%;
+    margin-top: -10%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.refuse-button-profil{
+    position: absolute;
+    margin-left: 55%;
+    margin-top: -10%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.accept-button-profil ion-icon{
+    color: #23be73;
+    font-size: 1.8em;
+}
+.refuse-button-profil ion-icon{
+    color: #be321c;
+    font-size: 1.8em;
 }
 .button-supr{
     position: relative;
