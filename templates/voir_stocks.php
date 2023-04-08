@@ -37,7 +37,7 @@
           <li class="active"><a href="#">Stocks</a></li>
           <li><a href="profile.php">Profil</a></li>
           <li><a href="#">Historique</a></li>
-          <li><a href="#">Amis</a></li>
+          <li><a href="amis.php">Amis</a></li>
           <li><a href="deconnexion.php">Déconnexion</a></li>
         </ul>
       </div>
@@ -46,16 +46,53 @@
 
 
     <nav class="sidenav">
-      <a href="#indices">Indices</a>
-      <div class="menu_divider"></div>
-      <a href="#forex">Forex</a>
-      <div class="menu_divider"></div>
-      <a href="#crypto">Crypto</a>
-      <div class="menu_divider"></div>
-      <a href="#action">Actions</a>
-      <div class="menu_divider"></div>
-      <a href="#taux-obligation">Taux & Obligations</a>
-      <div class="menu_divider"></div>
+        <ul>
+            <li class="dropdown"><a class="main_drop" href="#indices">Indices</a>
+                <ul>
+                    <li> <a href="#">CAC 40</a> </li>
+                    <li> <a href="#">NASDAQ</a> </li>
+                    <li> <a href="#">S&P 500</a> </li>
+                    <li> <a href="#">EURO STOXX 50</a> </li>
+                </ul>
+            </li>
+            <div class="menu_divider"></div>
+            <li class="dropdown"><a class="main_drop" href="#forex">Forex</a>
+                <ul>
+                    <li> <a href="#">EUR/USD</a> </li>
+                    <li> <a href="#">USD/JPY</a> </li>
+                    <li> <a href="#">USD/CAD</a> </li>
+                    <li> <a href="#">EUR/GBP</a> </li>
+                </ul>
+            </li>
+            <div class="menu_divider"></div>
+            <li class="dropdown"><a class="main_drop" href="#crypto">Crypto</a>
+                <ul>
+                    <li> <a href="#">Bitcoin</a> </li>
+                    <li> <a href="#">Ethernum</a> </li>
+                    <li> <a href="#">Tether</a> </li>
+                    <li> <a href="#">BNB</a> </li>
+                </ul>
+            </li>
+            <div class="menu_divider"></div>
+            <li class="dropdown"><a class="main_drop" href="#action">Actions</a>
+                <ul>
+                    <li> <a href="#">AAPL</a> </li>
+                    <li> <a href="#">META</a> </li>
+                    <li> <a href="#">AMZN</a> </li>
+                    <li> <a href="#">NVDA</a> </li>
+                </ul>
+            </li>
+            <div class="menu_divider"></div>
+            <li class="dropdown"><a class="main_drop" href="#taux-obligation">Taux & Obligations</a>
+                <ul>
+                    <li> <a href="#">French Bond</a> </li>
+                    <li> <a href="#">Italian Bond</a> </li>
+                    <li> <a href="#">German Bond</a> </li>
+                    <li> <a href="#">United States Bond</a> </li>
+                </ul>
+            </li>
+            <div class="menu_divider"></div>
+        </ul>
     </nav>
 
 
@@ -162,10 +199,11 @@
             function displayNumber() {
               const number = document.getElementById('numberInput').value;
               const unit_price = <?php echo $prix; ?>;
-              const final_price = number * $prix;
+              const final_price = number * unit_price;
               const final_price_rounded = final_price.toFixed(2);
+                console.error(final_price_rounded)
               document.getElementById('display').innerHTML = `${final_price_rounded} $`;
-              return [number, $prix]
+              return [number, unit_price]
             }
           </script>
         </div>

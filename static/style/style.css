@@ -918,49 +918,11 @@ input:valid~label {
     font-weight: 600;
 }
 /*Sidenav*/
-
-.sidenav {
-  height: 100%;
-  width: 160px;
-  position: fixed;
-  z-index: 1;
-  top: 74px;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  display: block;
-  }
-  
-  .sidenav a {
-    padding: 18px 18px 18px 16px;
-    text-decoration: none;
-    font-size: 19px;
-    color: #818181;
-    display: block;
-  }
-  
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
   
   .main {
     margin-left: 160px; /* Same as the width of the sidenav */
     font-size: 28px; /* Increased text to enable scrolling */
     padding: 0px 10px;
-  }
-
-  @media only screen and (max-width : 1035px){
-    .sidenav {
-        height: 100%;
-        width: 160px;
-        position: fixed;
-        z-index: 1;
-        top: 108px;
-        left: 0;
-        background-color: #111;
-        overflow-x: hidden;
-        display: block;
-        }
   }
 
   .menu_divider{
