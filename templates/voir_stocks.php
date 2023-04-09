@@ -49,46 +49,46 @@
         <ul>
             <li class="dropdown"><a class="main_drop" href="#indices">Indices</a>
                 <ul>
-                    <li> <a href="#">CAC 40</a> </li>
-                    <li> <a href="#">NASDAQ</a> </li>
-                    <li> <a href="#">S&P 500</a> </li>
-                    <li> <a href="#">EURO STOXX 50</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=1">CAC 40</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=2">NASDAQ</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=3">S&P 500</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=4">EURO STOXX 50</a> </li>
                 </ul>
             </li>
             <div class="menu_divider"></div>
             <li class="dropdown"><a class="main_drop" href="#forex">Forex</a>
                 <ul>
-                    <li> <a href="#">EUR/USD</a> </li>
-                    <li> <a href="#">USD/JPY</a> </li>
-                    <li> <a href="#">USD/CAD</a> </li>
-                    <li> <a href="#">EUR/GBP</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=5">EUR/USD</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=6">USD/JPY</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=7">USD/CAD</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=8">EUR/GBP</a> </li>
                 </ul>
             </li>
             <div class="menu_divider"></div>
             <li class="dropdown"><a class="main_drop" href="#crypto">Crypto</a>
                 <ul>
-                    <li> <a href="#">Bitcoin</a> </li>
-                    <li> <a href="#">Ethernum</a> </li>
-                    <li> <a href="#">Tether</a> </li>
-                    <li> <a href="#">BNB</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=9">Bitcoin</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=10">Ethernum</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=11">Tether</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=12">BNB</a> </li>
                 </ul>
             </li>
             <div class="menu_divider"></div>
             <li class="dropdown"><a class="main_drop" href="#action">Actions</a>
                 <ul>
-                    <li> <a href="#">AAPL</a> </li>
-                    <li> <a href="#">META</a> </li>
-                    <li> <a href="#">AMZN</a> </li>
-                    <li> <a href="#">NVDA</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=13">AAPL</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=14">META</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=15">AMZN</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=16">NVDA</a> </li>
                 </ul>
             </li>
             <div class="menu_divider"></div>
             <li class="dropdown"><a class="main_drop" href="#taux-obligation">Taux & Obligations</a>
                 <ul>
-                    <li> <a href="#">French Bond</a> </li>
-                    <li> <a href="#">Italian Bond</a> </li>
-                    <li> <a href="#">German Bond</a> </li>
-                    <li> <a href="#">United States Bond</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=17">French Bond</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=18">Italian Bond</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=19">German Bond</a> </li>
+                    <li> <a href="voir_stocks.php?ID_Action=20">United States Bond</a> </li>
                 </ul>
             </li>
             <div class="menu_divider"></div>

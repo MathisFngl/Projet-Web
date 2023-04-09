@@ -98,9 +98,11 @@
                 if(isset($allUsers)){
                 $verfifUser = $allUsers->rowCount();
                 if($verfifUser > 0){
+                    ?>
+                    <?php
                     foreach($allUsers as $user){
                         ?>
-                        <div>
+                        <div class="joueurSearch">
                             <div><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a></div>
                         </div>
                         <?php
@@ -177,7 +179,7 @@
                     $reqAdd = $bdd->prepare('SELECT ID_Followed FROM amis WHERE statut = ? AND ID_Follower = ?');
                     $reqAdd->execute(array(0,$amiInfo['ID_User']));
                     $verifAdd = $reqAdd->fetch();
-                    if($verifAdd['ID_Followed']=== $dataUser['ID_User']){
+                    if($verifAdd){
                         ?>
                         <div class="button-profil-ar">
                             <div>
