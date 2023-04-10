@@ -1,8 +1,6 @@
 <?php
     session_start();
     require_once 'bdd.php';
-
-    include_once('remember.php');
 ?>
 <!DOCTYPE html>
 

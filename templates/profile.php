@@ -1,8 +1,7 @@
 <?php
     session_start();
     require_once 'bdd.php';
-
-    include_once('remember.php');
+    
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
