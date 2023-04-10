@@ -25,14 +25,14 @@
 
 .dim-main-trade{
     width: 100%;
-    height: 90%;
+    height: 100%;
 }
 
 .graphes-gauche{
     position: relative;
     left:0;
     width: 80%;
-    height:95%;
+    height:100%;
 }
 
 .graphe-droite{
@@ -216,6 +216,23 @@
     vertical-align: middle;
 }
 
+.passser_tour_button{
+    text-align: center;
+    padding: 15px 25px;
+    background-color: #232d36;
+    border: none;
+    transition-duration: 0.2s;
+    border-radius: 5px;
+    font-family: 'kanit';
+    font-size: 1.35vw;
+    width: 90%;
+    height: 10%;
+}
+
+.passser_tour_button:hover{
+    background-color: #32404d;
+}
+
 /*Sidenav*/
 
 .sidenav {
@@ -252,6 +269,8 @@ nav ul .dropdown:hover ul{
     display: initial;
 }
 
-.main_drop{
-
+@media only screen and (max-width : 1035px) {
+    .sidenav {
+        top: 108px;
+    }
 }

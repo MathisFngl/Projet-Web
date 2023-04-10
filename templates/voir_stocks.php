@@ -212,6 +212,11 @@
               return [number, unit_price]
             }
           </script>
+            <div class="passer_tour">
+                <form action="nouveauTour.php" method="post">
+                    <label><input class="passser_tour_button" type="submit" value="Passer un tour"></label>
+                </form>
+            </div>
         </div>
       </div>
     </div>
