@@ -197,12 +197,19 @@
           ?>
           <script>
             function displayNumber() {
+              const solde = <?php echo $dataUser['soldeJoueur'] ?>;
               const number = document.getElementById('numberInput').value;
               const unit_price = <?php echo $prix; ?>;
               const final_price = number * unit_price;
               const final_price_rounded = final_price.toFixed(2);
-                console.error(final_price_rounded)
               document.getElementById('display').innerHTML = `${final_price_rounded} $`;
+                if (final_price_rounded > solde) {
+                    document.getElementById('display').style.color = 'red';
+                }
+                else{
+                    document.getElementById('display').style.color = 'white';
+                }
+
               return [number, unit_price]
             }
           </script>
