@@ -28,6 +28,9 @@
                         die();
                     }
                     else{
+                        if(isset($_POST['remember'])){
+                            setcookie('user',$data['token'],time()+3600*24*3,'/','localhost',false,true);
+                        }
                         $_SESSION['user'] = $data['token'];
                         $_SESSION['email'] = $data['email'];
                         $_SESSION['mdp'] = $data['mdp'];
