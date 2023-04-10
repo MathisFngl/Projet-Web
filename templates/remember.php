@@ -1,19 +1,18 @@
-<?php
-    if(isset($_COOKIE['user']) AND !empty($_COOKIE['user'])){
-        setcookie('user',$data['id'],time() + 3600*24*2, '/', 'localhost', false, true);
-        $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE id = ?');
-        $verif->execute(array($_COOKIE['user']));
-        $data = $verif->fetch();
-        $userExist = $verif->rowCount();
-
-        if($userExist > 0){
-            $_SESSION['user'] = $data['token'];
-            $_SESSION['email'] = $data['email'];
-            $_SESSION['mdp'] = $data['mdp'];
-            $_SESSION['pseudo'] = $data['pseudo'];
-            $_SESSION['statut'] = $data['statut'];
+<?php 
+    require_once 'bdd.php';
+    if(isset($_COOKIE['user']) && !isset($_SESSION['user'])){
+        $token=$_COOKIE['user'];
+        $reqRemember = $bdd->prepare('SELECT * FROM user WHERE token = ?');
+        $reqRemember->execute(array($token));
+        $rememberUser = $reqRemember->fetch();
+        if($rememberUser){
+            $_SESSION['user'] = $rememberUser['token'];
+            $_SESSION['email'] = $rememberUser['email'];
+            $_SESSION['mdp'] = $rememberUser['mdp'];
+            $_SESSION['pseudo'] = $rememberUser['pseudo'];
+            $_SESSION['statut'] = $rememberUser['statut'];
+            setcookie('user',$rememberUser['token'],time()+3600*24*3,'/','localhost',false,true);
+        }else{header('Location: deconnexion.php');}
         
-        }
-        header('Location: profile.php');
     }
 ?>

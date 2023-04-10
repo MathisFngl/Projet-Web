@@ -1,8 +1,7 @@
 <?php
     session_start();
     require_once 'bdd.php';
-
-    include_once('remember.php');
+    require('remember.php');
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -69,6 +68,7 @@
             <div class="historiqueProfil">
             </div>
         </div>
+        <!-- <div class=h2-register><?= var_dump($_COOKIE); ?></div> -->
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     </body>

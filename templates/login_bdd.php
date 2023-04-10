@@ -1,20 +1,16 @@
 <?php 
     session_start();
     require_once 'bdd.php';
-    include_once('remember.php');
 
     // Si les variables existent et qu'elles ne sont pas vides
     if(!empty($_POST['email']) && !empty($_POST['password']))
     {
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
-
+        $remember = isset($_POST['remember']);
         $email = strtolower($email);
 
         // On vérifie si l'utilisateur existe
-        if(isset($_POST['remember'])){
-            setcookie('user',$data['id'],time() +3600*24, '/', 'localhost', false, true);
-        }
         $requUser = $bdd->prepare('UPDATE user SET token = ? WHERE email = ?');
         $requUser->execute(array(bin2hex(openssl_random_pseudo_bytes(64)),$email));
         $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE email = ?');
@@ -32,6 +28,9 @@
                         die();
                     }
                     else{
+                        if(isset($_POST['remember'])){
+                            setcookie('user',$data['token'],time()+3600*24*3,'/','localhost',false,true);
+                        }
                         $_SESSION['user'] = $data['token'];
                         $_SESSION['email'] = $data['email'];
                         $_SESSION['mdp'] = $data['mdp'];

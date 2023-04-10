@@ -1,6 +1,5 @@
 <?php
     require_once 'bdd.php';
-    include_once('remember.php');
 
     function newCandle($bdd){
         $requValDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)');

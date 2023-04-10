@@ -1,8 +1,6 @@
 <?php
     session_start();
     require_once 'bdd.php';
-
-    include_once('remember.php');
 ?>
 <!DOCTYPE html>
 
@@ -89,6 +87,7 @@
                 </div>
             </form>
         </div>
+
     </section>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

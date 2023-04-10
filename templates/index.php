@@ -1,3 +1,7 @@
+<?php 
+require('remember.php')
+?>
+
 <!DOCTYPE html>
 <html>
     <metacharset="utf-8"></metacharset>

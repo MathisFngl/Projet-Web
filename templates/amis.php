@@ -1,8 +1,7 @@
 <?php
     session_start();
     require_once 'bdd.php';
-
-    include_once('remember.php');
+    require('remember.php');
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,ID_User,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -98,9 +97,11 @@
                 if(isset($allUsers)){
                 $verfifUser = $allUsers->rowCount();
                 if($verfifUser > 0){
+                    ?>
+                    <?php
                     foreach($allUsers as $user){
                         ?>
-                        <div>
+                        <div class="joueurSearch">
                             <div><a href="amis.php?profil=<?= $user['token']?>"><?= $user['pseudo']?></a></div>
                         </div>
                         <?php
@@ -174,13 +175,33 @@
                 </div>
                 <?php 
                 if($verifAmi){
-                    ?>
-                    <div class="supr-button">
-                    <form method="get">
-                        <button class="button-supr"><a href="amis.php?supprime=<?= $_GET['profil'] ?>">Supprimer</a></button>
-                    </form>
-                    </div>
-                <?php }
+                    $reqAdd = $bdd->prepare('SELECT ID_Followed FROM amis WHERE statut = ? AND ID_Follower = ?');
+                    $reqAdd->execute(array(0,$amiInfo['ID_User']));
+                    $verifAdd = $reqAdd->fetch();
+                    if($verifAdd){
+                        ?>
+                        <div class="button-profil-ar">
+                            <div>
+                                <form method="get">
+                                    <a href="amis.php?accept=<?= $_GET['profil'] ?>" class="accept-button-profil"><ion-icon name="checkmark-circle-outline"></ion-icon></a>
+                                </form>
+                            </div>
+                            <div>
+                                <form method="get">
+                                    <a href="amis.php?refuse=<?= $_GET['profil'] ?>" class="refuse-button-profil"><ion-icon name="close-circle-outline"></ion-icon></a>
+                                </form>
+                            </div> 
+                        </div>
+                    <?php
+                    }else{
+                        ?>
+                        <div class="supr-button">
+                        <form method="get">
+                            <button class="button-supr"><a href="amis.php?supprime=<?= $_GET['profil'] ?>">Supprimer</a></button>
+                        </form>
+                        </div>
+                    <?php }   
+                 }
                 else{
                     ?>
                     <div class="supr-button">
@@ -194,30 +215,27 @@
             <?php }
         ?>
         <div class="demande">
+            <h2 class="h2-demande">Demandes d'amis</h2>
         <?php 
             if($nbDemande>0){
-                    ?>
-                    <h2>Demandes d'amis : <?= $nbDemande?></h2>
-                    <?php
                 foreach($reqDemande as $demande){;
                 ?>
-                    <div><a href="amis.php?profil=<?= $demande['token']?>"><?= $demande['pseudo']?></a></div>
                     <div>
                         <form method="get">
-                            <button><a href="amis.php?accept=<?= $demande['token'] ?>">Accepter</a></button>
+                            <a href="amis.php?accept=<?= $demande['token'] ?>" class="accept-button"><ion-icon name="checkmark-circle-outline"></ion-icon></a>
                         </form>
                     </div>
                     <div>
                         <form method="get">
-                            <button><a href="amis.php?refuse=<?= $demande['token'] ?>">Refuser</a></button>
+                            <a href="amis.php?refuse=<?= $demande['token'] ?>" class="refuse-button"><ion-icon name="close-circle-outline"></ion-icon></a>
                         </form>
                     </div>
+                    <div class="demande-pseudo"><a href="amis.php?profil=<?= $demande['token']?>"><?= $demande['pseudo']?></a></div>
                 <?php 
                 } 
             }else{
                 ?>
-                <h2>Demandes d'amis :</h2>
-                <div>Vous n'avez pas de demande d'ami</div>
+                <div><p>Vous n'avez pas de demande d'ami</p></div>
                 <?php  
             }
         ?>
