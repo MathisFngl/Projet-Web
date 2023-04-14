@@ -133,7 +133,10 @@
 
                   var options = {
                       'hAxis': {
-                          'direction': -1
+                          'direction': -1,
+                          'gridlines': {
+                              'color': 'transparent' // hide horizontal gridlines
+                          }
                       },
                     legend:'none',
 
@@ -167,7 +170,7 @@
             <div>
             <div class="side-labels">Prix à l'unité :</div>
                 <?php
-                $prix_courrant_req = $bdd->prepare('SELECT prix FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)');
+                $prix_courrant_req = $bdd->prepare('SELECT prix FROM historiqueaction WHERE mois = (SELECT MAX(mois)-1 FROM historiqueaction)');
                 $prix_courrant_req->execute();
                 $prix_courrant = $prix_courrant_req->fetch();
                 $prix = $prix_courrant["prix"];

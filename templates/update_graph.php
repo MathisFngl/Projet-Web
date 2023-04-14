@@ -33,7 +33,7 @@ function random_float() {
 
     function constructionTableau($bdd, $data_amount){
         $ID_Action = 2;
-        $requHistoriquePrix = $bdd->prepare("SELECT prix, mois FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 40");
+        $requHistoriquePrix = $bdd->prepare("SELECT prix, mois FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 50");
         $requHistoriquePrix -> execute(array($ID_Action));
         $HistoriquePrix = [];
         $curr_output = $requHistoriquePrix->fetch();
@@ -43,7 +43,7 @@ function random_float() {
         }
 
         $dataTable = [];
-        for($i = 0; $i<=37; $i++){
+        for($i = 0; $i<=47; $i++){
             $bougie = ["$i", $HistoriquePrix[$i+1]["prix"], $HistoriquePrix[$i+1]["prix"], $HistoriquePrix[$i]["prix"], $HistoriquePrix[$i]["prix"]];
             array_push($dataTable, $bougie);
         }
