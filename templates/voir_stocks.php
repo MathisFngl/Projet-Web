@@ -93,8 +93,6 @@
             <div class="menu_divider"></div>
         </ul>
     </nav>
-
-
       <div class="page-content">
       <div class="trading-panel">
         <div class="graphes-gauche">
@@ -104,8 +102,9 @@
               $data_amount = 5;
               $data_array = constructionTableau($bdd, $data_amount);
 
-                $requHistoriquePrix = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 2");
+                $requHistoriquePrix = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 3");
                 $requHistoriquePrix -> execute(array(2));
+                $blob = $requHistoriquePrix->fetch();
                 $price1_raw = $requHistoriquePrix->fetch();
                 $price2_raw = $requHistoriquePrix->fetch();
                 $price1 = $price1_raw["prix"];
@@ -127,12 +126,17 @@
 
               function drawChart(){
 
-                  const data_array = <?php echo json_encode($data_array); ?>;
+                  const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>;
+                  console.log(data_array);
                   const data_amount = <?php echo json_encode($data_amount); ?>;
                   const data = google.visualization.arrayToDataTable(data_array, true);
 
                   var options = {
+                      'hAxis': {
+                          'direction': -1
+                      },
                     legend:'none',
+
                     candlestick: {
                           fallingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#a52714' },
                           risingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#0f9d58' }},
