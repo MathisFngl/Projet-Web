@@ -93,19 +93,23 @@
             <div class="menu_divider"></div>
         </ul>
     </nav>
-
-
       <div class="page-content">
       <div class="trading-panel">
         <div class="graphes-gauche">
           <div class="graphique_main">
             <?php
             include 'update_graph.php';
-              $data_amount = 5;
-              $data_array = constructionTableau($bdd, $data_amount);
 
-                $requHistoriquePrix = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 2");
-                $requHistoriquePrix -> execute(array(2));
+            if(isset($_GET['ID_Action'] ) && !empty($_GET['ID_Action'])){
+                $ID_Action = $_GET['ID_Action'];
+            }
+
+              $data_amount = 5;
+              $data_array = constructionTableau($bdd, $data_amount, $ID_Action);
+
+                $requHistoriquePrix = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 3");
+                $requHistoriquePrix -> execute(array($ID_Action));
+                $blob = $requHistoriquePrix->fetch();
                 $price1_raw = $requHistoriquePrix->fetch();
                 $price2_raw = $requHistoriquePrix->fetch();
                 $price1 = $price1_raw["prix"];
@@ -126,13 +130,19 @@
               google.charts.setOnLoadCallback(drawChart);
 
               function drawChart(){
-
-                  const data_array = <?php echo json_encode($data_array); ?>;
+                  const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>;
                   const data_amount = <?php echo json_encode($data_amount); ?>;
                   const data = google.visualization.arrayToDataTable(data_array, true);
 
                   var options = {
+                      'hAxis': {
+                          'direction': -1,
+                          'gridlines': {
+                              'color': 'transparent' // hide horizontal gridlines
+                          }
+                      },
                     legend:'none',
+
                     candlestick: {
                           fallingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#a52714' },
                           risingColor: { wickStroke: 'white', strokeWidth: 0, fill: '#0f9d58' }},
@@ -163,8 +173,8 @@
             <div>
             <div class="side-labels">Prix à l'unité :</div>
                 <?php
-                $prix_courrant_req = $bdd->prepare('SELECT prix FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)');
-                $prix_courrant_req->execute();
+                $prix_courrant_req = $bdd->prepare('SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois = (SELECT MAX(mois)-1 FROM historiqueaction)');
+                $prix_courrant_req->execute(array($ID_Action));
                 $prix_courrant = $prix_courrant_req->fetch();
                 $prix = $prix_courrant["prix"];
                 ?>
@@ -187,7 +197,7 @@
                 $sql_money_update->execute(array($new_solde_joueur, $_SESSION['user']));
                 if($numberInput != 0){
                   $sql_action_possede = $bdd->prepare("INSERT INTO actionpossede(ID_Action,ID_User, nombreAction, prix_achat) VALUES (?,?,?,?)");
-                  $sql_action_possede->execute(array(2, $dataUser['ID_User'], $numberInput, $prix));
+                  $sql_action_possede->execute(array($ID_Action, $dataUser['ID_User'], $numberInput, $prix));
                 }
 
                 $dataUser['soldeJoueur'] = $new_solde_joueur;
@@ -214,6 +224,7 @@
           </script>
             <div class="passer_tour">
                 <form action="nouveauTour.php" method="post">
+                    <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
                     <label><input class="passser_tour_button" type="submit" value="Passer un tour"></label>
                 </form>
             </div>
