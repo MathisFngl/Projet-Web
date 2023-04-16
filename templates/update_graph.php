@@ -5,10 +5,10 @@ function random_float() {
     return $random_num;
 }
     function newCandle($bdd, $ID_Action){
-        $requValDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE mois = (SELECT MAX(mois) FROM historiqueaction)');
-        $requValDernierMois->execute();
-        $requValAvantDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE (mois = (SELECT MAX(mois) FROM historiqueaction)-1)');
-        $requValAvantDernierMois->execute();
+        $requValDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE ID_Action = ? AND mois = (SELECT MAX(mois) FROM historiqueaction WHERE ID_Action = ?)');
+        $requValDernierMois->execute(array($ID_Action, $ID_Action));
+        $requValAvantDernierMois = $bdd->prepare('SELECT prix,mois FROM historiqueaction WHERE ID_Action = ? AND (mois = (SELECT MAX(mois) FROM historiqueaction WHERE ID_Action = ?)-1)');
+        $requValAvantDernierMois->execute(array($ID_Action, $ID_Action));
 
         $DerniereVal = $requValDernierMois->fetch();
         $AvantDerniereVal = $requValAvantDernierMois->fetch();
@@ -31,8 +31,7 @@ function random_float() {
         $newPriceToAdd->execute(array($ID_Action, $mois, $prix));
     }
 
-    function constructionTableau($bdd, $data_amount){
-        $ID_Action = 2;
+    function constructionTableau($bdd, $data_amount, $ID_Action){
         $requHistoriquePrix = $bdd->prepare("SELECT prix, mois FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 50");
         $requHistoriquePrix -> execute(array($ID_Action));
         $HistoriquePrix = [];

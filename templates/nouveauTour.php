@@ -4,13 +4,12 @@
     require_once 'update_graph.php';
 
     $stocksReq = $bdd->prepare("SELECT * FROM dataaction");
-    $stocksReq -> execute();
+    $stocksReq->execute();
     $stock = $stocksReq->fetch();
 
-    while($stock["ID_Action"] != null){
+    while ($stock["ID_Action"] != null) {
         $id = $stock["ID_Action"];
-        newCandle($bdd,$id);
+        newCandle($bdd, $id);
         $stock = $stocksReq->fetch();
     }
-
-    header("Location: voir_stocks.php");
+    header("Location: voir_stocks.php?ID_Action=" .$_POST["ID_Action"]);
