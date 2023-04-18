@@ -102,8 +102,11 @@
 
             if(isset($_GET['ID_Action'] ) && !empty($_GET['ID_Action'])){
                 $ID_Action = $_GET['ID_Action'];
+                $requHistoriquePrix = $bdd->prepare("SELECT nomAction FROM dataaction WHERE ID_Action = ?");
+                $requHistoriquePrix -> execute(array($ID_Action));
+                $dataAction = $requHistoriquePrix->fetch();
+                $nameAction = $dataAction['nomAction'];
             }
-
               $data_amount = 5;
               $data_array = constructionTableau($bdd, $data_amount, $ID_Action);
 
@@ -119,7 +122,7 @@
               $percent_change_rounded = number_format($percent_change, 1);
             ?>
 
-            <div class="bandeau-infos-trade"> EUR/USD : Changement du dernier mois : <?php echo "$percent_change_rounded" ?> %</div>
+            <div class="bandeau-infos-trade"> <?php echo"$nameAction"?> : Changement du dernier mois : <?php echo "$percent_change_rounded" ?> %</div>
 
             <div id="MainTrade" class="dim-main-trade"></div>
             <script src="../js/calculate_rsi.js"></script>
@@ -164,10 +167,10 @@
           </div>
         </div>
         <div class="graphe-droite">
-          <form class="achat-vente" method="post" action="">
+          <form class="achat" method="post" action="achat_vente.php">
             <div class="achat-vente-button">
-              <button type="submit" name="buyButton" class="achat-button"> Acheter </button>
-              <button type="submit" name="sellButton" class="sell-button"> Vendre </button>
+              <button type="submit" name='buy' class="achat-button"> Acheter </button>
+              <button type="submit" name='sell' class='sell-button'> Vendre </button>
             </div>
             <div class="menu_divider" style="margin-bottom: 10px;"></div>
             <div>
@@ -183,27 +186,11 @@
             <div class="side-labels"> Quantité à acheter / vendre :</div>
             <input class="quantity-input" name="numberInput" id="numberInput" oninput="displayNumber()" type="number" value="0" min="0" max="1000000" style="padding-top : 10px;
             padding-bottom : 10px;"> </input>
-            <div class="side-labels" style="padding-top: 15px;"> Prix total à payer : </div>
+            <div class="side-labels" style="padding-top: 15px;"> Prix total : </div>
             <div class="full-price" id="display"></div>
+                <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
+                <label><input type="hidden" name="unit-price" value="<?php echo"$prix"?>"></label>
           </form>
-          <?php 
-            if(isset($_POST['buyButton'])){ 
-              $numberInput = $_POST['numberInput'];
-              $moneyCalc = $numberInput*$prix;
-              if($moneyCalc <= $dataUser['soldeJoueur']){
-
-                $new_solde_joueur = $dataUser["soldeJoueur"] - $moneyCalc;
-                $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE token = ?");
-                $sql_money_update->execute(array($new_solde_joueur, $_SESSION['user']));
-                if($numberInput != 0){
-                  $sql_action_possede = $bdd->prepare("INSERT INTO actionpossede(ID_Action,ID_User, nombreAction, prix_achat) VALUES (?,?,?,?)");
-                  $sql_action_possede->execute(array($ID_Action, $dataUser['ID_User'], $numberInput, $prix));
-                }
-
-                $dataUser['soldeJoueur'] = $new_solde_joueur;
-              }
-            }
-          ?>
           <script>
             function displayNumber() {
               const solde = <?php echo $dataUser['soldeJoueur'] ?>;
@@ -218,7 +205,6 @@
                 else{
                     document.getElementById('display').style.color = 'white';
                 }
-
               return [number, unit_price]
             }
           </script>
@@ -239,19 +225,14 @@
         Solde : <?php echo $dataUser['soldeJoueur'] ?> $
       </div>
 
-      <?php 
-        $reqDernierAchat = $bdd->prepare("SELECT nombreAction, prix_achat, nomAction FROM actionpossede INNER JOIN dataaction ON dataaction.ID_Action = actionpossede.ID_Action WHERE ID_User = ? ORDER BY transaction_date DESC LIMIT 1");
-        $reqDernierAchat -> execute(array($_SESSION['user']));
-        $dernierAchat = $reqDernierAchat->fetch();
-      
-      if ($dernierAchat){
+      <?php
+      $stockAmount = $bdd->prepare("SELECT SUM(nombreAction) FROM actionpossede WHERE ID_Action = ? AND ID_User = ?");
+      $stockAmount -> execute(array($ID_Action, $dataUser['ID_User']));
+      $max_sell_amount = $stockAmount -> fetch();
       ?>
         <div class="infos">
-          Dernier Stock Acheté : <?php echo $dernierAchat['nombreAction'] ?> <?php echo $dernierAchat['nomAction'] ?> à <?php echo $dernierAchat['prix_achat'] ?>$ l'unité
+          Nombre de <?php echo $nameAction ?>  possédé : <?php echo $max_sell_amount[0]?>
         </div>
-      <?php 
-      }
-      ?>
     </div>
   </body>
 </html>
