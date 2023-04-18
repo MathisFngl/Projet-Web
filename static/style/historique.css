@@ -22,7 +22,8 @@
 
 .label-titres{
     padding: 15px;
-    background-color: #1c2127;
+    font-size: 1.6vw;
+    background-color: #192129;
 }
 
 .tableau_historique table tr td{
@@ -30,6 +31,16 @@
     text-align: center;
     padding: 5px;
 }
+
+.tableau_historique table tr{
+    background-color: #192129;
+}
+
+.tableau_historique table tr:nth-child(even){
+    background-color:#232d36;
+}
+
+
 
 .achat_statut{
     color: #ff1f00;
