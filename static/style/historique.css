@@ -1,0 +1,40 @@
+.main_content{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.historique_title{
+    font-size: 2.9vw;
+    color: bisque;
+    height: 20%;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0px 20px 0px;
+}
+
+.tableau_historique table{
+    width: 100%;
+    align-items: center;
+    height: 100%;
+}
+
+.label-titres{
+    padding: 15px;
+    background-color: #1c2127;
+}
+
+.tableau_historique table tr td{
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+}
+
+.achat_statut{
+    color: #ff1f00;
+}
+
+.vente_statut{
+    color: #22ff00;
+}

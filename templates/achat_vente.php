@@ -13,6 +13,11 @@
     $prix = $_POST['unit-price'];
     $ID_Action = $_POST['ID_Action'];
 
+    $requMois = $bdd->prepare('SELECT mois FROM historiqueaction WHERE ID_Action = ? AND mois = (SELECT MAX(mois) FROM historiqueaction WHERE ID_Action = ?)');
+    $requMois->execute(array($ID_Action, $ID_Action));
+    $valMois = $requMois->fetch();
+    $mois = $valMois["mois"];
+
     if (isset($_POST['buy'])) {
         $numberInput = $_POST['numberInput'];
         $moneyCalc = $numberInput*$prix;
@@ -23,6 +28,9 @@
             if($numberInput != 0){
                 $sql_action_possede = $bdd->prepare("INSERT INTO actionpossede(ID_Action,ID_User, nombreAction, prix_achat) VALUES (?,?,?,?)");
                 $sql_action_possede->execute(array($ID_Action, $dataUser['ID_User'], $numberInput, $prix));
+
+                $sql_historique = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,?,?,0,?)");
+                $sql_historique->execute(array($dataUser['ID_User'], $ID_Action, $numberInput, $mois));
             }
             $dataUser['soldeJoueur'] = $new_solde_joueur;
         }
@@ -52,6 +60,9 @@
                 }
                 $ActionToSubtract = $Actions -> fetch();
             }
+
+            $sql_historique = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,?,?,1,?)");
+            $sql_historique->execute(array($dataUser['ID_User'], $ID_Action, $_POST['numberInput'], $mois));
 
             $numberInput = $_POST['numberInput'];
             $moneyCalc = $numberInput*$prix;
