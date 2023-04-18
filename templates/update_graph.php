@@ -27,6 +27,12 @@ function random_float() {
         $mois = $DerniereVal["mois"] + 1;
         $prix = $DerniereVal["prix"] + $DerniereVal["prix"]*($pourcentage_ecart/100);
 
+        while($prix < 1){
+            $random = random_float();
+            $pourcentage_ecart = $pourcentage_ecart_avant + $random;
+            $prix = $DerniereVal["prix"] + $DerniereVal["prix"]*($pourcentage_ecart/100);
+        }
+
         $newPriceToAdd = $bdd->prepare('INSERT INTO historiqueaction VALUES (?,?,?)');
         $newPriceToAdd->execute(array($ID_Action, $mois, $prix));
     }

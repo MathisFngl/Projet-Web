@@ -35,20 +35,22 @@
         $Actions -> execute(array($ID_Action, $dataUser['ID_User']));
         $ActionToSubtract = $Actions -> fetch();
 
-        if($max_sell_amount > $_POST['numberInput']){
+        if($max_sell_amount[0] >= $_POST['numberInput']){
             $amount_to_subtract = $_POST['numberInput'];
             while($amount_to_subtract > 0){
-                if($ActionToSubtract["nombreAction"] <= $amount_to_subtract){
-                    $amount_to_subtract -= $ActionToSubtract["nombreAction"];
-                    $Actions = $bdd->prepare("DELETE FROM actionpossede WHERE ID_achat = ?");
-                    $Actions -> execute(array($ActionToSubtract["ID_achat"]));
-                    $ActionToSubtract = $Actions -> fetch();
-                }
-                else{
-                    $Actions = $bdd->prepare("UPDATE actionpossede SET nombreAction = ? WHERE ID_achat = ?");
-                    $Actions -> execute(array($ActionToSubtract["nombreAction"] - $amount_to_subtract, $ActionToSubtract["ID_achat"]));
+                if(($ActionToSubtract["nombreAction"] <= $amount_to_subtract) && isset($ActionToSubtract["nombreAction"])){
+
+                    $amount_to_subtract = $amount_to_subtract - $ActionToSubtract["nombreAction"];
+                    $Delete = $bdd->prepare("DELETE FROM actionpossede WHERE ID_achat = ?");
+                    $Delete -> execute(array($ActionToSubtract["ID_achat"]));
+                    var_dump($amount_to_subtract);
+                }else{
+                    $Update = $bdd->prepare("UPDATE actionpossede SET nombreAction = ? WHERE ID_achat = ?");
+                    $Update -> execute(array($ActionToSubtract["nombreAction"] - $amount_to_subtract, $ActionToSubtract["ID_achat"]));
                     $amount_to_subtract = 0;
+                    var_dump($amount_to_subtract);
                 }
+                $ActionToSubtract = $Actions -> fetch();
             }
 
             $numberInput = $_POST['numberInput'];

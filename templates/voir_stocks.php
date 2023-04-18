@@ -34,6 +34,7 @@
       <div class="nav-links">
         <ul>
           <li class="active"><a href="#">Stocks</a></li>
+          <li><a href="historique_trade.php">Historique</a></li>
           <li><a href="profile.php">Profil</a></li>
           <li><a href="classement.php">Classement</a></li>
           <li><a href="amis.php">Amis</a></li>
@@ -42,8 +43,6 @@
       </div>
     </nav>
     <div class="menu_divider"></div>
-
-
     <nav class="sidenav">
         <ul>
             <li class="dropdown"><a class="main_drop" href="#indices">Indices</a>
@@ -98,17 +97,17 @@
         <div class="graphes-gauche">
           <div class="graphique_main">
             <?php
-            include 'update_graph.php';
+                include 'update_graph.php';
 
-            if(isset($_GET['ID_Action'] ) && !empty($_GET['ID_Action'])){
-                $ID_Action = $_GET['ID_Action'];
-                $requHistoriquePrix = $bdd->prepare("SELECT nomAction FROM dataaction WHERE ID_Action = ?");
-                $requHistoriquePrix -> execute(array($ID_Action));
-                $dataAction = $requHistoriquePrix->fetch();
-                $nameAction = $dataAction['nomAction'];
-            }
-              $data_amount = 5;
-              $data_array = constructionTableau($bdd, $data_amount, $ID_Action);
+                if(isset($_GET['ID_Action'] ) && !empty($_GET['ID_Action'])){
+                    $ID_Action = $_GET['ID_Action'];
+                    $requHistoriquePrix = $bdd->prepare("SELECT nomAction FROM dataaction WHERE ID_Action = ?");
+                    $requHistoriquePrix -> execute(array($ID_Action));
+                    $dataAction = $requHistoriquePrix->fetch();
+                    $nameAction = $dataAction['nomAction'];
+                }
+                $data_amount = 5;
+                $data_array = constructionTableau($bdd, $data_amount, $ID_Action);
 
                 $requHistoriquePrix = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? ORDER BY mois DESC LIMIT 3");
                 $requHistoriquePrix -> execute(array($ID_Action));
@@ -118,12 +117,11 @@
                 $price1 = $price1_raw["prix"];
                 $price2 = $price2_raw["prix"];
 
-              $percent_change = (($price1 - $price2) / $price2) * 100.0;
-              $percent_change_rounded = number_format($percent_change, 1);
+                $percent_change = (($price1 - $price2) / $price2) * 100.0;
+                $percent_change_rounded = number_format($percent_change, 1);
             ?>
 
             <div class="bandeau-infos-trade"> <?php echo"$nameAction"?> : Changement du dernier mois : <?php echo "$percent_change_rounded" ?> %</div>
-
             <div id="MainTrade" class="dim-main-trade"></div>
             <script src="../js/calculate_rsi.js"></script>
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -175,7 +173,7 @@
             <div class="menu_divider" style="margin-bottom: 10px;"></div>
             <div>
             <div class="side-labels">Prix à l'unité :</div>
-                <?php
+            <?php
                 $prix_courrant_req = $bdd->prepare('SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois = (SELECT MAX(mois)-1 FROM historiqueaction)');
                 $prix_courrant_req->execute(array($ID_Action));
                 $prix_courrant = $prix_courrant_req->fetch();
@@ -188,8 +186,8 @@
             padding-bottom : 10px;"> </input>
             <div class="side-labels" style="padding-top: 15px;"> Prix total : </div>
             <div class="full-price" id="display"></div>
-                <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
-                <label><input type="hidden" name="unit-price" value="<?php echo"$prix"?>"></label>
+              <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
+              <label><input type="hidden" name="unit-price" value="<?php echo"$prix"?>"></label>
           </form>
           <script>
             function displayNumber() {
@@ -208,31 +206,24 @@
               return [number, unit_price]
             }
           </script>
-            <div class="passer_tour">
-                <form action="nouveauTour.php" method="post">
-                    <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
-                    <label><input class="passser_tour_button" type="submit" value="Passer un tour"></label>
-                </form>
-            </div>
+          <div class="passer_tour">
+            <form action="nouveauTour.php" method="post">
+              <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
+              <label><input class="passser_tour_button" type="submit" value="Passer un tour"></label>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    <?php
+    $stockAmount = $bdd->prepare("SELECT SUM(nombreAction) FROM actionpossede WHERE ID_Action = ? AND ID_User = ?");
+    $stockAmount -> execute(array($ID_Action, $dataUser['ID_User']));
+    $max_sell_amount = $stockAmount -> fetch();
+    ?>
     <div class="player-info-bar">
-      <div class="infos">
-        Joueur : <?php echo $dataUser['pseudo'] ?>
-      </div>
-      <div class="infos">
-        Solde : <?php echo $dataUser['soldeJoueur'] ?> $
-      </div>
-
-      <?php
-      $stockAmount = $bdd->prepare("SELECT SUM(nombreAction) FROM actionpossede WHERE ID_Action = ? AND ID_User = ?");
-      $stockAmount -> execute(array($ID_Action, $dataUser['ID_User']));
-      $max_sell_amount = $stockAmount -> fetch();
-      ?>
-        <div class="infos">
-          Nombre de <?php echo $nameAction ?>  possédé : <?php echo $max_sell_amount[0]?>
-        </div>
+      <div class="infos"> Joueur : <?php echo $dataUser['pseudo'] ?> </div>
+      <div class="infos"> Solde : <?php echo $dataUser['soldeJoueur'] ?> $ </div>
+      <div class="infos"> Nombre de <?php echo $nameAction ?>  possédé : <?php echo $max_sell_amount[0]?> </div>
     </div>
   </body>
 </html>
