@@ -35,7 +35,7 @@
         <ul>
           <li class="active"><a href="#">Stocks</a></li>
           <li><a href="profile.php">Profil</a></li>
-          <li><a href="#">Historique</a></li>
+          <li><a href="classement.php">Classement</a></li>
           <li><a href="amis.php">Amis</a></li>
           <li><a href="deconnexion.php">Déconnexion</a></li>
         </ul>

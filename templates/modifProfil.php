@@ -8,10 +8,13 @@
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
+    $photo = $bdd->prepare('SELECT photo,ID_Photo FROM photo');
+    $photo->execute();
+
     if(!empty($_POST)){
         if(isset($_POST['pseudoModif'])){
             if(!empty($_POST['pseudoModif'])){
-                $pseudo = htmlspecialchars($_POST['pseudo']);
+                $pseudo = $_POST['pseudo'];
                 if(strlen($pseudo) < 100){
                     $pseudoUpdate = $bdd->prepare('UPDATE user SET pseudo=? WHERE token=? ');
                     $pseudoUpdate->execute(array($pseudo,$_SESSION['user']));
@@ -21,7 +24,7 @@
         }
         else if(isset($_POST['mailModif'])){
             if(!empty($_POST['mailModif'])){
-                $email = htmlspecialchars($_POST['email']);
+                $email = $_POST['email'];
                 $email = strtolower($email);
                 // On vérifie si l'utilisateur existe
                 $verif = $bdd->prepare('SELECT email FROM user WHERE email = ?');
@@ -40,8 +43,8 @@
         }
         else if(isset($_POST['passwordModif'])){
             if(!empty($_POST['password']) && !empty($_POST['password2'])){
-                $password = htmlspecialchars($_POST['password']);
-                $password2 = htmlspecialchars($_POST['password2']);
+                $password = $_POST['password'];
+                $password2 = $_POST['password2'];
 
                 if($password == $password2){
                     $password = password_hash($password, PASSWORD_DEFAULT);
@@ -50,6 +53,13 @@
                     header('Location: profile.php');
                 }else{ echo "mdp différent";}
             }else{echo "mdp vide";}
+        }
+        else if (isset($_POST['imageModif'])){
+            $imageUp = $_POST['imageModif'];
+            echo $imageUp;
+            $photoUpdate = $bdd->prepare('UPDATE user SET photo=? WHERE token=? ');
+            $photoUpdate->execute(array($imageUp,$_SESSION['user']));
+            header('Location: profile.php');
         }
     }
     
@@ -75,8 +85,8 @@
                 <ul>
                     <li><a href="voir_stocks.php">Voir les stocks</a></li>
                     <li><a href="profile.php">Profil</a></li>
-                    <li><a href="#">Historique</a></li>
-                    <li><a href="#">Amis</a></li>
+                    <li><a href="classement.php">Classement</a></li>
+                    <li><a href="amis.php">Amis</a></li>
                     <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
@@ -109,6 +119,30 @@
                     </div>
                     <input type="submit" class="buttonModifP" value="Modifier" name="passwordModif">
                 </form>
+            </div>
+            <div>
+                <form method="post">
+                    <div class="modal-container-register">
+                        <div class="modal-register">
+                            <button class="close-modal-register modal-trigger-register">X</button>
+                            <?php 
+                                foreach($photo as $image){
+                                    echo '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil" class="modal-trigger-register" onclick="selectPhoto('.$image['ID_Photo'].')">';
+                                }
+                            ?>
+                        </div>
+                        <input type="hidden" id="photo" name="photo" required>
+                    </div>   
+                    <input type="button" class="modal-btn-modif modal-trigger-register" value="Selectionner une photo" required>
+                    <button type="submit" class="buttonModif">Modifier</button>
+                </form>
+                <script>
+                function selectPhoto(photo) {
+                // Sélectionnez la photo cliquée
+                    var photoInput = document.getElementById("photo");
+                    photoInput.value = photo;
+                }
+                </script>
             </div>
         </div>
             

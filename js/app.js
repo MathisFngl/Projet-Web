@@ -6,3 +6,5 @@ modalTriggers.forEach(trigger => trigger.addEventListener("click", toggleModal_r
 function toggleModal_register(){
   modalContainer.classList.toggle("active")
 }
+
+

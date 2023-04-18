@@ -11,7 +11,11 @@
     $photo = $bdd->prepare('SELECT photo FROM photo WHERE ID_Photo = ?');
     $photo->execute(array($dataUser['photo']));
     $image = $photo->fetch();
-    
+    /* selectionner les joueurs */
+    $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user EXCEPT (SELECT pseudo,soldeJoueur FROM user WHERE email="virtualtrader23@gmail.com") ORDER BY soldeJoueur DESC');
+    $reqJoueur->execute();
+    $classement = $reqJoueur->fetchAll();
+    $nbJoueur = $reqJoueur->rowCount();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,39 +37,33 @@
             <div class="nav-links">
                 <ul>
                     <li><a href="voir_stocks.php">Voir les stocks</a></li>
-                    <li class="active"><a href="profile.php">Profil</a></li>
-                    <li><a href="classement.php">Classement</a></li>
+                    <li><a href="profile.php">Profil</a></li>
+                    <li class="active"><a href="classement.php">Classement</a></li>
                     <li><a href="amis.php">Amis</a></li>
                     <li><a href="deconnexion.php">Déconnexion</a></li>
                 </ul>
             </div>
         </nav>
-        <div class="menu_divider"></div>
-        <div class="infoProfil">
-            <div class="profilPhoto">
-                <?= '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil">' ?>
-            </div>
-            <h2>Profil</h2>
-            <div class="info-user">
+        <div>
+            <h2>Classement des joueurs</h2>
+            <div>
                 <div>
-                    <label for="pseudo"><ion-icon name="person-outline"></ion-icon> Pseudo :</label>
-                    <input type="text" name="pseudo" value="<?php echo $dataUser['pseudo'] ?>" readonly>
+                    <?php 
+                        for($i=0; $i<3;$i++){
+                            ?>
+                            <div class="items"><?= $classement[$i]['pseudo'] ?></div>
+                            <div class="items"><?= $classement[$i]['soldeJoueur'] ?></div>
+                        <?php }  
+                    ?>
                 </div>
                 <div>
-                    <label for="nom"><ion-icon name="mail-outline"></ion-icon> Email :</label>
-                    <input type="email" name="email" value="<?php echo $dataUser['email'] ?>" readonly>
+                    <?php 
+                        for($i=3; $i<$nbJoueur;$i++){
+                            ?>
+                            <div class="items"><?= $i+1 ?> <?= $classement[$i]['pseudo'] ?></div>
+                        <?php }  
+                    ?>
                 </div>
-                <div>
-                    <label for="nom"><ion-icon name="checkmark-outline"></ion-icon> Nombre parties jouées :</label>
-                    <input type="text" name="nbParties" value="3" readonly>
-                </div>
-                <div>
-                    <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>
-                    <input type="text" name="soldeUser" value="<?php echo $dataUser['soldeJoueur'] ?>" readonly>
-                </div>
-            </div>
-            <button class="modifProfil"><a href="modifProfil.php">Modifier mon profil</a></button>
-            <div class="historiqueProfil">
             </div>
         </div>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

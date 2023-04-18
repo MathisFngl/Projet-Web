@@ -1,3 +1,13 @@
+<?php
+    session_start();
+    require_once 'bdd.php';
+    require('remember.php');
+
+    $photo = $bdd->prepare('SELECT photo,ID_Photo FROM photo');
+    $photo->execute();
+    
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -94,14 +104,11 @@
                 <div class="modal-container-register">
                     <div class="modal-register">
                         <button class="close-modal-register modal-trigger-register">X</button>
-                        <img src="../images/img1.jpg" alt="photo de profile"  class="modal-image1-register modal-trigger-register" onclick="selectPhoto('1')">
-                        <img src="../images/img2.jpg" alt="photo de profile"  class="modal-image2-register modal-trigger-register" onclick="selectPhoto('2')">
-                        <img src="../images/img3.jpg" alt="photo de profile"  class="modal-image3-register modal-trigger-register" onclick="selectPhoto('3')">
-                        <img src="../images/img4.jpg" alt="photo de profile"  class="modal-image4-register modal-trigger-register" onclick="selectPhoto('4')">
-                        <img src="../images/img5.jpg" alt="photo de profile"  class="modal-image5-register modal-trigger-register" onclick="selectPhoto('5')">
-                        <img src="../images/img6.jpg" alt="photo de profile"  class="modal-image6-register modal-trigger-register" onclick="selectPhoto('6')">
-                        <img src="../images/img7.jpg" alt="photo de profile"  class="modal-image7-register modal-trigger-register" onclick="selectPhoto('7')">
-                        <img src="../images/img8.jpg" alt="photo de profile"  class="modal-image8-register modal-trigger-register" onclick="selectPhoto('8')">
+                        <?php 
+                            foreach($photo as $image){
+                                echo '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil" class="modal-trigger-register" onclick="selectPhoto('.$image['ID_Photo'].')">';
+                            }
+                        ?>
                     </div>
                     <input type="hidden" id="photo" name="photo" required>
                  </div>   
