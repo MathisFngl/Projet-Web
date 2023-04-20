@@ -56,7 +56,7 @@ function Benefice($bdd, $ID_Action, $mois, $amount){
     <div class="main_content">
         <div class="historique_title"> Historique de trade </div>
         <?php
-        $req = $bdd->prepare('SELECT * FROM historiquetrade WHERE ID_User = ?');
+        $req = $bdd->prepare('SELECT * FROM historiquetrade WHERE ID_User = ? ORDER BY mois DESC');
         $req -> execute(array($dataUser["ID_User"]));
         ?>
         <div class="tableau_historique">
@@ -76,10 +76,10 @@ function Benefice($bdd, $ID_Action, $mois, $amount){
                     while($donnees != null){
                         echo "<tr>
                             <td> ". $donnees["mois"] ." </td>
-                            <td> ". ActionParser($bdd, $donnees["ID_Action"]) ."</td>
-                            <td class='". ($donnees["statut"] == 0 ? "achat_statut" : "vente_statut") ."'> ". ($donnees["statut"] == 0 ? "Achat" : "Vente") ." </td>
-                            <td> ". $donnees["nombreAction"] ." </td>
-                            <td class='". ($donnees["statut"] == 0 ? "achat_statut" : "vente_statut") ."'> ". Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"]) ." </td>
+                            <td> ". ($donnees["statut"] == 2 ? "Flux de Dividende" : (ActionParser($bdd, $donnees["ID_Action"]))) ."</td>
+                            <td class='". ($donnees["statut"] == 0 ? "achat_statut" : ($donnees["statut"] == 1 ? "vente_statut" : "dividende_statut")) ."'> ". ($donnees["statut"] == 0 ? "Achat" : ($donnees["statut"] == 1 ? "Vente" : "Dividende")) ." </td>
+                            <td> ". ($donnees["statut"] == 2 ? "N/A" : $donnees["nombreAction"]) ." </td>
+                            <td class='". ($donnees["statut"] == 0 ? "achat_statut" : ($donnees["statut"] == 1 ? "vente_statut" : "dividende_statut")) ."'> ". ($donnees["statut"] == 2 ? $donnees["nombreAction"] : Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"])) ." </td>
                         </tr>";
                         $donnees = $req->fetch();
                     }
