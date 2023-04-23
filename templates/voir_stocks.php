@@ -45,7 +45,6 @@
     <title>Stocks</title>
     <link rel="stylesheet" href="../static/style/style.css">
     <link rel="stylesheet" href="../static/style/stock.css">
-    <script src="../js/graph.js"></script>
   </head>
   <body>
 
@@ -213,7 +212,6 @@
 
             <div class="bandeau-infos-trade"> <?php echo"$nameAction"?> : Changement du dernier mois : <?php echo "$percent_change_rounded" ?> %</div>
             <div id="MainTrade" class="dim-main-trade"></div>
-            <script src="../js/calculate_rsi.js"></script>
             <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
             <script>
 

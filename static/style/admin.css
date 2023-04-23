@@ -84,3 +84,13 @@ button{
     color: #dddddd;
     text-decoration: none;
 }
+.profil_body{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.portefeuille_historique{
+    left: 500px;
+}

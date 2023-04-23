@@ -757,34 +757,40 @@ input:valid~label {
     margin-top: 1vh;
     margin-left: 1vw;
     color: #fff;
-    width: 30%;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
 }
 .profilPhoto{
-    position: absolute;
-    margin-top: 7vh;
+    position: relative;
     user-select: none;
-    width: 10.8vw;
-    height: 28.8vh;
+    width: 90%;
+    height: 40%;
+    margin-top: 100px;
 }
+.profile-title{
+    font-size: 2.9vw;
+    color: bisque;
+    text-align: center;
+    padding: 4%;
+}
+
 .profilPhoto img{
     width: 100%;
     height: 100%;
-    border: 2px solid #fff;
-    border-radius: 20%;
-    box-shadow: 5px 5px 5px #fff;
+    border: 0px solid #fff;
+    border-radius: 10px;
    
 }
 .infoProfil h2{
-    position: absolute;
+    position: relative;
     font-size: 2.6em;
-    margin-left: 50%;
+    display: block;
 }
 .info-user{
-    width: 100%;
-    position: absolute;
-    font-size: 2em;
+    position: relative;
+    font-size: 2vw;
     margin-top: 6vh;
-    margin-left: 17vw;
     border-right: 2px solid #fff;   
 }
 .info-user label{
@@ -809,15 +815,15 @@ input:valid~label {
     font-weight: 600;
 }
 .modifProfil{
-    width: 45%;
+    width: 90%;
     height: 40px;
-    border-radius: 40px;
-    margin-top: 65%;
+    border-radius: 10px;
+    margin-top: 4%;
     background: #fff;
     border: none;
     outline: none;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.2vw;
     font-weight: 600;
     text-align: center;
 }
@@ -850,3 +856,28 @@ input:valid~label {
   .menu_divider{
     border-top: 1px solid #212b36;
   }
+
+.profil_body{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.portefeuille_historique{
+    position: relative;
+    margin-left: 40%;
+    margin-top: 20px;
+}
+
+.left_panel{
+    width: 30%;
+}
+
+.chart{
+    width: 57.9vw;
+    height: 100vh;
+    margin-top: 5%;
+    background-color: #111;
+    border-radius: 5px;
+}
