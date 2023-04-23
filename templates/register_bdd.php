@@ -4,11 +4,11 @@
     // Si les variables existent et qu'elles ne sont pas vides
     if(!empty($_POST['pseudo']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['password2']) && !empty($_POST['photo']))
     {
-        $pseudo = htmlspecialchars($_POST['pseudo']);
-        $email = htmlspecialchars($_POST['email']);
-        $password = htmlspecialchars($_POST['password']);
-        $password2 = htmlspecialchars($_POST['password2']);
-        $photo = htmlspecialchars($_POST['photo']);
+        $pseudo = $_POST['pseudo'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+        $photo = $_POST['photo'];
 
         // On vérifie si l'utilisateur existe
         $verif = $bdd->prepare('SELECT pseudo, email, mdp, token FROM user WHERE email = ?');
