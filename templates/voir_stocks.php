@@ -294,12 +294,6 @@
               return [number, unit_price]
             }
           </script>
-          <div class="passer_tour">
-            <form action="nouveauTour.php" method="post">
-              <label><input type="hidden" name="ID_Action" value="<?php echo"$ID_Action"?>"></label>
-              <label><input class="passser_tour_button" type="submit" value="Passer un tour"></label>
-            </form>
-          </div>
         </div>
       </div>
     </div>
@@ -313,5 +307,17 @@
       <div class="infos"> Solde : <?php echo $dataUser['soldeJoueur'] ?> $ </div>
       <div class="infos"> Nombre de <?php echo $nameAction ?>  possédé : <?php echo $max_sell_amount[0]?> </div>
     </div>
+
+    <script>
+        function Reload() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+            };
+            xhttp.open("GET", "nouveauTour.php", true);
+            xhttp.send();
+            location.reload();
+        }
+        setInterval(Reload, 120000);
+    </script>
   </body>
 </html>

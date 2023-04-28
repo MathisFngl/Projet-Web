@@ -816,8 +816,9 @@ input:valid~label {
 }
 .modifProfil{
     width: 90%;
-    height: 40px;
+    height: 60px;
     border-radius: 10px;
+    background-color: #232d36;
     margin-top: 4%;
     background: #fff;
     border: none;

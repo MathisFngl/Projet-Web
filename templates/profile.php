@@ -51,6 +51,7 @@
                         <?= '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil">' ?>
                     </div>
                     <button class="modifProfil"><a href="modifProfil.php">Modifier mon profil</a></button>
+                    <button class="modifProfil"><a href="gameOver.php"> Abandonner la partie</a></button>
                 </div>
                 <div class="right_panel">
                     <div class="info-user">

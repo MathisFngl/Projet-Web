@@ -3,12 +3,12 @@
     require_once 'bdd.php';
     require('remember.php');
     if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT ID_User, pseudo FROM user WHERE token = ?');
+        $requUser = $bdd->prepare('SELECT ID_User, pseudo, nbPartie FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
-    $reqSolde = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
-    $reqSolde->execute(array(10000.00,$dataUser['ID_User']));
+    $reqSolde = $bdd->prepare('UPDATE user SET soldeJoueur = ?, nbPartie = ? WHERE ID_User = ?');
+    $reqSolde->execute(array(10000.00,$dataUser['nbPartie']+1,$dataUser['ID_User']));
     $reqDelAction = $bdd->prepare('DELETE FROM actionpossede WHERE ID_User = ?');
     $reqDelAction->execute(array($dataUser['ID_User']));
 
@@ -19,7 +19,6 @@
     $total_sentences = count($sentences);
     $random_index = rand(0, $total_sentences - 1);
     $random_sentence = $sentences[$random_index];
-
 
     //Score
     function Benefice($bdd, $ID_Action, $mois, $amount){
@@ -47,6 +46,9 @@
         }
         $donnees = $req->fetch();
     }
+
+    $reqDelAction = $bdd->prepare('DELETE FROM historiquetrade WHERE ID_User = ?');
+    $reqDelAction->execute(array($dataUser['ID_User']));
 ?>
 
 <!DOCTYPE html>
