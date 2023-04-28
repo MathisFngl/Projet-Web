@@ -3,17 +3,7 @@
     require_once 'bdd.php';
     require_once 'update_graph.php';
 
-    if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
-        $requUser->execute(array($_SESSION['user']));
-        $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}
-
-    if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
-        $requUser->execute(array($_SESSION['user']));
-        $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}
+    
 
     $timeReq = $bdd->prepare("SELECT MAX(timestamp_nb) FROM gestiontour");
     $timeReq->execute();
@@ -28,6 +18,12 @@
 
 function nouveauTour($bdd)
 {
+    if(isset($_SESSION['user'])){
+        $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
+        $requUser->execute(array($_SESSION['user']));
+        $dataUser = $requUser->fetch();
+    }else{header('Location: deconnexion.php');}
+    
     $stocksReq = $bdd->prepare("SELECT * FROM dataaction");
     $stocksReq->execute();
     $stock = $stocksReq->fetch();
