@@ -1,0 +1,73 @@
+@font-face {
+    font-family: 'minecraft';
+    src: url('../fonts/MinecraftRegular-Bmg3.otf') format('woff2');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: None;
+    list-style: None;
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    font-family: 'minecraft', Helvetica;
+    background: #5b0000;
+}
+
+h2 {
+    font-size: 5.8vw;
+    color: #ffffff;
+    text-align: center;
+    padding: 180px 0px 0px 0px;
+    margin-bottom: 2%;
+}
+
+.lower_box{
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.button-resume{
+    background-color: #676767;
+    border: 2px solid #000000;
+    align-items: center;
+    width: 40%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    position:relative;
+    left:30%;
+    margin-bottom: 20px;
+}
+
+.button-resume a {
+    font-family: 'minecraft';
+    color: #ececec;
+    text-decoration: none;
+    font-size: 1.8em;
+}
+
+.button-resume:hover{
+    border: 2px solid #ffffff;
+}
+
+.lower_box p{
+    font-family: 'minecraft';
+    color: #ececec;
+    font-size: 1.4em;
+    text-align: center;
+    left: 30%;
+    margin-bottom: 30px;
+}
+.lower_box p.score{
+    font-family: 'minecraft';
+    color: #ececec;
+    font-size: 1.2em;
+    text-align: center;
+    left: 30%;
+    margin-bottom: 30px;
+}

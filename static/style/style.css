@@ -818,6 +818,7 @@ input:valid~label {
     width: 90%;
     height: 45px;
     border-radius: 10px;
+    background-color: #232d36;
     margin-top: 4%;
     background: #fff;
     border: none;

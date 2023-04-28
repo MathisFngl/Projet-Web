@@ -84,6 +84,7 @@
                     </div>
                     <div class="overlay hidden"></div>
                     <script src="../js/modal.js"></script>
+                    <button class="modifProfil"><a href="gameOver.php"> Abandonner la partie</a></button>
                 </div>
                 <div class="right_panel">
                     <div class="info-user">
@@ -125,6 +126,7 @@
                 <script>var ctx = document.getElementById('myChart').getContext('2d');
 
                     const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>;
+                    data_array.reverse();
                     // Define the data for the chart
                     var data = {
                         labels: [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12],
