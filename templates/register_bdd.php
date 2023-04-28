@@ -25,8 +25,8 @@
                         if($password === $password2){
                             $password = password_hash($password, PASSWORD_DEFAULT);
                             $soldeJoueur = 10000.00;
-                            $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token,soldeJoueur,photo) VALUES(?, ?, ?,?,?,?)');
-                            $insert->execute(array($pseudo,$email,$password,bin2hex(openssl_random_pseudo_bytes(64)),$soldeJoueur,$photo));
+                            $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token,soldeJoueur,photo,nbPartie) VALUES(?, ?, ?,?,?,?;?)');
+                            $insert->execute(array($pseudo,$email,$password,bin2hex(openssl_random_pseudo_bytes(64)),$soldeJoueur,$photo,1));
                             header('Location:login.php');
                             die();
                         }else{ header('Location: register.php?reg_err=password'); die();}

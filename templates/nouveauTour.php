@@ -3,6 +3,12 @@
     require_once 'bdd.php';
     require_once 'update_graph.php';
 
+    if(isset($_SESSION['user'])){
+        $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
+        $requUser->execute(array($_SESSION['user']));
+        $dataUser = $requUser->fetch();
+    }else{header('Location: deconnexion.php');}
+
     $stocksReq = $bdd->prepare("SELECT * FROM dataaction");
     $stocksReq->execute();
     $stock = $stocksReq->fetch();
@@ -12,6 +18,19 @@
         newCandle($bdd, $id);
         $stock = $stocksReq->fetch();
     }
+    //GESTION EMPRUNT
+    $reqEmprunt = $bdd->prepare('SELECT moisEmprunt,soldeEmprunt FROM emprunt WHERE ID_User=?');
+    $reqEmprunt->execute(array($dataUser['ID_User']));
+    $emprunt = $reqEmprunt->fetchAll();
+    $nbEmprunt = $reqEmprunt->rowCount();
+    $prelSolde = 0;
+    
+    for($i=0;$i<$nbEmprunt;$i++){
+        $prelSolde = $prelSolde + ($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt']);
+    }
+    echo $prelSolde;
+    $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
+    $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']-$prelSolde,$dataUser['ID_User']));
 
     // GESTION DES DIVIDENDES
     $MoisReq = $bdd->prepare("SELECT MAX(mois) FROM historiqueaction;");
@@ -64,5 +83,6 @@
         }
         $dataUser = $requUser->fetch();
     }
+    
 
     header("Location: voir_stocks.php?ID_Action=" .$_POST["ID_Action"]);

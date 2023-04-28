@@ -12,6 +12,8 @@
     $photo->execute(array($dataUser['photo']));
     $image = $photo->fetch();
     
+    $reqEmprunt = $bdd->prepare('SELECT moisEmprunt, soldeEmprunt FROM emprunt WHERE ID_User = ?');
+    $reqEmprunt->execute(array($dataUser['ID_User']));
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +53,37 @@
                         <?= '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil">' ?>
                     </div>
                     <button class="modifProfil"><a href="modifProfil.php">Modifier mon profil</a></button>
+                    <div class="flex-container">
+                        <button class="show-modal">Emprunt</button>
+                    </div>
+                    <div class="modal hidden">
+                        <button class="close-modal">&times;</button>
+                        <h2 class="emprunt1-h2">Emprunt</h2>
+                        <div class="emprunt">
+                            <?php 
+                                foreach($reqEmprunt as $emprunt){
+                                ?> 
+                                    <div class="empruntJoueur"><p>Solde : <?= $emprunt['soldeEmprunt'] ?></p><p>Nombre de mois : <?= $emprunt['moisEmprunt']?></p><br /></div>   
+                                <?php }
+                            ?>
+                        </div>
+                        <form action="emprunt.php" method="post">
+                            <h2 class="emprunt2-h2">Faire un emprunt</h2>
+                            <div class="demEmprunt">
+                                <div class="soldeEmprunt">
+                                    <label for="soldeEmprunt">Quantité d'argent à emprunter :</label>
+                                    <input class="" type="number" name="soldeEmprunt" value="0" min="0" max="100000"  id="soldeEmprunt"></input>
+                                </div>
+                                <div class="moisEmprunt">
+                                    <label for="moisEmprunt">Nombre de mois pour rembourser :</label>
+                                    <input class="" type="number" name="moisEmprunt" value="1" min="1" max="24"  id="moisEmprunt"></input>
+                                </div>
+                                <button type="submit" name="emprunt" class="buton-emprunt">Emprunter</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="overlay hidden"></div>
+                    <script src="../js/modal.js"></script>
                 </div>
                 <div class="right_panel">
                     <div class="info-user">
@@ -68,7 +101,7 @@
                         </div>
                         <div>
                             <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>
-                            <input type="text" name="soldeUser" value="<?php echo $dataUser['soldeJoueur'] ?>" readonly>
+                            <input type="text" name="soldeUser" value="<?php echo $dataUser['soldeJoueur'] ?>$" readonly>
                         </div>
                     </div>
                 </div>
