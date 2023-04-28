@@ -92,6 +92,7 @@
                 <script>var ctx = document.getElementById('myChart').getContext('2d');
 
                     const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>;
+                    data_array.reverse();
                     // Define the data for the chart
                     var data = {
                         labels: [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12],
