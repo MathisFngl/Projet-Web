@@ -3,7 +3,7 @@
     require_once 'bdd.php';
     require('remember.php');
     if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT email,pseudo FROM user WHERE token = ?');
+        $requUser = $bdd->prepare('SELECT email,pseudo,photo,mdp FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
@@ -11,56 +11,48 @@
     $photo = $bdd->prepare('SELECT photo,ID_Photo FROM photo');
     $photo->execute();
 
-    if(!empty($_POST)){
-        if(isset($_POST['pseudoModif'])){
-            if(!empty($_POST['pseudoModif'])){
-                $pseudo = $_POST['pseudo'];
-                if(strlen($pseudo) < 100){
-                    $pseudoUpdate = $bdd->prepare('UPDATE user SET pseudo=? WHERE token=? ');
-                    $pseudoUpdate->execute(array($pseudo,$_SESSION['user']));
-                    header('Location: profile.php');
-                }else{ echo "pseudo trop long";}
-            }else{echo "pseudo vide";}
-        }
-        else if(isset($_POST['mailModif'])){
-            if(!empty($_POST['mailModif'])){
-                $email = $_POST['email'];
-                $email = strtolower($email);
-                // On vérifie si l'utilisateur existe
-                $verif = $bdd->prepare('SELECT email FROM user WHERE email = ?');
-                $verif->execute(array($email));
-                $userExist = $verif->rowCount();
-                if($userExist == 0){
-                    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                        if(strlen($email) < 255){
-                            $emailUpdate = $bdd->prepare('UPDATE user SET email=? WHERE token=? ');
-                            $emailUpdate->execute(array($email,$_SESSION['user']));
-                            header('Location: profile.php');
-                        }else{echo "email trop grand";}
-                    }else{echo "email non valide";}
-                }else{echo "email deja pris";}
-            }else{echo "email vide";}    
-        }
-        else if(isset($_POST['passwordModif'])){
-            if(!empty($_POST['password']) && !empty($_POST['password2'])){
-                $password = $_POST['password'];
-                $password2 = $_POST['password2'];
-
-                if($password == $password2){
-                    $password = password_hash($password, PASSWORD_DEFAULT);
-                    $passwordUpdate = $bdd->prepare('UPDATE user SET mdp=? WHERE token=? ');
-                    $passwordUpdate->execute(array($password,$_SESSION['user']));
-                    header('Location: profile.php');
-                }else{ echo "mdp différent";}
-            }else{echo "mdp vide";}
-        }
-        else if (isset($_POST['imageModif'])){
-            $imageUp = $_POST['imageModif'];
-            echo $imageUp;
+    if(!empty($_POST['pseudo']) || !empty($_POST['email']) || !empty($_POST['password']) || !empty($_POST['password2']) || !empty($_POST['photo'])){
+        $modifOk = true;
+        if($_POST['pseudo'] != $dataUser['pseudo']){
+            $pseudo = $_POST['pseudo'];
+            if(strlen($pseudo) < 100){
+                $pseudoUpdate = $bdd->prepare('UPDATE user SET pseudo=? WHERE token=? ');
+                $pseudoUpdate->execute(array($pseudo,$_SESSION['user']));
+            }else{ echo "pseudo trop long"; $modifOk = false;}
+        }else{echo "pseudo pareil";}
+        if($_POST['email'] != $dataUser['email']){
+            $email = $_POST['email'];
+            $email = strtolower($email);
+            // On vérifie si l'utilisateur existe
+            $verif = $bdd->prepare('SELECT email FROM user WHERE email = ?');
+            $verif->execute(array($email));
+            $userExist = $verif->rowCount();
+            if($userExist == 0){
+                if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                    if(strlen($email) < 255){
+                        $emailUpdate = $bdd->prepare('UPDATE user SET email=? WHERE token=? ');
+                        $emailUpdate->execute(array($email,$_SESSION['user']));
+                    }else{echo "email trop grand"; $modifOk = false;}
+                }else{echo "email non valide"; $modifOk = false;}
+            }else{echo "email deja pris"; $modifOk = false;}
+        }else{echo "email pareil";}    
+        if($_POST['password'] === $_POST['password2']){
+            $password = $_POST['password'];
+            if(password_verify($password,$dataUser['mdp'])){
+                $password = password_hash($password, PASSWORD_DEFAULT);
+                $passwordUpdate = $bdd->prepare('UPDATE user SET mdp=? WHERE token=? ');
+                $passwordUpdate->execute(array($password,$_SESSION['user']));
+            }else{ echo "mdp pareil";}
+        }else{echo "mdp différent"; $modifOk = false;}
+        if ($_POST['photo'] != $dataUser['photo'] && $_POST['photo'] != false){
+            $imageUp = $_POST['photo'];
             $photoUpdate = $bdd->prepare('UPDATE user SET photo=? WHERE token=? ');
             $photoUpdate->execute(array($imageUp,$_SESSION['user']));
+        }
+        if($modifOk == true){
             header('Location: profile.php');
         }
+        
     }
     
 ?>
@@ -91,51 +83,44 @@
                 </ul>
             </div>
         </nav>
-        <div class="modifUser">
-            <h2 class="h2-modif">Modifier mon profil</h2>
-            <div class="inputModif">
-                <form method="post">
-                    <ion-icon name="person-outline"></ion-icon>
-                    <input type="text" name="pseudo" value="<?php echo $dataUser['pseudo'] ?>" class="modif">
-                    <input type="submit" class="buttonModif" value="Modifier" name ="pseudoModif">
-                </form>
-            </div>
-            <div class="inputModif">
-                <form method="post">
+        <section class="form-box-register">
+        <div class="form-value-register">
+        <form method="post" enctype="multipart/form-data">
+                <h2 class="h2-modif">Modifier mon Profil</h2>
+                <div class="inputbox-register">
+                <ion-icon name="person-outline"></ion-icon>
+                    <input type="text" name="pseudo" value="<?php echo $dataUser['pseudo'] ?>">
+                </div>
+                
+                <div class="inputbox-register">
                     <ion-icon name="mail-outline"></ion-icon>
-                    <input type="email" name="email" value="<?php echo $dataUser['email'] ?>" class="modif">
-                    <input type="submit" class="buttonModif" value="Modifier" name ="emailModif">
-                </form>
-            </div>
-            <div class="inputModif">
-                <form method="post">
-                    <div class="modifPassword1">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" name="password" placeholder="Nouveau mot de passe" class="modif">
+                    <input type="email" name="email" value="<?php echo $dataUser['email'] ?>">
+                </div>
+                <div class="inputbox-register">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <input type="password" name="password" >
+                    <label class="modifP">Nouveau mot de passe</label>
+                </div>
+                <div class="inputbox-register">
+                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <input type="password" name="password2">
+                    <label class="modifP">Confirmation mot de passe</label>
+                </div>
+                <div class="modal-container-register">
+                    <div class="modal-register">
+                        <button class="close-modal-register modal-trigger-register">X</button>
+                        <?php 
+                            foreach($photo as $image){
+                                echo '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil" class="modal-trigger-register" onclick="selectPhoto('.$image['ID_Photo'].')">';
+                            }
+                        ?>
                     </div>
-                    <div class="modifPassword2">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" name="password2" placeholder="Confirmation mot de passe" class="modif">
-                    </div>
-                    <input type="submit" class="buttonModifP" value="Modifier" name="passwordModif">
-                </form>
-            </div>
-            <div>
-                <form method="post">
-                    <div class="modal-container-register">
-                        <div class="modal-register">
-                            <button class="close-modal-register modal-trigger-register">X</button>
-                            <?php 
-                                foreach($photo as $image){
-                                    echo '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil" class="modal-trigger-register" onclick="selectPhoto('.$image['ID_Photo'].')">';
-                                }
-                            ?>
-                        </div>
-                        <input type="hidden" id="photo" name="photo" required>
-                    </div>   
-                    <input type="button" class="modal-btn-modif modal-trigger-register" value="Selectionner une photo" required>
-                    <button type="submit" class="buttonModif">Modifier</button>
-                </form>
+                    <input type="hidden" id="photo" name="photo">
+                 </div>   
+                <input type="button" class="modal-btn-register modal-trigger-register" value="Selectionner une photo" required>
+                <button type="submit" class="buttonLog-register">Modifier</button>
+            </form>
+            
                 <script>
                 function selectPhoto(photo) {
                 // Sélectionnez la photo cliquée
@@ -145,7 +130,7 @@
                 </script>
             </div>
         </div>
-            
+        </section>      
     <script src="../js/app.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>

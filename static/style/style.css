@@ -623,7 +623,7 @@ input:valid~label {
     outline: none;
     cursor: pointer;
     background: none;
-    margin-left: 65%;
+    margin-left: 80%;
     margin-top: 3%;
 }
 .refuse-button{
@@ -633,7 +633,7 @@ input:valid~label {
     outline: none;
     cursor: pointer;
     background: none;
-    margin-left: 75%;
+    margin-left: 90%;
     margin-top: 3%;
 }
 .accept-button ion-icon{
@@ -653,7 +653,7 @@ input:valid~label {
 }
 .accept-button-profil{
     position: absolute;
-    margin-left: 35%;
+    margin-right: 35%;
     margin-top: -10%;
     border: none;
     outline: none;
@@ -827,23 +827,16 @@ input:valid~label {
     font-weight: 600;
     text-align: center;
 }
-
-/*Modif Profil*/
-.modifUser{
-    position: relative;
-    width: 400px;
-    height: 550px;
-    background: transparent;
-    border: 2px solid #fff;
-    border-radius: 20px;
-    backdrop-filter: blur(15px);
-    justify-content: center;
-    align-items: center;
-    box-shadow: 5px 5px 5px #fff;
-    margin-left: 35vw;
-    margin-top: 2vh;
+.modifP{
+    position: absolute;
+    margin-top: 5%;
+    left: 5px;
+    color: #fff;
+    font-size: 1em;
+    pointer-events: none;
+    
 }
-.h2-modif{
+.h2-modif {
     position: absolute;
     font-size: 2em;
     color: #fff;
@@ -851,87 +844,6 @@ input:valid~label {
     top: 8%;
     left: 15%;
 }
-.inputModif{
-    position: relative;
-    padding-top: 30px;
-    top: 15%;
-    width: 310px;
-    left: 10%;
-}
-.modif{
-    width: 100%;
-    height: 30px;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    color: #fff;
-    border-bottom: 2px solid #fff;
-}
-::placeholder{
-    color: #fff;
-}
-.inputModif ion-icon {
-    position: absolute;
-    right: 8px;
-    color: #fff;
-    font-size: 1.3em;
-    top: 28%;
-}
-.modifPassword2{
-    position: absolute;
-    top: 130%;
-    width: 100%;
-}
-.modifPassword1 ion-icon{
-    top: 40%;
-}
-.modifPassword2 ion-icon{
-    top: -5%;
-}
-.buttonModif{
-    width: 70%;
-    height: 25px;
-    margin-left: 15%;
-    border-radius: 40px;
-    margin-top: 5%;
-    background: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
-    color: #000;
-}
-.buttonModifP{
-    position: absolute;
-    width: 70%;
-    height: 25px;
-    margin-left: 15%;
-    border-radius: 40px;
-    margin-top: 22%;
-    background: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
-    color: #000;
-}
-.modal-btn-modif {
-    width: 70%;
-    height: 25px;
-    margin-left: 15%;
-    border-radius: 40px;
-    margin-top: 52%;
-    background: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
-    color: #000;
-  } 
 
 /*Sidenav*/
   

@@ -3,7 +3,7 @@
     require_once 'bdd.php';
     require('remember.php');
     if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT ID_User, email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
+        $requUser = $bdd->prepare('SELECT ID_User, email,pseudo,soldeJoueur,photo,nbPartie FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
@@ -64,7 +64,7 @@
                         </div>
                         <div>
                             <label for="nom"><ion-icon name="checkmark-outline"></ion-icon> Nombre parties jouées :</label>
-                            <input type="text" name="nbParties" value="3" readonly>
+                            <input type="text" name="nbParties" value="<?php echo $dataUser['nbPartie'] ?>" readonly>
                         </div>
                         <div>
                             <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>

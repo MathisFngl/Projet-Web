@@ -8,6 +8,33 @@
     $requUser->execute(array($token));
     $dataUser = $requUser->fetch();
   }else{header('Location: deconnexion.php');}
+  $reqMaxPrice = $bdd->prepare('SELECT MAX(prix) as prix FROM historiqueaction ORDER BY mois DESC');
+  $reqMaxPrice->execute();
+  $maxPrice = $reqMaxPrice->fetch();
+  $nbSearchAction = 0;
+  $nbPrixAction = 0;
+    if(!empty($_POST['searchAction']) || !empty($_POST['periode']) || !empty($_POST['pourcentage']) || !empty($_POST['triPrix'])){
+        if(!empty($_POST['searchAction'])){
+            $reqSearchAction = $bdd->prepare('SELECT nomAction,ID_Action FROM dataaction WHERE nomAction LIKE ?');
+            $reqSearchAction->execute(array('%'.$_POST['searchAction'].'%'));
+            $searchAction = $reqSearchAction->fetchAll();
+            $nbSearchAction = $reqSearchAction->rowCount();
+        }
+        if(!empty($_POST['periode']) && !empty($_POST['pourcentage'])){
+            if($_POST['periode'] == "mois"){
+
+            }
+            else if($_GET['periode'] == "mois"){
+
+            }
+        }
+        if(!empty($_GET['triPrix']) && $_POST['triPrix'] != 0){
+            $reqPrixAction = $bdd->prepare('SELECT nomAction,ID_Action FROM dataaction INNER JOIN historiqueaction ON dataaction.ID_Action = historiqueaction.ID_Action WHERE historiqueaction.prix = ? ORDER BY mois DESC');
+            $reqPrixAction->execute(array($_POST['triPrix']));
+            $prixAction = $reqPrixAction->fetchall();  
+            $nbPrixAction = $reqPrixAction->rowCount();          
+        }  
+    }
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +70,61 @@
     </nav>
     <div class="menu_divider"></div>
     <nav class="sidenav">
+      
+      <div class="flex-container">
+          <button class="show-modal">Trier</button>
+      </div>
+        <div class="modal hidden">
+        <form action="voir_stocks.php?ID_Action=<?=$_GET['ID_Action']?>&modal=1" method="post">
+          <button class="close-modal"><a href="voir_stocks.php?ID_Action=<?=$_GET['ID_Action']?>">&times;</a></button>
+          <h2 class="trie-h2">Trier les actions</h2>
+          <div class=modal-modif>
+            <div class="triPrix">
+              <label for="triPrix">Prix :</label>
+              <input class="range" type="number" name="triPrix" value="0" min="0" max="<?= $maxPrice['prix'] ?>" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)" id="triPrix" step="0.01"></input>
+            </div>
+            <div class="searchAction">
+            <label for="searchAction">Rechercher une Action :</label>
+            <input type="search" name="searchAction" placeholder="Action" id="searchAction">
+            </div>
+            <div class = pourcentage>
+            <label for="periode">Période :</label>
+            <select name="periode" id="periode">
+              <option value="mois">Mois</option>
+              <option value="annee">Année</option>
+            </select>
+  
+            <label for="pourcentage">Pourcentage :</label>
+            <input type="number" name="pourcentage" id="pourcentage" value="0">
+            </div>
+            <button type="submit" name="rechercher" class="searchButon">Rechercher</button>
+          </div>
+          </form>
+          <div class="resultAction">
+          <h2 class = "h2-resultAction">Résultat :</h2>
+          <?php 
+          
+            if($nbPrixAction>0){
+              for($i=0;$i<$nbPrixAction;$i++){
+                ?>
+                  <div class="actionResult"><a href="voir_stocks.php?ID_Action=<?= $prixAction[$i]['ID_Action']?>"><?= $prixAction[$i]['nomAction']?></a></div>
+              <?php }
+            }
+            if($nbSearchAction>0){
+              for($i=0;$i<$nbSearchAction;$i++){
+                ?>
+                  <div class="actionResult"><a href="voir_stocks.php?ID_Action=<?= $searchAction[$i]['ID_Action']?>"><?= $searchAction[$i]['nomAction']?></a></div>
+              <?php }
+            }
+            if($nbPrixAction+$nbSearchAction == 0){
+              ?>
+              <div class="actionResult"><p>Aucun éléments ne correspond à votre recherche</p></div>
+            <?php }
+          ?>
+      </div>
+        </div>
+        <div class="overlay hidden"></div>
+        <script src="../js/modal.js"></script>
         <ul>
             <li class="dropdown"><a class="main_drop" href="#indices">Indices</a>
                 <ul>
@@ -89,8 +171,16 @@
                 </ul>
             </li>
             <div class="menu_divider"></div>
-        </ul>
+        </ul>     
     </nav>
+    <script>
+        // Vérifie si l'URL contient "modal=1" et ouvre la fenêtre modale correspondante
+        const urlParams = new URLSearchParams(window.location.search);
+        const modalSearch = urlParams.get("modal");
+        if (modalSearch == 1) {
+          openModal();
+        }
+      </script>
       <div class="page-content">
       <div class="trading-panel">
         <div class="graphes-gauche">
