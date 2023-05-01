@@ -74,12 +74,31 @@ function Benefice($bdd, $ID_Action, $mois, $amount){
                 <?php
                     $donnees = $req->fetch();
                     while($donnees != null){
+                        $css = null;
+                        switch ($donnees["statut"]){
+                            case 0:
+                                $css = "achat_statut";
+                                break;
+                            case 1:
+                                $css = "vente_statut";
+                                break;
+                            case 2:
+                                $css = "dividende_statut";
+                                break;
+                            case 3:
+                                $css = "emprunt_gain";
+                                break;
+                            case 4:
+                                $css = "emprunt_remb";
+                                break;
+                        }
+
                         echo "<tr>
                             <td> ". $donnees["mois"] ." </td>
-                            <td> ". ($donnees["statut"] == 2 ? "Flux de Dividende" : (ActionParser($bdd, $donnees["ID_Action"]))) ."</td>
-                            <td class='". ($donnees["statut"] == 0 ? "achat_statut" : ($donnees["statut"] == 1 ? "vente_statut" : "dividende_statut")) ."'> ". ($donnees["statut"] == 0 ? "Achat" : ($donnees["statut"] == 1 ? "Vente" : "Dividende")) ." </td>
-                            <td> ". ($donnees["statut"] == 2 ? "N/A" : $donnees["nombreAction"]) ." </td>
-                            <td class='". ($donnees["statut"] == 0 ? "achat_statut" : ($donnees["statut"] == 1 ? "vente_statut" : "dividende_statut")) ."'> ". ($donnees["statut"] == 2 ? $donnees["nombreAction"] : Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"])) ." </td>
+                            <td> ". ($donnees["statut"] == 2 ? "Flux de Dividende" : ($donnees["statut"] == 3 ? "Argent Emprunté" : ($donnees["statut"] == 4 ? "Remboursement d'Emprunt" : (ActionParser($bdd, $donnees["ID_Action"]))))) ."</td>
+                            <td class='". $css. "'> ". ($donnees["statut"] == 0 ? "Achat" : ($donnees["statut"] == 1 ? "Vente" : ($donnees["statut"] == 2 ? "Dividende" : ($donnees["statut"] == 3 ? "Emprunt" : "Remboursement d'Emprunt")))) ." </td>
+                            <td> ". (($donnees["statut"] == 2 || $donnees["statut"] = 3 || $donnees["statut"] = 4 ) ? "N/A" : $donnees["nombreAction"]) ." </td>
+                            <td class='". $css ."'> ". (($donnees["statut"] == 2 || $donnees["statut"] == 3 || $donnees["statut"] == 4) ? $donnees["nombreAction"] : Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"])) ." </td>
                         </tr>";
                         $donnees = $req->fetch();
                     }

@@ -15,6 +15,14 @@
             if($solde/$mois < $dataUser['soldeJoueur']){
                 $reqEmprunt = $bdd->prepare('INSERT INTO emprunt(ID_User,moisEmprunt,soldeEmprunt) VALUES(?,?,?)');
                 $reqEmprunt->execute(array($dataUser['ID_User'],$mois,$solde));
+
+                $MoisReq = $bdd->prepare("SELECT MAX(mois) FROM historiqueaction;");
+                $MoisReq->execute();
+                $Mois = $MoisReq->fetch();
+
+                $sql_historique_emprunt = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,3,?)");
+                $sql_historique_emprunt->execute(array($dataUser['ID_User'], $solde, $Mois[0]));
+
                 $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
                 $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']+$solde,$dataUser['ID_User']));
                 header('Location:profile.php');
