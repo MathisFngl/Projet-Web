@@ -33,6 +33,12 @@ function nouveauTour($bdd)
         newCandle($bdd, $id);
         $stock = $stocksReq->fetch();
     }
+
+    $MoisReq = $bdd->prepare("SELECT MAX(mois) FROM historiqueaction;");
+    $MoisReq->execute();
+    $Mois = $MoisReq->fetch();
+    $nouveauMois = $Mois[0] + 1;
+
     //GESTION EMPRUNT
     $reqEmprunt = $bdd->prepare('SELECT moisEmprunt,soldeEmprunt FROM emprunt WHERE ID_User=?');
     $reqEmprunt->execute(array($dataUser['ID_User']));
@@ -44,14 +50,16 @@ function nouveauTour($bdd)
         $prelSolde = $prelSolde + ($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt']);
     }
     echo $prelSolde;
+
+    if($prelSolde != 0){
+        $sql_historique_emprunt = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,4,?)");
+        $sql_historique_emprunt->execute(array($dataUser['ID_User'], $prelSolde, $Mois[0]));
+    }
+
     $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
     $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']-$prelSolde,$dataUser['ID_User']));
 
     // GESTION DES DIVIDENDES
-    $MoisReq = $bdd->prepare("SELECT MAX(mois) FROM historiqueaction;");
-    $MoisReq->execute();
-    $Mois = $MoisReq->fetch();
-    $nouveauMois = $Mois[0] + 1;
 
     $requUser = $bdd->prepare('SELECT soldeJoueur, ID_User FROM user');
     $requUser->execute();
