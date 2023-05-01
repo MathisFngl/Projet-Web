@@ -222,6 +222,12 @@ input:valid~label {
 .register p a:hover {
     text-decoration: underline;
 }
+.e-login{
+    position: absolute;
+    font-size: 1.5em;
+    color: #f55151;
+    margin-top: 100%; 
+}
 
 /*register*/
 .form-box-register {
@@ -245,7 +251,12 @@ input:valid~label {
     top: 8%;
     left: 30%;
 }
-
+.e-register{
+    position: absolute;
+    font-size: 1.5em;
+    color: #f55151;
+    margin-top: 120%; 
+}
 .inputbox-register {
     position: relative;
     padding-top: 40px;
@@ -819,7 +830,7 @@ input:valid~label {
     height: 45px;
     border-radius: 10px;
     background-color: #232d36;
-    margin-top: 4%;
+    margin-top: 10%;
     background: #fff;
     border: none;
     outline: none;
@@ -856,20 +867,23 @@ input:valid~label {
     align-items: center;
     margin-top: 5%;
   }
-.show-modal {
-    position: relative;
-    width: 70%;
-    height: 25px;
-    border-radius: 40px;
+.flex-container button{
+    margin-left: -10%;
+    margin-bottom: 4%;
+}
+.show-modal{
+    width: 90%;
+    height: 45px;
+    border-radius: 10px;
+    background-color: #232d36;
+    margin-top: 10%;
     background: #fff;
     border: none;
     outline: none;
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.2vw;
     font-weight: 600;
-    color: #000;
-    margin-top: 0vh;  
-    margin-right: 20%;  
+    text-align: center;
 }
   
 .close-modal {
@@ -929,32 +943,109 @@ input:valid~label {
 }
 .emprunt1-h2{
     position: absolute;
-    width: 100%;
+    width: 90%;
     font-size: 1em;
     margin-top: -10%;
-    margin-right: 100%;
+    margin-left: -30%;
 }
 .emprunt{
     margin-top: 10%;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    align-items: flex-start;
+    height: 70%;
+    width: 70%;
+    margin-left: 15%;
 }
-.empruntJoueur{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: baseline;
-    gap: 1em;
-    color: #fff;
+.emprunt table{
+    width: 80%;
+    align-items: center;
+    height: 80%;
+}
+.label-titres{
+    padding: 10px;
     font-size: 1.2em;
+    background-color: #192129;
+}
+.emprunt table tr td{
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+}
+.emprunt table tr{
+    background-color: #192129;
+    color: #f1f1f1;
+}
+
+.emprunt table tr:nth-child(even){
+    background-color:#232d36;
+    color: #f1f1f1;
 }
 .emprunt2-h2{
     position: absolute;
+    width: 90%;
     font-size: 1em;
-    margin-top: 10%;
-    margin-right: 100%;
+    margin-top: -5%;
+    margin-left: -30%;
+}
+.demEmprunt{
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
+    margin-left: 5%;
+    gap: 1em;
+}
+.soldeEmprunt label{
+    color: #f1f1f1;
+}
+.soldeEmprunt input{
+    margin-left: 2%;
+    border-radius: 5px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    color: #000;
+    width: 10%;
+    text-align: center;
+}
+.moisEmprunt label{
+    color: #f1f1f1;
+}
+.moisEmprunt input{
+    margin-left: 2%;
+    border-radius: 5px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    color: #000;
+    width: 10%;
+    text-align: center;
+}
+.buton-emprunt{
+    width: 30%;
+    height: 25px;
+    border-radius: 40px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #000;
+    margin-top: 0vh;  
+    margin-left: 20%; 
+}
+.empruntFalse{
+    color: #f55151;
+    margin-top: 2%;
+    margin-left: 10%;
 }
 /*Sidenav*/
   

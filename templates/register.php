@@ -47,7 +47,7 @@
                 {
                     case 'password':
                     ?>
-                        <div class="h2-register">
+                        <div class="e-register">
                             <strong>Erreur</strong> mot de passe différent
                         </div>
                     <?php
@@ -55,7 +55,7 @@
 
                     case 'email':
                     ?>
-                        <div class="h2-register">
+                        <div class="e-register">
                             <strong>Erreur</strong> email non valide
                         </div>
                     <?php
@@ -63,7 +63,7 @@
 
                     case 'pseudo':
                         ?>
-                            <div class="h2-register">
+                            <div class="e-register">
                                 <strong>Erreur</strong> pseudo non valide
                             </div>
                         <?php
@@ -71,7 +71,7 @@
 
                     case 'already':
                     ?>
-                        <div class="h2-register">
+                        <div class="e-register">
                             <strong>Erreur</strong> compte deja existant
                         </div>
                     <?php 

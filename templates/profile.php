@@ -54,25 +54,37 @@
                     </div>
                     <button class="modifProfil"><a href="modifProfil.php">Modifier mon profil</a></button>
                     <div class="flex-container">
-                        <button class="show-modal">Emprunt</button>
+                        <button class="show-modal">Faire un emprunt</button>
                     </div>
                     <div class="modal hidden">
-                        <button class="close-modal">&times;</button>
+                        <button class="close-modal"><a href="profile.php">&times;</a></button>
                         <h2 class="emprunt1-h2">Emprunt</h2>
                         <div class="emprunt">
-                            <?php 
-                                foreach($reqEmprunt as $emprunt){
-                                ?> 
-                                    <div class="empruntJoueur"><p>Solde : <?= $emprunt['soldeEmprunt'] ?></p><p>Nombre de mois : <?= $emprunt['moisEmprunt']?></p><br /></div>   
-                                <?php }
-                            ?>
+                            <table>
+                                <tr>
+                                    <div class="titres">
+                                        <th class="label-titres"><p>Solde</p></th>
+                                        <th class="label-titres"><p>Nombre mois</p></th>
+                                    </div>
+                                </tr>
+                                <div class="tab_corps">
+                                    <?php 
+                                        foreach($reqEmprunt as $emprunt){
+                                    ?> <tr>
+                                        <td><?= $emprunt['soldeEmprunt'] ?></td>
+                                        <td><?= $emprunt['moisEmprunt']?></td>
+                                    </tr>   
+                                    <?php }
+                                    ?>
+                                </div>
+                            </table>
                         </div>
                         <form action="emprunt.php" method="post">
                             <h2 class="emprunt2-h2">Faire un emprunt</h2>
                             <div class="demEmprunt">
                                 <div class="soldeEmprunt">
                                     <label for="soldeEmprunt">Quantité d'argent à emprunter :</label>
-                                    <input class="" type="number" name="soldeEmprunt" value="0" min="0" max="100000"  id="soldeEmprunt"></input>
+                                    <input class="" type="number" name="soldeEmprunt" value="0" min="0" max="100000000"  id="soldeEmprunt"></input>
                                 </div>
                                 <div class="moisEmprunt">
                                     <label for="moisEmprunt">Nombre de mois pour rembourser :</label>
@@ -81,9 +93,24 @@
                                 <button type="submit" name="emprunt" class="buton-emprunt">Emprunter</button>
                             </div>
                         </form>
+                        <?php 
+                            if(isset($_GET['emprunt'])){
+                                if($_GET['emprunt'] == 1){
+                                    echo "<p class= 'empruntFalse'>Vous n'avez pas assez d'argent pour faire cet emprunt";
+                                }
+                            }
+                        ?>
                     </div>
                     <div class="overlay hidden"></div>
                     <script src="../js/modal.js"></script>
+                    <script>
+                        // Vérifie si l'URL contient "modal=1" et ouvre la fenêtre modale correspondante
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const modalSearch = urlParams.get("emprunt");
+                        if (modalSearch == 1) {
+                            openModal();
+                        }
+                    </script>
                     <button class="modifProfil"><a href="gameOver.php"> Abandonner la partie</a></button>
                 </div>
                 <div class="right_panel">
