@@ -24,6 +24,7 @@ h2 {
     text-align: center;
     padding: 180px 0px 0px 0px;
     margin-bottom: 2%;
+    text-shadow: 2px 1px 3px #000000;
 }
 
 .lower_box{
@@ -49,6 +50,7 @@ h2 {
     color: #ececec;
     text-decoration: none;
     font-size: 1.8em;
+    text-shadow: 2px 1px 3px #000000;
 }
 
 .button-resume:hover{
@@ -62,6 +64,7 @@ h2 {
     text-align: center;
     left: 30%;
     margin-bottom: 30px;
+    text-shadow: 2px 1px 3px #000000;
 }
 .lower_box p.score{
     font-family: 'minecraft';
@@ -70,4 +73,5 @@ h2 {
     text-align: center;
     left: 30%;
     margin-bottom: 30px;
+    text-shadow: 2px 1px 3px #000000;
 }

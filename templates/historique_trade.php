@@ -75,20 +75,32 @@ function Benefice($bdd, $ID_Action, $mois, $amount){
                     $donnees = $req->fetch();
                     while($donnees != null){
                         $css = null;
+                        $data_gain = null;
+                        $quantite = null;
                         switch ($donnees["statut"]){
                             case 0:
+                                $quantite = $donnees["nombreAction"];
+                                $data_gain = "-".Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"]);
                                 $css = "achat_statut";
                                 break;
                             case 1:
+                                $quantite = $donnees["nombreAction"];
+                                $data_gain = "+". Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"]);
                                 $css = "vente_statut";
                                 break;
                             case 2:
+                                $quantite = "N/A";
+                                $data_gain = "+". $donnees["nombreAction"];
                                 $css = "dividende_statut";
                                 break;
                             case 3:
+                                $quantite = "N/A";
+                                $data_gain = "+".$donnees["nombreAction"];
                                 $css = "emprunt_gain";
                                 break;
                             case 4:
+                                $quantite = "N/A";
+                                $data_gain = "-".$donnees["nombreAction"];
                                 $css = "emprunt_remb";
                                 break;
                         }
@@ -97,8 +109,8 @@ function Benefice($bdd, $ID_Action, $mois, $amount){
                             <td> ". $donnees["mois"] ." </td>
                             <td> ". ($donnees["statut"] == 2 ? "Flux de Dividende" : ($donnees["statut"] == 3 ? "Argent Emprunté" : ($donnees["statut"] == 4 ? "Remboursement d'Emprunt" : (ActionParser($bdd, $donnees["ID_Action"]))))) ."</td>
                             <td class='". $css. "'> ". ($donnees["statut"] == 0 ? "Achat" : ($donnees["statut"] == 1 ? "Vente" : ($donnees["statut"] == 2 ? "Dividende" : ($donnees["statut"] == 3 ? "Emprunt" : "Remboursement d'Emprunt")))) ." </td>
-                            <td> ". (($donnees["statut"] == 2 || $donnees["statut"] = 3 || $donnees["statut"] = 4 ) ? "N/A" : $donnees["nombreAction"]) ." </td>
-                            <td class='". $css ."'> ". (($donnees["statut"] == 2 || $donnees["statut"] == 3 || $donnees["statut"] == 4) ? $donnees["nombreAction"] : Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"])) ." </td>
+                            <td> ". $quantite ." </td>
+                            <td class='". $css ."'> ". $data_gain ." </td>
                         </tr>";
                         $donnees = $req->fetch();
                     }

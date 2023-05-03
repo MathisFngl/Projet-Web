@@ -14,8 +14,6 @@
     /* selectionner les joueurs */
     $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user EXCEPT (SELECT pseudo,soldeJoueur FROM user WHERE email="virtualtrader23@gmail.com") ORDER BY soldeJoueur DESC');
     $reqJoueur->execute();
-    $classement = $reqJoueur->fetchAll();
-    $nbJoueur = $reqJoueur->rowCount();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +21,7 @@
     <meta charset="UTF-8">
     <title>Profil</title>
     <link rel="stylesheet" href="../static/style/style.css">
+    <link rel="stylesheet" href="../static/style/historique.css">
 </head>
     <body>
         <nav class="navbar menu-padding-50">
@@ -45,26 +44,34 @@
                 </ul>
             </div>
         </nav>
-        <div>
-            <h2>Classement des joueurs</h2>
-            <div>
-                <div>
-                    <?php 
-                        for($i=0; $i<3;$i++){
-                            ?>
-                            <div class="items"><?= $classement[$i]['pseudo'] ?></div>
-                            <div class="items"><?= $classement[$i]['soldeJoueur'] ?></div>
-                        <?php }  
-                    ?>
-                </div>
-                <div>
-                    <?php 
-                        for($i=3; $i<$nbJoueur;$i++){
-                            ?>
-                            <div class="items"><?= $i+1 ?> <?= $classement[$i]['pseudo'] ?></div>
-                        <?php }  
-                    ?>
-                </div>
+
+        <div class = "main_content">
+            <div class="historique_title">Classement des joueurs</div>
+            <div class="tableau_historique">
+                <table>
+                    <tr>
+                        <div class="titres">
+                            <th class="label-titres"><p>Classement</p></th>
+                            <th class="label-titres"><p>Nom</p></th>
+                            <th class="label-titres"><p>Solde</p></th>
+                        </div>
+                    </tr>
+                    <div class="tab_corps">
+                        <?php
+                        $classement = $reqJoueur->fetch();
+                        $i = 1;
+                        while($classement != null){
+                            echo "<tr>
+                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ". $i ." </td>
+                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ".$classement["pseudo"]."</td>
+                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'>". $classement["soldeJoueur"]." $"." </td>
+                            </tr>";
+                            $classement = $reqJoueur->fetch();
+                            $i++;
+                        }
+                        ?>
+                    </div>
+                </table>
             </div>
         </div>
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

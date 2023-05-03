@@ -110,14 +110,23 @@
             <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
             <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
             <div class="portefeuille_historique">
-
                 <?php
-                    $data_array = [];
-                    $requHistoriqueSolde = $bdd->prepare("SELECT solde FROM historiqueportefeuille WHERE ID_User = ? ORDER BY mois DESC LIMIT 12");
-                    $requHistoriqueSolde -> execute(array($dataUser['ID_User']));
 
-                for($i = 0; $i<12; $i++){
-                    $portefeuille_temp = $requHistoriqueSolde -> fetch();
+                    $data_array = [];
+                    $CountLineReq = $bdd->prepare("SELECT COUNT(solde) FROM historiqueportefeuille WHERE ID_User = ?");
+                    $CountLineReq -> execute(array($dataUser['ID_User']));
+                    $nbLine = $CountLineReq -> fetch();
+                    $nbLine = $nbLine[0];
+
+                    if($nbLine>12){
+                        $nbLine = 12;
+                    }
+
+                    $reqHistoriqueSolde = $bdd->prepare("SELECT solde FROM historiqueportefeuille WHERE ID_User = ? ORDER BY mois DESC LIMIT 12");
+                    $reqHistoriqueSolde -> execute(array($dataUser['ID_User']));
+
+                for($i = 0; $i < $nbLine; $i++){
+                    $portefeuille_temp = $reqHistoriqueSolde -> fetch();
                     $data_temp = $portefeuille_temp["solde"];
                     array_push($data_array, $data_temp);
                 }
@@ -127,9 +136,12 @@
 
                     const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>;
                     data_array.reverse();
+
                     // Define the data for the chart
+                    const n = <?php echo $nbLine ?>;
+                    const label = Array.from({length: n}, (_, i) => i + 1)
                     var data = {
-                        labels: [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12],
+                        labels: label,
                         datasets: [{
                             label: 'Solde mensuel',
                             data: data_array,

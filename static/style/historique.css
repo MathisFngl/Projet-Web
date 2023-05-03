@@ -40,8 +40,6 @@
     background-color:#232d36;
 }
 
-
-
 .achat_statut{
     color: #ff1f00;
 }
@@ -60,4 +58,24 @@
 
 .emprunt_remb{
     color: #dd00ff;
+}
+
+.f{
+    color: gold;
+    font-size: 3vw;
+}
+
+.s{
+    color: #ffffff;
+    font-size: 2.3vw;
+}
+
+.t{
+    color: #834212;
+    font-size: 1.7vw;
+}
+
+.no_podium{
+    color: #656565;
+    font-size: 1.3vw;
 }
