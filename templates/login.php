@@ -42,7 +42,7 @@
                 {
                     case 'password':
                     ?>
-                        <div class="h2-register">
+                        <div class="e-login">
                             <strong>Erreur</strong> mot de passe incorrect
                         </div>
                     <?php
@@ -50,7 +50,7 @@
 
                     case 'email':
                     ?>
-                        <div class="h2-register">
+                        <div class="e-login">
                             <strong>Erreur</strong> email non valide
                         </div>
                     <?php
@@ -58,7 +58,7 @@
 
                     case 'already':
                     ?>
-                        <div class="h2-register">
+                        <div class="e-login">
                             <strong>Erreur</strong> déja connecté
                         </div>
                     <?php 

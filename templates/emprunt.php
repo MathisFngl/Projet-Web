@@ -26,7 +26,7 @@
                 $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
                 $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']+$solde,$dataUser['ID_User']));
                 header('Location:profile.php');
-            }
+            }else{header('Location:profile.php?emprunt=1');}
         }
     }
 ?>
