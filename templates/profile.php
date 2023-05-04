@@ -2,6 +2,7 @@
     session_start();
     require_once 'bdd.php';
     require('remember.php');
+    require_once 'calculTotalArgent.php';
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT ID_User, email,pseudo,soldeJoueur,photo,nbPartie FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -129,7 +130,7 @@
                         </div>
                         <div>
                             <label for="nom"><ion-icon name="cash-outline"></ion-icon> Porte monnaie actuel :</label>
-                            <input type="text" name="soldeUser" value="<?php echo $dataUser['soldeJoueur'] ?>$" readonly>
+                            <input type="text" name="soldeUser" value="<?php echo ArgentTotal($bdd, $dataUser['ID_User']) ?>$" readonly>
                         </div>
                     </div>
                 </div>

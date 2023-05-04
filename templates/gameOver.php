@@ -2,6 +2,7 @@
     session_start();
     require_once 'bdd.php';
     require('remember.php');
+    require_once 'calculTotalArgent.php';
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT ID_User, pseudo, nbPartie, soldeJoueur FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -22,6 +23,9 @@
     $reqDelAction = $bdd->prepare('DELETE FROM actionpossede WHERE ID_User = ?');
     $reqDelAction->execute(array($dataUser['ID_User']));
 
+$reqDelAction = $bdd->prepare('DELETE FROM historiqueportefeuille WHERE ID_User = ?');
+$reqDelAction->execute(array($dataUser['ID_User']));
+
     //Splash Screen aléatoire
     $file_path = '../static/splash.txt';
     $text = file_get_contents($file_path);
@@ -31,12 +35,6 @@
     $random_sentence = $sentences[$random_index];
 
     //Score
-    function Benefice($bdd, $ID_Action, $mois, $amount){
-        $requPrix = $bdd->prepare('SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois = ?');
-        $requPrix->execute(array($ID_Action, $mois));
-        $ActionPrix = $requPrix->fetch();
-        return $ActionPrix["prix"] * $amount;
-    }
 
     $reqcount = $bdd->prepare('SELECT COUNT(*) FROM historiquetrade WHERE ID_User = ?');
     $reqcount -> execute(array($dataUser["ID_User"]));

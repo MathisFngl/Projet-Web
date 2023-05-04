@@ -1,6 +1,7 @@
 <?php
   session_start();
   require_once 'bdd.php';
+  require_once 'calculTotalArgent.php';
   require('remember.php');
   if(isset($_SESSION['user'])){
     $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
@@ -365,7 +366,8 @@
     ?>
     <div class="player-info-bar">
       <div class="infos"> Joueur : <?php echo $dataUser['pseudo'] ?> </div>
-      <div class="infos"> Solde : <?php echo $dataUser['soldeJoueur'] ?> $ </div>
+      <div class="infos"> Solde utilisable: <?php echo $dataUser['soldeJoueur'] ?> $ </div>
+      <div class="infos"> Solde total: <?php echo ArgentTotal($bdd, $dataUser['ID_User']) ?> $ </div>
       <div class="infos"> Nombre de <?php echo $nameAction ?>  possédé : <?php echo $max_sell_amount[0]?> </div>
     </div>
 

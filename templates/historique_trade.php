@@ -2,23 +2,19 @@
 session_start();
 require_once 'bdd.php';
 require('remember.php');
+require_once 'calculTotalArgent.php';
 if(isset($_SESSION['user'])){
     $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
     $requUser->execute(array($_SESSION['user']));
     $dataUser = $requUser->fetch();
 }else{header('Location: deconnexion.php');}
 
-function ActionParser($bdd, $ID_Action){
+function ActionParser($bdd, $ID_Action)
+{
     $requNom = $bdd->prepare('SELECT nomAction FROM dataaction WHERE ID_Action = ?');
     $requNom->execute(array($ID_Action));
     $ActionName = $requNom->fetch();
     return $ActionName["nomAction"];
-}
-function Benefice($bdd, $ID_Action, $mois, $amount){
-    $requPrix = $bdd->prepare('SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois = ?');
-    $requPrix->execute(array($ID_Action, $mois));
-    $ActionPrix = $requPrix->fetch();
-    return $ActionPrix["prix"] * $amount;
 }
 ?>
 
