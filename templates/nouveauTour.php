@@ -44,7 +44,7 @@ function nouveauTour($bdd)
     $prelSolde = 0;
 
     for($i=0;$i<$nbEmprunt;$i++){
-        $prelSolde = $prelSolde + ($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt']);
+        $prelSolde = $prelSolde + (($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt'])+(($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt'])*0.2));
     }
     echo $prelSolde;
 

@@ -12,7 +12,7 @@
         $solde = $_POST['soldeEmprunt'];
         $mois = $_POST['moisEmprunt'];
         if($mois<24){
-            if($solde/$mois < $dataUser['soldeJoueur']){
+            if((($solde/$mois)+($solde/$mois)*0.2) < $dataUser['soldeJoueur']){
                 $reqEmprunt = $bdd->prepare('INSERT INTO emprunt(ID_User,moisEmprunt,soldeEmprunt) VALUES(?,?,?)');
                 $reqEmprunt->execute(array($dataUser['ID_User'],$mois,$solde));
 
