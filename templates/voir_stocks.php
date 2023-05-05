@@ -378,9 +378,10 @@
             };
             xhttp.open("GET", "nouveauTour.php", true);
             xhttp.send();
+
             location.reload();
         }
-        setInterval(Reload, 120000);
+        setInterval(Reload, 30000);
     </script>
   </body>
 </html>

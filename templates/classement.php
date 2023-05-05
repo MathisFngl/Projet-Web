@@ -74,7 +74,7 @@
                         <div class="titres">
                             <th class="label-titres"><p>Classement</p></th>
                             <th class="label-titres"><p>Nom</p></th>
-                            <th class="label-titres"><p>Solde Utilisable</p></th>
+                            <th class="label-titres"><p>Solde Total</p></th>
                         </div>
                     </tr>
                     <div class="tab_corps">
