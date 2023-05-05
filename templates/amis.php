@@ -3,27 +3,32 @@
     require_once 'bdd.php';
     require('remember.php');
     require_once 'calculTotalArgent.php';
+
+//  on recupère les informations d'un joueur via son token
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,ID_User,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
-    /* rechercher un ami*/
+
+    /* rechercher un ami contenant les caractères envoyé sauf admin et propre joueur connecté*/
     if(isset($_GET['rechercher']) && !empty($_GET['searchAmi'])){
         $search = htmlspecialchars($_GET['searchAmi']);
-        $allUsers=$bdd->prepare("SELECT pseudo,token,ID_User FROM user WHERE pseudo LIKE ? EXCEPT (SELECT pseudo,token,ID_User FROM user WHERE email=? or email=?)");
-        $allUsers->execute(array('%'.$search.'%',"virtualtrader23@gmail.com",$_SESSION['email']));
+        $allUsers=$bdd->prepare("SELECT pseudo,token,ID_User FROM user WHERE pseudo LIKE ? EXCEPT (SELECT pseudo,token,ID_User FROM user WHERE statut=? or ID_User=?)");
+        $allUsers->execute(array('%'.$search.'%',1,$dataUser['ID_User']));
     }
 
     /*liste d'amis si on est le suiveur de base*/
     $reqAmiFollower = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Follower=user.ID_User WHERE user.token = ? AND amis.statut = ?');
     $reqAmiFollower->execute(array($_SESSION['user'],1));
-    $nbAmiFollower = $reqAmiFollower->rowCount(); 
+    $nbAmiFollower = $reqAmiFollower->rowCount();
+
     /*liste d'amis si on est suivi de base*/
     $reqAmiFollowed = $bdd->prepare('SELECT * FROM amis INNER JOIN user ON amis.ID_Followed=user.ID_User WHERE user.token = ? AND amis.statut = ?');
     $reqAmiFollowed->execute(array($_SESSION['user'],1));
     $nbAmiFollowed = $reqAmiFollowed->rowCount(); 
 
+    /* ajout d'ami en insérant une nouvelle ligne dans la table ami*/
     if(isset($_GET['add'] ) && !empty($_GET['add'])){
         $reqIdAdd = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
         $reqIdAdd->execute(array($_GET['add']));
@@ -32,6 +37,8 @@
         $addUser->execute(array($dataUser['ID_User'],$idAdd['ID_User'],0));
         header('Location: amis.php');
     }
+
+    /* suppression d'ami en supprimant la ligne dans la table ami*/
     if(isset($_GET['supprime'] ) && !empty($_GET['supprime'])){
         $reqIdSupr = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
         $reqIdSupr->execute(array($_GET['supprime']));
@@ -40,10 +47,15 @@
         $suprAmi-> execute(array($idSupr['ID_User'],$dataUser['ID_User'],$dataUser['ID_User'],$idSupr['ID_User']));
         header('Location: amis.php');
     }
+
+    /* demande d'ami c'est a dire si le joueur suivi est celui connecté */
     $reqDemande = $bdd->prepare('SELECT pseudo,token FROM user INNER JOIN amis ON user.ID_User=amis.ID_Follower WHERE amis.ID_Followed = ? AND amis.statut = ? ');
     $reqDemande->execute(array($dataUser['ID_User'],0));
     $nbDemande = $reqDemande->rowCount();
+
+    /* accepter : on passe le statut à 1 */
     if(isset($_GET['accept'] ) && !empty($_GET['accept'])){
+         /* récupération de l'id du suiveur */
         $reqIdAccept = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
         $reqIdAccept->execute(array($_GET['accept']));
         $idAccept = $reqIdAccept->fetch();
@@ -51,7 +63,9 @@
         $acceptAmi-> execute(array(1,$idAccept['ID_User'],$dataUser['ID_User']));
         header('Location: amis.php');
     }
+    /*refuser : on supprime la ligne*/
     if(isset($_GET['refuse'] ) && !empty($_GET['refuse'])){
+        /* récupération de l'id du suiveur */
         $reqIdRefuse = $bdd->prepare('SELECT ID_User FROM user WHERE token=?');
         $reqIdRefuse->execute(array($_GET['refuse']));
         $idRefuse = $reqIdRefuse->fetch();
@@ -94,6 +108,7 @@
                 <button type="submit" name="rechercher" class="search-btn"></button>
             </form>
         </div>
+        <!-- rechercher une joueur -->
         <div class="searchJoueur">
             <?php 
                 if(isset($allUsers)){
@@ -112,6 +127,7 @@
                 }   
             ?>
         </div>
+        <!-- lister les amis -->
         <div class="amis">
             <?php
                 if($nbAmiFollower + $nbAmiFollowed>0){
@@ -124,6 +140,7 @@
                         <h2 class="h2-ami">Liste d'ami</h2>
                         <?php
                     }
+                    // amis qui nous suivent
                     foreach($reqAmiFollower as $amiFollower){
                         $reqAmiFollower = $bdd->prepare('SELECT pseudo,token FROM user WHERE ID_User = ?');
                         $reqAmiFollower->execute(array($amiFollower['ID_Followed']));
@@ -133,6 +150,7 @@
                     <?php 
                     
                     } 
+                    // amis que l'on suit
                     foreach($reqAmiFollowed as $amiFollowed){
                         $reqAmiFollowed = $bdd->prepare('SELECT pseudo,token FROM user WHERE ID_User = ?');
                         $reqAmiFollowed->execute(array($amiFollowed['ID_Follower']));
@@ -150,6 +168,7 @@
                 }
             ?>
         </div>
+        <!-- affichage des quelques informations de la personne  -->
         <?php 
             if(isset($_GET['profil'])){
                 $reqProfil = $bdd->prepare('SELECT pseudo, soldeJoueur,ID_User,photo FROM user WHERE token = ?');
@@ -180,6 +199,7 @@
                     $reqAdd = $bdd->prepare('SELECT ID_Followed FROM amis WHERE statut = ? AND ID_Follower = ?');
                     $reqAdd->execute(array(0,$amiInfo['ID_User']));
                     $verifAdd = $reqAdd->fetch();
+                    // si demande alors les boutons accepter / refuser : statut = 0
                     if($verifAdd){
                         ?>
                         <div class="button-profil-ar">
@@ -195,6 +215,7 @@
                             </div> 
                         </div>
                     <?php
+                    // si ami alors bouton supprimé : statut = 1
                     }else{
                         ?>
                         <div class="supr-button">
@@ -204,6 +225,7 @@
                         </div>
                     <?php }   
                  }
+                 //si une recherche alors bouton ajouter : pas de lignes dans la table amis
                 else{
                     ?>
                     <div class="supr-button">
@@ -216,6 +238,7 @@
                 </div>
             <?php }
         ?>
+        <!-- liste demande d'ami -->
         <div class="demande">
             <h2 class="h2-demande">Demandes d'amis</h2>
         <?php 

@@ -2,6 +2,7 @@
     session_start();
     require_once 'bdd.php';
     require('remember.php');
+
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT statut FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -9,10 +10,11 @@
     }
     if(isset($dataUser['statut']) AND $dataUser['statut'] == 1){
 
-    }else{
+    }else{ //si pas admin (statut =1) alors deconnexion
         header('Location: deconnexion.php');
     }   
 
+    /*suppression d'un personne en supprimant sa ligne dans la table user */
     if(isset($_GET['supprime']) AND !empty($_GET['supprime'])){
         $idSupr = (int) $_GET['supprime'];
 
@@ -57,6 +59,7 @@
                     </div>
                 </tr>
                 <?php
+                // récupère tout  les informations de tout les joueurs et les affichent joueur par joueur dans un tableau
                 foreach($bdd->query('SELECT * FROM user EXCEPT (SELECT * FROM user WHERE email="virtualtrader23@gmail.com")') as $infoUser ){ 
                 ?>
                 <div class="tabAdmin">

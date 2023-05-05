@@ -19,15 +19,19 @@
         $userExist = $verif->rowCount();
         
         if($userExist > 0){ 
+            // verifie que c'est bien un mail
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){ 
+                //verifie mot de passe renseigner correspond
                 if(password_verify($password,$data['mdp'])){
-                    if($email == 'virtualtrader23@gmail.com'){
+                    // si admin
+                    if($data['statut'] == 1){
                         $_SESSION['user'] = $data['token'];
                         $_SESSION['statut'] = $data['statut'];
                         header('Location: admin.php');
                         die();
                     }
                     else{
+                        //création du token
                         if(isset($_POST['remember'])){
                             setcookie('user',$data['token'],time()+3600*24*3,'/','localhost',false,true);
                         }
@@ -39,6 +43,7 @@
                         header('Location: profile.php');
                         die();
                     }
+                    // refidirge vers la page avec les différentes erreurs
                 }else{ header('Location: login.php?reg_err=password'); die();}
             }else{ header('Location: login.php?reg_err=email'); die();}
         }else{ header('Location: login.php?reg_err=already'); die();}

@@ -1,5 +1,6 @@
 <?php 
     require_once 'bdd.php';
+    // si le cookie existe on récupère les informations et on les ajoutent à une variable de session
     if(isset($_COOKIE['user']) && !isset($_SESSION['user'])){
         $token=$_COOKIE['user'];
         $reqRemember = $bdd->prepare('SELECT * FROM user WHERE token = ?');

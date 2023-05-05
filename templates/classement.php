@@ -2,17 +2,16 @@
     session_start();
     require_once 'bdd.php';
     require('remember.php');
+    // vérification joueur connecté + récupération de ses informations 
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
-    $photo = $bdd->prepare('SELECT photo FROM photo WHERE ID_Photo = ?');
-    $photo->execute(array($dataUser['photo']));
-    $image = $photo->fetch();
-    /* selectionner les joueurs */
-    $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user EXCEPT (SELECT pseudo,soldeJoueur FROM user WHERE email="virtualtrader23@gmail.com") ORDER BY soldeJoueur DESC');
+    
+    /* selectionner les joueurs sauf admin dans l'ordre décroissant par rapport au prix*/
+    $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user EXCEPT (SELECT pseudo,soldeJoueur FROM user WHERE statut=1) ORDER BY soldeJoueur DESC');
     $reqJoueur->execute();
 ?>
 <!DOCTYPE html>

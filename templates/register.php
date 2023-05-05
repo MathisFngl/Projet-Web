@@ -3,6 +3,7 @@
     require_once 'bdd.php';
     require('remember.php');
 
+    // récupération des photos de la table photo
     $photo = $bdd->prepare('SELECT photo,ID_Photo FROM photo');
     $photo->execute();
     
