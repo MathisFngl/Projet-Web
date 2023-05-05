@@ -38,7 +38,7 @@ function nouveauTour($bdd)
     $nouveauMois = $Mois[0] + 1;
 
     //GESTION EMPRUNT
-    $reqEmprunt = $bdd->prepare('SELECT moisEmprunt,soldeEmprunt FROM emprunt WHERE ID_User=?');
+    $reqEmprunt = $bdd->prepare('SELECT moisEmprunt,soldeEmprunt,ID_Emprunt FROM emprunt WHERE ID_User=?');
     $reqEmprunt->execute(array($dataUser['ID_User']));
     $emprunt = $reqEmprunt->fetchAll();
     $nbEmprunt = $reqEmprunt->rowCount();
@@ -46,6 +46,15 @@ function nouveauTour($bdd)
 
     for($i=0;$i<$nbEmprunt;$i++){
         $prelSolde = $prelSolde + ($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt']);
+        // si mois =1 donc le derniier mois il n'y aura plus d'emprunt donc un supprime
+        if($emprunt[$i]['moisEmprunt'] == 1){
+            $reqmoisEmprunt = $bdd->prepare('DELETE FROM emprunt WHERE ID_Emprunt = ?');
+            $reqmoisEmprunt -> execute(array($emprunt[$i]['ID_Emprunt']));
+        }
+        else{
+            $reqmoisEmprunt = $bdd->prepare('UPDATE  emprunt SET moiEmprunt = ? WHERE ID_Emprunt = ?');
+            $reqmoisEmprunt -> execute(array($emprunt[$i]['moisEmprunt']-1,$emprunt[$i]['ID_Emprunt']));
+        }
     }
     echo $prelSolde;
 
@@ -56,6 +65,7 @@ function nouveauTour($bdd)
 
     $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
     $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']-$prelSolde,$dataUser['ID_User']));
+    
 
     // GESTION DES DIVIDENDES
 
