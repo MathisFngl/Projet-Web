@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once 'bdd.php';
-
+    require('remember.php');
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT statut FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
