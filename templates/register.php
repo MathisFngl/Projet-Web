@@ -31,8 +31,6 @@
                 <li><a href="index.php">Acceuil</a></li>
                 <li><a href="login.php">Connexion</a></li>
                 <li class="active"><a href="#">S'inscrire</a></li>
-                <li><a href="info.php">Info</a></li>
-                <li><a href="#">Contact</a></li>
             </ul>
         </div>
     </nav>

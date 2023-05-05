@@ -26,8 +26,6 @@
                 <li><a href="index.php">Acceuil</a></li>
                 <li class="active"><a href="#">Connexion</a></li>
                 <li><a href="register.php">S'inscrire</a></li>
-                <li><a href="info.php">Info</a></li>
-                <li><a href="#">Contact</a></li>
             </ul>
         </div>
     </nav>
