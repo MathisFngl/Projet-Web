@@ -11,7 +11,7 @@
 
     
     /* selectionner les joueurs sauf admin dans l'ordre décroissant par rapport au prix*/
-    $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user EXCEPT (SELECT pseudo,soldeJoueur FROM user WHERE statut=1) ORDER BY soldeJoueur DESC');
+    $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user EXCEPT (SELECT pseudo,soldeJoueur, ID_User FROM user WHERE statut=1) ORDER BY soldeJoueur DESC');
     $reqJoueur->execute();
 
     $nbJoueur = $bdd->prepare('SELECT COUNT(*) FROM user');

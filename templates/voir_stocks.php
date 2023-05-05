@@ -2,7 +2,10 @@
   session_start();
   require_once 'bdd.php';
   require_once 'calculTotalArgent.php';
+  require 'nouveauTour.php';
   require('remember.php');
+
+
   if(isset($_SESSION['user'])){
     $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
     $token = $_SESSION['user'];
@@ -373,11 +376,6 @@
 
     <script>
         function Reload() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-            };
-            xhttp.open("GET", "nouveauTour.php", true);
-            xhttp.send();
             location.reload();
         }
         setInterval(Reload, 30000);

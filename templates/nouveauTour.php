@@ -1,5 +1,4 @@
 <?php
-
     require_once 'bdd.php';
     require_once 'update_graph.php';
     require_once 'calculTotalArgent.php';
@@ -26,7 +25,11 @@ function nouveauTour($bdd)
     $stocksReq->execute();
     $stock = $stocksReq->fetch();
 
-    while ($stock["ID_Action"] != null) {
+    $nbStockReq = $bdd->prepare("SELECT COUNT(*) FROM dataaction");
+    $nbStockReq->execute();
+    $nbstock = $nbStockReq->fetch();
+
+    for ($z=0; $z<$nbstock[0]; $z++) {
         $id = $stock["ID_Action"];
         newCandle($bdd, $id);
         $stock = $stocksReq->fetch();
@@ -52,7 +55,7 @@ function nouveauTour($bdd)
             $reqmoisEmprunt -> execute(array($emprunt[$i]['ID_Emprunt']));
         }
         else{
-            $reqmoisEmprunt = $bdd->prepare('UPDATE  emprunt SET moiEmprunt = ? WHERE ID_Emprunt = ?');
+            $reqmoisEmprunt = $bdd->prepare('UPDATE  emprunt SET moisEmprunt = ? WHERE ID_Emprunt = ?');
             $reqmoisEmprunt -> execute(array($emprunt[$i]['moisEmprunt']-1,$emprunt[$i]['ID_Emprunt']));
         }
     }
@@ -86,7 +89,7 @@ function nouveauTour($bdd)
         if ($nouveauMois % 12 == 0) {
             $sommeDividendes = 0;
             $DivAc = $bdd->prepare("SELECT ID_Action, nombreAction FROM actionpossede WHERE ID_User = ?;");
-            $DivAc->execute(array($dataUser["ID_User"], $Mois[0]));
+            $DivAc->execute(array($dataUser["ID_User"]));
             $ActionDiv = $DivAc->fetch();
 
             $DivCount = $bdd->prepare("SELECT COUNT(*) FROM actionpossede WHERE ID_User = ?;");
@@ -114,11 +117,17 @@ function nouveauTour($bdd)
             $sql_historique_trade -> execute(array($dataUser['ID_User'], $sommeDividendes, $Mois[0]));
         }
         //GESTION GAME OVER
-        if(ArgentTotal($bdd, $dataUser["ID_User"]) < 1000){
-            header("Location: gameOver.php");
-        }
+
+        $dataUser = $requUser->fetch();
+    }
+    if(isset($_SESSION['user'])){
+        $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
+        $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }
 
-    header("Location: voir_stocks.php?ID_Action=" . $_POST["ID_Action"]);
+    if(ArgentTotal($bdd, $dataUser["ID_User"]) < 1000){
+        header("Location: gameOver.php");
+    }
+    header("Location: voir_stocks.php?ID_Action=1");
 }
