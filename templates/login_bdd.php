@@ -13,7 +13,7 @@
         // On vérifie si l'utilisateur existe
         $requUser = $bdd->prepare('UPDATE user SET token = ? WHERE email = ?');
         $requUser->execute(array(bin2hex(openssl_random_pseudo_bytes(64)),$email));
-        $verif = $bdd->prepare('SELECT pseudo, email, mdp,token FROM user WHERE email = ?');
+        $verif = $bdd->prepare('SELECT pseudo, email, mdp,token,statut FROM user WHERE email = ?');
         $verif->execute(array($email));
         $data = $verif->fetch();
         $userExist = $verif->rowCount();

@@ -13,8 +13,8 @@
         $mois = $_POST['moisEmprunt'];
         if($mois<24){
             if($solde/$mois < $dataUser['soldeJoueur']){
-                $reqEmprunt = $bdd->prepare('INSERT INTO emprunt(ID_User,moisEmprunt,soldeEmprunt) VALUES(?,?,?)');
-                $reqEmprunt->execute(array($dataUser['ID_User'],$mois,$solde));
+                $reqEmprunt = $bdd->prepare('INSERT INTO emprunt(ID_User,moisEmprunt,soldeEmprunt,valeurEmprunt) VALUES(?,?,?,?)');
+                $reqEmprunt->execute(array($dataUser['ID_User'],$mois,$solde,$solde/$mois));
 
                 $MoisReq = $bdd->prepare("SELECT MAX(mois) FROM historiqueaction;");
                 $MoisReq->execute();

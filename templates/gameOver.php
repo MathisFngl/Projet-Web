@@ -23,8 +23,11 @@
     $reqDelAction = $bdd->prepare('DELETE FROM actionpossede WHERE ID_User = ?');
     $reqDelAction->execute(array($dataUser['ID_User']));
 
-$reqDelAction = $bdd->prepare('DELETE FROM historiqueportefeuille WHERE ID_User = ?');
-$reqDelAction->execute(array($dataUser['ID_User']));
+    $reqDelAction = $bdd->prepare('DELETE FROM historiqueportefeuille WHERE ID_User = ?');
+    $reqDelAction->execute(array($dataUser['ID_User']));
+
+    $reqDelEmprunt =  $bdd->prepare('DELETE FROM emprunt WHERE ID_User = ?');
+    $reqDelEmprunt->execute(array($dataUser['ID_User']));
 
     //Splash Screen aléatoire
     $file_path = '../static/splash.txt';
