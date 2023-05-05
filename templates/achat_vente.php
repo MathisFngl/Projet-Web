@@ -30,7 +30,7 @@
                 $sql_action_possede->execute(array($ID_Action, $dataUser['ID_User'], $numberInput, $prix));
 
                 $sql_historique = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,?,?,0,?)");
-                $sql_historique->execute(array($dataUser['ID_User'], $ID_Action, $numberInput, $mois));
+                $sql_historique->execute(array($dataUser['ID_User'], $ID_Action, $numberInput, $mois-1));
             }
             $dataUser['soldeJoueur'] = $new_solde_joueur;
         }
@@ -62,7 +62,7 @@
             }
 
             $sql_historique = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,?,?,1,?)");
-            $sql_historique->execute(array($dataUser['ID_User'], $ID_Action, $_POST['numberInput'], $mois));
+            $sql_historique->execute(array($dataUser['ID_User'], $ID_Action, $_POST['numberInput'], $mois-1));
 
             $numberInput = $_POST['numberInput'];
             $moneyCalc = $numberInput*$prix;

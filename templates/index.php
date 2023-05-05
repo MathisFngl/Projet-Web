@@ -23,8 +23,6 @@ require('remember.php')
                     <li class="active"><a href="#">Acceuil</a></li>
                     <li><a href="login.php">Connexion</a></li>
                     <li><a href="register.php">S'inscrire</a></li>
-                    <li><a href="#">Info</a></li>
-                    <li><a href="#">Contact</a></li>
                 </ul>
             </div>
         </nav>

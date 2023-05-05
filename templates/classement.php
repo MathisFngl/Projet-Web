@@ -2,7 +2,7 @@
     session_start();
     require_once 'bdd.php';
     require('remember.php');
-    // vérification joueur connecté + récupération de ses informations 
+    require_once 'calculTotalArgent.php';
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
@@ -13,6 +13,26 @@
     /* selectionner les joueurs sauf admin dans l'ordre décroissant par rapport au prix*/
     $reqJoueur = $bdd->prepare('SELECT pseudo, soldeJoueur FROM user EXCEPT (SELECT pseudo,soldeJoueur FROM user WHERE statut=1) ORDER BY soldeJoueur DESC');
     $reqJoueur->execute();
+
+    $nbJoueur = $bdd->prepare('SELECT COUNT(*) FROM user');
+    $nbJoueur->execute();
+    $nb = $nbJoueur->fetch();
+
+    $classement = $reqJoueur->fetch();
+    $classement_j = [];
+    for($j = 0; $j < $nb[0]-1; $j++){
+        $temp = [$classement["pseudo"], ArgentTotal($bdd,$classement["ID_User"])];
+        array_push($classement_j, $temp);
+        $classement = $reqJoueur->fetch();
+    }
+
+    function sort_by_second_element($a, $b) {
+        return $b[1] - $a[1];
+    }
+
+    // Sort the array using the defined function
+    usort($classement_j, 'sort_by_second_element');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,20 +72,18 @@
                         <div class="titres">
                             <th class="label-titres"><p>Classement</p></th>
                             <th class="label-titres"><p>Nom</p></th>
-                            <th class="label-titres"><p>Solde Utilisable</p></th>
+                            <th class="label-titres"><p>Solde Total</p></th>
                         </div>
                     </tr>
                     <div class="tab_corps">
                         <?php
-                        $classement = $reqJoueur->fetch();
                         $i = 1;
-                        while($classement != null){
+                        while($i < $nb[0]){
                             echo "<tr>
                                 <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ". $i ." </td>
-                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ".$classement["pseudo"]."</td>
-                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'>". $classement["soldeJoueur"]." $"." </td>
+                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ".$classement_j[$i-1][0]."</td>
+                                <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'>". $classement_j[$i-1][1]." $"." </td>
                             </tr>";
-                            $classement = $reqJoueur->fetch();
                             $i++;
                         }
                         ?>

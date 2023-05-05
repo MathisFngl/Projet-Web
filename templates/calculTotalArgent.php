@@ -29,7 +29,7 @@ function ArgentTotal($bdd, $ID_User){
     $ActDiv = $Div->fetch(); // Demande quelles sont les actions que le joueur possède.
 
     for ($k = 0; $k < $nbAct; $k++) {
-        $Total += Benefice($bdd, $ActDiv["ID_Action"], $Mois[0], $ActDiv["nombreAction"]);
+        $Total += Benefice($bdd, $ActDiv["ID_Action"], $Mois[0]-1, $ActDiv["nombreAction"]);
         $ActDiv = $Div->fetch();
     }
 

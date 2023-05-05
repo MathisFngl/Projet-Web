@@ -1,4 +1,5 @@
 <?php
+
     require_once 'bdd.php';
     require_once 'update_graph.php';
     require_once 'calculTotalArgent.php';
@@ -68,43 +69,44 @@ function nouveauTour($bdd)
     $nbUser = $nbUser[0];
 
     for ($i = 0; $i < $nbUser; $i++) {
-        // HISTORIQUE PORTEFEUILLE
-        $sql_historique = $bdd->prepare("INSERT INTO historiqueportefeuille(ID_User, mois, solde) VALUES (?,?,?)");
-        $sql_historique->execute(array($dataUser['ID_User'], $Mois[0], ArgentTotal($bdd, $dataUser['ID_User'])));
+
+        $sql_historique_portefeuille = $bdd->prepare("INSERT INTO historiqueportefeuille(ID_User, mois, solde) VALUES (?,?,?)");
+        $sql_historique_portefeuille -> execute(array($dataUser['ID_User'], $Mois[0], ArgentTotal($bdd, $dataUser['ID_User'])));
 
         if ($nouveauMois % 12 == 0) {
             $sommeDividendes = 0;
-            $DivAc = $bdd->prepare("SELECT ID_Action, nombreAction, prix FROM actionpossede INNER JOIN historiqueaction ON actionpossede.ID_Action = historiqueaction.ID_Action WHERE ID_User = ? AND mois = ?;");
+            $DivAc = $bdd->prepare("SELECT ID_Action, nombreAction FROM actionpossede WHERE ID_User = ?;");
             $DivAc->execute(array($dataUser["ID_User"], $Mois[0]));
             $ActionDiv = $DivAc->fetch();
 
             $DivCount = $bdd->prepare("SELECT COUNT(*) FROM actionpossede WHERE ID_User = ?;");
             $DivCount->execute(array($dataUser["ID_User"]));
             $nbActions = $DivCount->fetch();
-            $nbActions = $nbActions[0];
 
-            for ($j = 0; $j < $nbActions; $j++) {
+            for ($j = 0; $j < $nbActions[0]; $j++) {
+
+                $PrixAc = $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois = ?;");
+                $PrixAc->execute(array($ActionDiv["ID_Action"], $Mois[0]-1));
+                $ActionPrix = $PrixAc->fetch();
+
                 $Div = $bdd->prepare("SELECT dividende FROM dataaction WHERE ID_Action = ?;");
                 $Div->execute(array($ActionDiv["ID_Action"]));
-                printf($ActionDiv["ID_Action"]);
                 $dividende = $Div->fetch();
 
-                $sommeDividendes = $sommeDividendes + ($dividende[0]/100 * $ActionDiv["prix"] * $ActionDiv["nombreAction"]);
+                $sommeDividendes = $sommeDividendes + ($dividende[0]/100 * $ActionPrix[0] * $ActionDiv["nombreAction"]);
                 $ActionDiv = $DivAc->fetch();
             }
             $new_solde_joueur = $dataUser["soldeJoueur"] + $sommeDividendes;
             $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE ID_User = ?");
-            $sql_money_update->execute(array($new_solde_joueur, $dataUser["ID_User"]));
+            $sql_money_update -> execute(array($new_solde_joueur, $dataUser["ID_User"]));
 
-            $sql_historique = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,2,?)");
-            $sql_historique->execute(array($dataUser['ID_User'], $sommeDividendes, $Mois[0]));
+            $sql_historique_trade = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,2,?)");
+            $sql_historique_trade -> execute(array($dataUser['ID_User'], $sommeDividendes, $Mois[0]));
         }
-
         //GESTION GAME OVER
         if(ArgentTotal($bdd, $dataUser["ID_User"]) < 1000){
             header("Location: gameOver.php");
         }
-
         $dataUser = $requUser->fetch();
     }
 
