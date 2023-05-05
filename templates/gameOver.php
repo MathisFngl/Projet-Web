@@ -3,6 +3,7 @@
     require_once 'bdd.php';
     require('remember.php');
     require_once 'calculTotalArgent.php';
+
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT ID_User, pseudo, nbPartie, soldeJoueur FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
