@@ -145,7 +145,7 @@
             <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
             <div class="portefeuille_historique">
                 <?php
-
+                    // Créé le tableau de l'historique qui sera affiché dans le profil (maximum 12 mois)
                     $data_array = [];
                     $CountLineReq = $bdd->prepare("SELECT COUNT(solde) FROM historiqueportefeuille WHERE ID_User = ?");
                     $CountLineReq -> execute(array($dataUser['ID_User']));
@@ -168,12 +168,11 @@
                 <canvas id="myChart" class="chart"></canvas>
                 <script>var ctx = document.getElementById('myChart').getContext('2d');
 
-                    const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>;
+                    const data_array = <?php echo json_encode($data_array, JSON_NUMERIC_CHECK); ?>; // Récupère le tableau en Javascript
                     data_array.reverse();
 
-                    // Define the data for the chart
                     const n = <?php echo $nbLine ?>;
-                    const label = Array.from({length: n}, (_, i) => i + 1)
+                    const label = Array.from({length: n}, (_, i) => i + 1) // Créé un tableau de la forme [0,1,2,3,...] de taille n
                     var data = {
                         labels: label,
                         datasets: [{
@@ -186,7 +185,6 @@
                         }]
                     };
 
-                    // Create the chart
                     var myChart = new Chart(ctx, {
                         type: 'line',
                         data: data,

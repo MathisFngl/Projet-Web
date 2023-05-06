@@ -13,11 +13,13 @@
     $prix = $_POST['unit-price'];
     $ID_Action = $_POST['ID_Action'];
 
-    $requMois = $bdd->prepare('SELECT mois FROM historiqueaction WHERE ID_Action = ? AND mois = (SELECT MAX(mois) FROM historiqueaction WHERE ID_Action = ?)');
-    $requMois->execute(array($ID_Action, $ID_Action));
+    //Récupère le mois courant
+    $requMois = $bdd->prepare('SELECT MAX(mois) AS mois FROM historiqueaction WHERE ID_Action = ?');
+    $requMois->execute(array($ID_Action));
     $valMois = $requMois->fetch();
     $mois = $valMois["mois"];
 
+    //Si l'action est un achat
     if (isset($_POST['buy'])) {
         $numberInput = $_POST['numberInput'];
         $moneyCalc = $numberInput*$prix;
@@ -34,6 +36,8 @@
             }
             $dataUser['soldeJoueur'] = $new_solde_joueur;
         }
+
+    //Si l'action est une vente
     } else if (isset($_POST['sell'])) {
         $stockAmount = $bdd->prepare("SELECT SUM(nombreAction) FROM actionpossede WHERE ID_Action = ? AND ID_User = ?");
         $stockAmount -> execute(array($ID_Action, $dataUser['ID_User']));
@@ -43,6 +47,7 @@
         $Actions -> execute(array($ID_Action, $dataUser['ID_User']));
         $ActionToSubtract = $Actions -> fetch();
 
+        //Nous devons cycler dans toute les lignes avec la même action pour pouvoir les mettre a jour ou les supprimer si besoin.
         if($max_sell_amount[0] >= $_POST['numberInput']){
             $amount_to_subtract = $_POST['numberInput'];
             while($amount_to_subtract > 0){
@@ -67,6 +72,7 @@
             $numberInput = $_POST['numberInput'];
             $moneyCalc = $numberInput*$prix;
 
+            //Met a jour le solde du joueur
             $new_solde_joueur = $dataUser["soldeJoueur"] + $moneyCalc;
             $sql_money_update = $bdd->prepare("UPDATE user SET soldeJoueur = ?  WHERE token = ?");
             $sql_money_update->execute(array($new_solde_joueur, $_SESSION['user']));

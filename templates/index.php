@@ -8,7 +8,7 @@ require('remember.php')
     <title>Tradding project</title>
     <link rel="stylesheet" href="../static/style/style.css">
         
-    <body>
+    <body class = "main_body">
         <nav class="navbar menu-padding-50">
             <svg width="48" height="48" fill="none" viewBox="0 0 24 24" class="icon">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.75 11.25L10.25 5.75"></path>
@@ -26,7 +26,11 @@ require('remember.php')
                 </ul>
             </div>
         </nav>
-        <div class="menu_divider"></div>
-        <h1>Bienvenue sur le jeu Virtual Trader</h1>
+        <div class = "menu_divider"></div>
+        <div class = "main_title"> Bienvenue sur le jeu Virtual Trader</div>
+        <div class="instructions"> Connectez vous pour retrouver votre partie, Inscrivez-vous si vous n'en avez pas une. </div>
     </body>
+    <footer class="main_menu_footer">
+        <div class="footer_text"> © Copyright 2023 | Fanigliulo Mathis , Milochevitch Antoine | All rights reserved </div>
+    </footer>
 </html>

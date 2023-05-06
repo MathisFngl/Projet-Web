@@ -401,8 +401,8 @@
       <div class="infos"> Solde total: <?php echo ArgentTotal($bdd, $dataUser['ID_User']) ?> $ </div>
       <div class="infos"> Nombre de <?php echo $nameAction ?>  possédé : <?php echo $max_sell_amount[0]?> </div>
     </div>
-
     <script>
+        // Raffraichi la page toute les 30 secondes (envoyant donc une requette à nouveauTour.php puisqu'il est appelé à la ligne 5
         function Reload() {
             location.reload();
         }

@@ -28,6 +28,7 @@ function ArgentTotal($bdd, $ID_User){
     $Div->execute(array($ID_User));
     $ActDiv = $Div->fetch(); // Demande quelles sont les actions que le joueur possède.
 
+    //Boucle pour toute les actions possédées, et ajoute leur prix dans la somme totale possédée par le joueur
     for ($k = 0; $k < $nbAct; $k++) {
         $Total += Benefice($bdd, $ActDiv["ID_Action"], $Mois[0]-1, $ActDiv["nombreAction"]);
         $ActDiv = $Div->fetch();

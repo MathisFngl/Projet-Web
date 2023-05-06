@@ -19,7 +19,6 @@
     $MoisReq->execute();
     $Mois = $MoisReq->fetch();
 
-
     $sql_historique = $bdd->prepare("INSERT INTO historiqueportefeuille(ID_User, mois, solde) VALUES (?,?,?)");
     $sql_historique->execute(array($dataUser['ID_User'], $Mois[0], $dataUser["soldeJoueur"]));
 
@@ -41,7 +40,6 @@
     $random_sentence = $sentences[$random_index];
 
     //Score
-
     $reqcount = $bdd->prepare('SELECT COUNT(*) FROM historiquetrade WHERE ID_User = ?');
     $reqcount -> execute(array($dataUser["ID_User"]));
     $lines = $reqcount->fetch();
@@ -52,11 +50,17 @@
     $Somme_gagnee = 0;
     for($i=0; $i < $lines[0]; $i++){
 
+        // Si le gain est une vente de stock
         if($donnees["statut"] == 1) {
             $Somme_gagnee += Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"]);
         }
+        // Si la valeur est un dividende la somme gagnée est stockée dans "nombreAction"
         else if($donnees["statut"] == 2){
             $Somme_gagnee += $donnees["nombreAction"];
+        }
+        // Si la valeur est un achat, alors on déduit la somme
+        else if($donnees["statut"] == 0){
+            $Somme_gagnee -= Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"]);
         }
         $donnees = $req->fetch();
     }

@@ -79,6 +79,7 @@
                         <?php
                         $i = 1;
                         while($i < $nb[0]){
+                            // Ici, f est le style css pour le premier, s pour second et t pour 3e. Sinon le style no_podium est utilisé
                             echo "<tr>
                                 <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ". $i ." </td>
                                 <td class='" . (($i == 1) ? 'f' : (($i == 2) ? 's' : (($i == 3) ? 't' : 'no_podium'))). "'> ".$classement_j[$i-1][0]."</td>
