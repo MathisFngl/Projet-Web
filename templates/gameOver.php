@@ -4,12 +4,14 @@
     require('remember.php');
     require_once 'calculTotalArgent.php';
 
+    //  on recupère les informations d'un joueur via son token + on vérifie s'il est connecté
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT ID_User, pseudo, nbPartie, soldeJoueur FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
+    // rénitialise les informations de jeu du joueur (solde, emprunt, nombre partie ,action posséder)
     $reqSolde = $bdd->prepare('UPDATE user SET soldeJoueur = ?, nbPartie = ? WHERE ID_User = ?');
     $reqSolde->execute(array(10000.00,$dataUser['nbPartie']+1,$dataUser['ID_User']));
 

@@ -38,6 +38,7 @@
     <div class="menu_divider"></div>
     <section class="form-box-register">
     <?php 
+    // erreur du à l'inscription
         if(isset($_GET['reg_err']))
             {
                 $err = htmlspecialchars($_GET['reg_err']);
@@ -104,6 +105,7 @@
                     <div class="modal-register">
                         <button class="close-modal-register modal-trigger-register">X</button>
                         <?php 
+                        // affiche les avatars
                             foreach($photo as $image){
                                 echo '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil" class="modal-trigger-register" onclick="selectPhoto('.$image['ID_Photo'].')">';
                             }

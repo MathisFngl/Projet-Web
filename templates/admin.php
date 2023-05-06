@@ -1,8 +1,9 @@
 <?php
     session_start();
     require_once 'bdd.php';
-    require('remember.php');
 
+    require('remember.php');
+//  on recupère les informations d'un joueur via son token + on vérifie s'il est connecté et que un admin
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT statut FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));

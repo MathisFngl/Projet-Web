@@ -1,18 +1,24 @@
 <?php
     session_start();
     require_once 'bdd.php';
-    require('remember.php');
+    require('remember.php'); // si il existe un cookie
+
+//  on recupère les informations d'un joueur via son token + on vérifie la connexion
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,photo,mdp FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
 
+    // récupértion des photos
     $photo = $bdd->prepare('SELECT photo,ID_Photo FROM photo');
     $photo->execute();
 
+    // si un des champs n'est pas vide alors on le modifie
     if(!empty($_POST['pseudo']) || !empty($_POST['email']) || !empty($_POST['password']) || !empty($_POST['password2']) || !empty($_POST['photo'])){
         $modifOk = true;
+
+        // modification du pseudo si il a bien été modifier
         if($_POST['pseudo'] != $dataUser['pseudo']){
             $pseudo = $_POST['pseudo'];
             if(strlen($pseudo) < 100){
@@ -20,6 +26,8 @@
                 $pseudoUpdate->execute(array($pseudo,$_SESSION['user']));
             }else{ echo "pseudo trop long"; $modifOk = false;}
         }else{echo "pseudo pareil";}
+
+        // modification de l'email
         if($_POST['email'] != $dataUser['email']){
             $email = $_POST['email'];
             $email = strtolower($email);
@@ -35,7 +43,9 @@
                     }else{echo "email trop grand"; $modifOk = false;}
                 }else{echo "email non valide"; $modifOk = false;}
             }else{echo "email deja pris"; $modifOk = false;}
-        }else{echo "email pareil";}    
+        }else{echo "email pareil";} 
+
+        // modification du mdp   
         if($_POST['password'] === $_POST['password2']){
             $password = $_POST['password'];
             if(password_verify($password,$dataUser['mdp'])){
@@ -44,11 +54,15 @@
                 $passwordUpdate->execute(array($password,$_SESSION['user']));
             }else{ echo "mdp pareil";}
         }else{echo "mdp différent"; $modifOk = false;}
+
+        // modification de l'avatar
         if ($_POST['photo'] != $dataUser['photo'] && $_POST['photo'] != false){
             $imageUp = $_POST['photo'];
             $photoUpdate = $bdd->prepare('UPDATE user SET photo=? WHERE token=? ');
             $photoUpdate->execute(array($imageUp,$_SESSION['user']));
         }
+
+        // s'il n'y a eu aucune erreur de modification on redirige vers le profil
         if($modifOk == true){
             header('Location: profile.php');
         }
@@ -110,6 +124,7 @@
                     <div class="modal-register">
                         <button class="close-modal-register modal-trigger-register">X</button>
                         <?php 
+                        // on affiche toute les avatars
                             foreach($photo as $image){
                                 echo '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil" class="modal-trigger-register" onclick="selectPhoto('.$image['ID_Photo'].')">';
                             }
@@ -123,7 +138,7 @@
             
                 <script>
                 function selectPhoto(photo) {
-                // Sélectionnez la photo cliquée
+                // Sélectionnez l'avatar cliquée
                     var photoInput = document.getElementById("photo");
                     photoInput.value = photo;
                 }

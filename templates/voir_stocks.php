@@ -5,44 +5,57 @@
   require 'nouveauTour.php';
   require('remember.php');
 
-
+ //  on recupère les informations d'un joueur via son token + on vérifie s'il est connecté
   if(isset($_SESSION['user'])){
     $requUser = $bdd->prepare('SELECT pseudo, soldeJoueur, ID_User FROM user WHERE token = ?');
     $token = $_SESSION['user'];
     $requUser->execute(array($token));
     $dataUser = $requUser->fetch();
   }else{header('Location: deconnexion.php');}
+
+  // GESTION TRI DES ACTIONS 
+
   $reqMaxPrice = $bdd->prepare('SELECT MAX(prix) as prix FROM historiqueaction ORDER BY mois DESC');
   $reqMaxPrice->execute();
   $maxPrice = $reqMaxPrice->fetch();
   $nbSearchAction = 0;
   $nbPrixAction = 0;
+  // si un des champs est vide 
     if(!empty($_POST['searchAction']) || !empty($_POST['periode']) || !empty($_POST['pourcentage']) || !empty($_POST['triPrix'])){
-        if(!empty($_POST['searchAction'])){
+       // si une actio à été rechercher -> revoie un tableau contenant toutes les actions comportant les caractère rechercher 
+      if(!empty($_POST['searchAction'])){
             $reqSearchAction = $bdd->prepare('SELECT nomAction,ID_Action FROM dataaction WHERE nomAction LIKE ?');
             $reqSearchAction->execute(array('%'.$_POST['searchAction'].'%'));
             $searchAction = $reqSearchAction->fetchAll();
             $nbSearchAction = $reqSearchAction->rowCount();
         }
+        // Si trie par pourcentage
         if(!empty($_POST['periode']) && !empty($_POST['pourcentage'])){
+          // par mois
             if($_POST['periode'] == "mois"){
+              // récupération des informations de chaques actions
               $reqID_Action = $bdd->prepare('SELECT ID_Action FROM dataaction');
               $reqID_Action->execute();
               $allID_Action = $reqID_Action->fetchall();
               $countID_Action = $reqID_Action->rowCount();
               $nbPercentAction = 0;
               $tabPercentAction = [];
+              // calcul des poucentage du dernier mois pour toute les actions
               for($i=0; $i<$countID_Action;$i++){
+                // mois actuel (-1 car buffer)
                 $reqMoisPercent1= $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois=(SELECT MAX(mois)-1 FROM historiqueaction)");
                 $reqMoisPercent1 -> execute(array($allID_Action[$i]['ID_Action']));
                 $price1_raw = $reqMoisPercent1->fetch();
+                // mois précédant
                 $reqMoisPercent2= $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois=(SELECT MAX(mois)-2 FROM historiqueaction)");
                 $reqMoisPercent2 -> execute(array($allID_Action[$i]['ID_Action']));
                 $price2_raw = $reqMoisPercent2->fetch();
                 $price1 = $price1_raw["prix"];
                 $price2 = $price2_raw["prix"];
+                // calcul
                 $percent_action = (($price1 - $price2) / $price2) * 100.0;
                 $percent_action_rounded = number_format($percent_action, 1);
+                // si un des pourcentage correspond alors on ajoute le nom et l'ID de l'action à un tableau
                 if($percent_action_rounded == $_POST['pourcentage']){
                   $reqPercentAction = $bdd->prepare('SELECT ID_Action,nomAction FROM dataaction WHERE ID_Action = ?');
                   $reqPercentAction->execute(array($allID_Action[$i]['ID_Action']));
@@ -54,24 +67,31 @@
               }
               
             }
+            // par an
             else if($_POST['periode'] == "annee"){
+              // récupération des informations de chaques actions
               $reqID_Action = $bdd->prepare('SELECT ID_Action FROM dataaction');
               $reqID_Action->execute();
               $allID_Action = $reqID_Action->fetchall();
               $countID_Action = $reqID_Action->rowCount();
               $nbPercentAction = 0;
               $tabPercentAction = [];
+              // calcul des poucentage du dernier mois pour toute les actions
               for($i=0; $i<$countID_Action;$i++){
+                // mois actuel (-1 car buffer)
                 $reqMoisPercent1= $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois=(SELECT MAX(mois)-1 FROM historiqueaction)");
                 $reqMoisPercent1 -> execute(array($allID_Action[$i]['ID_Action']));
                 $price1_raw = $reqMoisPercent1->fetch();
+                // mois un an avant (-13 car buffer)
                 $reqMoisPercent2= $bdd->prepare("SELECT prix FROM historiqueaction WHERE ID_Action = ? AND mois=(SELECT MAX(mois)-13 FROM historiqueaction)");
                 $reqMoisPercent2 -> execute(array($allID_Action[$i]['ID_Action']));
                 $price2_raw = $reqMoisPercent2->fetch();
                 $price1 = $price1_raw["prix"];
                 $price2 = $price2_raw["prix"];
+                // calcul
                 $percent_action = (($price1 - $price2) / $price2) * 100.0;
                 $percent_action_rounded = number_format($percent_action, 1);
+                // si un des pourcentage correspond alors on ajoute le nom et l'ID de l'action à un tableau
                 if($percent_action_rounded == $_POST['pourcentage']){
                   $reqPercentAction = $bdd->prepare('SELECT ID_Action,nomAction FROM dataaction WHERE ID_Action = ?');
                   $reqPercentAction->execute(array($allID_Action[$i]['ID_Action']));
@@ -83,7 +103,9 @@
               } 
             }
         }
+        // par prix 
         if(!empty($_POST['triPrix']) && $_POST['triPrix'] != 0){
+          // sélectionne toutes les actions qui correspondent au prix
             $reqPrixAction = $bdd->prepare('SELECT dataaction.nomAction,dataaction.ID_Action FROM dataaction INNER JOIN historiqueaction ON dataaction.ID_Action = historiqueaction.ID_Action WHERE historiqueaction.prix = ? AND mois=(SELECT MAX(mois)-1 FROM historiqueaction)');
             $reqPrixAction->execute(array($_POST['triPrix']));
             $prixAction = $reqPrixAction->fetchall();  
@@ -134,14 +156,17 @@
           <button class="close-modal"><a href="voir_stocks.php?ID_Action=<?=$_GET['ID_Action']?>">&times;</a></button>
           <h2 class="trie-h2">Trier les actions</h2>
           <div class=modal-modif>
+            <!-- tri par prix -->
             <div class="triPrix">
               <label for="triPrix">Prix :</label>
               <input class="range" type="number" name="triPrix" value="0" min="0" max="<?= $maxPrice['prix'] ?>" id="triPrix" step="0.01"></input>
             </div>
+            <!-- tri par recherche -->
             <div class="searchAction">
             <label for="searchAction">Rechercher une Action :</label>
             <input type="search" name="searchAction" placeholder="Action" id="searchAction">
             </div>
+            <!-- tri par pourcentage -->
             <div class = pourcentage>
             <label for="periode">Période :</label>
             <select name="periode" id="periode">
@@ -158,19 +183,21 @@
           <div class="resultAction">
           <h2 class = "h2-resultAction">Résultat :</h2>
           <?php 
-          
+          // si recherhce par prix
             if($nbPrixAction>0){
               for($i=0;$i<$nbPrixAction;$i++){
                 ?>
                   <div class="actionResult"><a href="voir_stocks.php?ID_Action=<?= $prixAction[$i]['ID_Action']?>"><?= $prixAction[$i]['nomAction']?></a></div>
               <?php }
             }
+          // si recherche textuel
             if($nbSearchAction>0){
               for($i=0;$i<$nbSearchAction;$i++){
                 ?>
                   <div class="actionResult"><a href="voir_stocks.php?ID_Action=<?= $searchAction[$i]['ID_Action']?>"><?= $searchAction[$i]['nomAction']?></a></div>
               <?php }
             }
+          // si recherche par pourcentage
             if(!isset($nbPercentAction)){
               $nbPercentAction = 0;
             }
@@ -181,6 +208,7 @@
                   <div class="actionResult"><a href="voir_stocks.php?ID_Action=<?= $tabPercentAction[$i][0]['ID_Action']?>"><?= $tabPercentAction[$i][0]['nomAction']?></a></div>
               <?php }
             }
+            // sinon
             if($nbPrixAction+$nbSearchAction+$nbPercentAction == 0){
               ?>
               <div class="actionResult"><p>Aucun éléments ne correspond à votre recherche</p></div>

@@ -23,6 +23,7 @@
                 if(strlen($pseudo) <= 100){
                     if(strlen($email) <= 255){
                         if($password === $password2){
+                            // si tous les test (mdp equivalent, email, pseudo) on ajoute l'utilisateur à la bdd + redirection vers login
                             $password = password_hash($password, PASSWORD_DEFAULT);
                             $soldeJoueur = 10000.00;
                             $insert = $bdd->prepare('INSERT INTO user(pseudo, email, mdp,token,soldeJoueur,photo,nbPartie) VALUES(?, ?, ?,?,?,?,?)');

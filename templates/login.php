@@ -32,6 +32,7 @@
     <div class="menu_divider"></div>
     <section class="form-box">
     <?php 
+    // récupération dans l'url des postentielles erreurs
         if(isset($_GET['reg_err']))
             {
                 $err = htmlspecialchars($_GET['reg_err']);

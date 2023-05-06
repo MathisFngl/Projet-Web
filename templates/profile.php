@@ -3,16 +3,20 @@
     require_once 'bdd.php';
     require('remember.php');
     require_once 'calculTotalArgent.php';
+
+     //  on recupère les informations d'un joueur via son token + on vérifie s'il est connecté
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT ID_User, email,pseudo,soldeJoueur,photo,nbPartie FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
         $dataUser = $requUser->fetch();
     }else{header('Location: deconnexion.php');}
-
+   
+    // récupération de l'avatar
     $photo = $bdd->prepare('SELECT photo FROM photo WHERE ID_Photo = ?');
     $photo->execute(array($dataUser['photo']));
     $image = $photo->fetch();
     
+    // récupération des emprunts
     $reqEmprunt = $bdd->prepare('SELECT moisEmprunt, soldeEmprunt FROM emprunt WHERE ID_User = ?');
     $reqEmprunt->execute(array($dataUser['ID_User']));
 ?>
@@ -47,8 +51,8 @@
         </nav>
         <div class="menu_divider"></div>
         <div class="profil_body">
+            <!-- affichage des informations du profil -->
             <div class="infoProfil">
-
                 <div class="left_panel">
                     <div class="profilPhoto">
                         <?= '<img src="data:image/jpeg;base64,'.base64_encode($image['photo']).'" alt="photo de profil">' ?>
@@ -60,6 +64,7 @@
                     <div class="modal hidden">
                         <button class="close-modal"><a href="profile.php">&times;</a></button>
                         <h2 class="emprunt1-h2">Emprunt</h2>
+                        <!-- affichage des emprunts -->
                         <div class="emprunt">
                             <table>
                                 <tr>
@@ -80,6 +85,7 @@
                                 </div>
                             </table>
                         </div>
+                        <!-- faire un emprunt -->
                         <form action="emprunt.php" method="post">
                             <h2 class="emprunt2-h2">Faire un emprunt</h2>
                             <div class="demEmprunt">

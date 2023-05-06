@@ -15,12 +15,6 @@
     }
 function nouveauTour($bdd)
 {
-    if(isset($_SESSION['user'])){
-        $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
-        $requUser->execute(array($_SESSION['user']));
-        $dataUser = $requUser->fetch();
-    }else{header('Location: deconnexion.php');}
-
     $stocksReq = $bdd->prepare("SELECT * FROM dataaction");
     $stocksReq->execute();
     $stock = $stocksReq->fetch();
@@ -40,36 +34,7 @@ function nouveauTour($bdd)
     $Mois = $MoisReq->fetch();
     $nouveauMois = $Mois[0] + 1;
 
-    //GESTION EMPRUNT
-    $reqEmprunt = $bdd->prepare('SELECT moisEmprunt,soldeEmprunt,ID_Emprunt FROM emprunt WHERE ID_User=?');
-    $reqEmprunt->execute(array($dataUser['ID_User']));
-    $emprunt = $reqEmprunt->fetchAll();
-    $nbEmprunt = $reqEmprunt->rowCount();
-    $prelSolde = 0;
-
-    for($i=0;$i<$nbEmprunt;$i++){
-        $prelSolde = $prelSolde + ($emprunt[$i]['soldeEmprunt']/$emprunt[$i]['moisEmprunt']);
-        // si mois =1 donc le derniier mois il n'y aura plus d'emprunt donc un supprime
-        if($emprunt[$i]['moisEmprunt'] == 1){
-            $reqmoisEmprunt = $bdd->prepare('DELETE FROM emprunt WHERE ID_Emprunt = ?');
-            $reqmoisEmprunt -> execute(array($emprunt[$i]['ID_Emprunt']));
-        }
-        else{
-            $reqmoisEmprunt = $bdd->prepare('UPDATE  emprunt SET moisEmprunt = ? WHERE ID_Emprunt = ?');
-            $reqmoisEmprunt -> execute(array($emprunt[$i]['moisEmprunt']-1,$emprunt[$i]['ID_Emprunt']));
-        }
-    }
-    echo $prelSolde;
-
-    if($prelSolde != 0){
-        $sql_historique_emprunt = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,4,?)");
-        $sql_historique_emprunt->execute(array($dataUser['ID_User'], $prelSolde, $Mois[0]));
-    }
-
-    $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
-    $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']-$prelSolde,$dataUser['ID_User']));
-    
-
+   
     // GESTION DES DIVIDENDES
 
     $requUser = $bdd->prepare('SELECT soldeJoueur, ID_User FROM user');
@@ -116,10 +81,41 @@ function nouveauTour($bdd)
             $sql_historique_trade = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,2,?)");
             $sql_historique_trade -> execute(array($dataUser['ID_User'], $sommeDividendes, $Mois[0]));
         }
-        //GESTION GAME OVER
+         //GESTION EMPRUNT
+         // récupération de tout les emprunts d'un joueur
+        $reqEmprunt = $bdd->prepare('SELECT moisEmprunt,ID_Emprunt,valeurEmprunt FROM emprunt WHERE ID_User=?');
+        $reqEmprunt->execute(array($dataUser['ID_User']));
+        $emprunt = $reqEmprunt->fetchAll();
+        $nbEmprunt = $reqEmprunt->rowCount();
+        $prelSolde = 0;
 
-        $dataUser = $requUser->fetch();
+        // calcul du solde total à prélever
+        for($k=0;$k<$nbEmprunt;$k++){
+        $prelSolde = $prelSolde + $emprunt[$k]['valeurEmprunt'];
+        // si mois =1 donc le derniier mois il n'y aura plus d'emprunt donc un supprime
+        if($emprunt[$k]['moisEmprunt'] == 1){
+            $reqmoisEmprunt = $bdd->prepare('DELETE FROM emprunt WHERE ID_Emprunt = ?');
+            $reqmoisEmprunt -> execute(array($emprunt[$k]['ID_Emprunt']));
+        }
+        //sinon on décrémente de 1 le nombre de mois
+        else{
+            $reqmoisEmprunt = $bdd->prepare('UPDATE  emprunt SET moisEmprunt = ? WHERE ID_Emprunt = ?');
+            $reqmoisEmprunt -> execute(array($emprunt[$k]['moisEmprunt']-1,$emprunt[$k]['ID_Emprunt']));
+        }
     }
+
+    // ajout à l'historique
+    if($prelSolde != 0){
+        $sql_historique_emprunt = $bdd->prepare("INSERT INTO historiquetrade(ID_User,ID_Action, nombreAction, statut ,mois) VALUES (?,1,?,4,?)");
+        $sql_historique_emprunt->execute(array($dataUser['ID_User'], $prelSolde, $Mois[0]));
+    }
+
+    // modification du solde du joueur
+    $reqSoldeEmprunt = $bdd->prepare('UPDATE user SET soldeJoueur = ? WHERE ID_User = ?');
+    $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']-$prelSolde,$dataUser['ID_User']));
+    $dataUser = $requUser->fetch();
+    }
+    //GESTION GAME OVER
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT ID_User,soldeJoueur FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
