@@ -3,6 +3,7 @@
     require_once 'bdd.php';
     require('remember.php');
     require_once 'calculTotalArgent.php';
+require 'nouveauTour.php';
 
 //  on recupère les informations d'un joueur via son token
     if(isset($_SESSION['user'])){

@@ -3,6 +3,7 @@
     require_once 'bdd.php';
     require('remember.php');
     require_once 'calculTotalArgent.php';
+    require 'nouveauTour.php';
     if(isset($_SESSION['user'])){
         $requUser = $bdd->prepare('SELECT email,pseudo,soldeJoueur,photo FROM user WHERE token = ?');
         $requUser->execute(array($_SESSION['user']));
