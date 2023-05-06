@@ -58,10 +58,6 @@
         else if($donnees["statut"] == 2){
             $Somme_gagnee += $donnees["nombreAction"];
         }
-        // Si la valeur est un achat, alors on déduit la somme
-        else if($donnees["statut"] == 0){
-            $Somme_gagnee -= Benefice($bdd, $donnees["ID_Action"], $donnees["mois"], $donnees["nombreAction"]);
-        }
         $donnees = $req->fetch();
     }
 

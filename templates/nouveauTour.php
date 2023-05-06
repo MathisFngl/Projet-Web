@@ -143,7 +143,7 @@ function nouveauTour($bdd)
         $dataUser = $requUser->fetch();
     }
 
-    if(ArgentTotal($bdd, $dataUser["ID_User"]) < 1000){
+    if(ArgentTotal($bdd, $dataUser["ID_User"]) < 1000 || $dataUser["soldeJoueur"] < 0){
         header("Location: gameOver.php");
     }
     header("Location: voir_stocks.php?ID_Action=1");
