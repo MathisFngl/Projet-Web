@@ -32,6 +32,6 @@
                 $reqSoldeEmprunt->execute(array($dataUser['soldeJoueur']+$solde,$dataUser['ID_User']));
                 header('Location:profile.php');
             }else{header('Location:profile.php?emprunt=1');}
-        }
+        }else{header('Location:profile.php?emprunt=1');}
     }
 ?>
